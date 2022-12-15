@@ -16,9 +16,4 @@ jobs:
         uses: maxday/quarkus-native-build-docker-action@13bf5c4ae6942143cf43a5663a6c7f847ac3163c
         with:
           outputName: app-runner
-      - name: Upload native executable
-        uses: actions/upload-artifact@v1
-        with:
-          name: native-executable
-          path: app-runner
 
