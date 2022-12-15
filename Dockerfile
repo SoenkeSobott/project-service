@@ -1,5 +1,5 @@
 ## Stage 1 : build with maven builder image with native capabilities
-FROM quay.io/quarkus/centos-quarkus-maven:22.3.0-java11 AS build
+FROM quay.io/quarkus/centos-quarkus-maven:22.2.0-java11 AS build
 COPY . /tmp/my-project
 USER root
 RUN chown -R quarkus /tmp/my-project
