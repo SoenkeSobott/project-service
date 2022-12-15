@@ -13,5 +13,5 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@master    
       - name: Build a Quarkus native application
-        uses: maxday/quarkus-native-build-docker-action@1
+        uses: maxday/quarkus-native-build-docker-action@13bf5c4
 
