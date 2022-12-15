@@ -6,14 +6,26 @@ on:
       - 'master'
 
 jobs:
-  native_build:
+  docker:
     runs-on: ubuntu-latest
-    name: Build native Quarkus app
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@master    
-      - name: Build a Quarkus native application
-        uses: maxday/quarkus-native-build-docker-action@13bf5c4ae6942143cf43a5663a6c7f847ac3163c
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v2
         with:
-          outputName: app-runner
-
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: sobott/project-service:latest
