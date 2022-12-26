@@ -5,7 +5,7 @@ public class BillOfQuantityEntry {
     private String articleNumber;
     private String description;
     private String unit;
-    private Double quantity;
+    private Integer quantity;
     private Double weightPerUnit;
 
     public String getArticleNumber() {
@@ -32,11 +32,11 @@ public class BillOfQuantityEntry {
         this.unit = unit;
     }
 
-    public Double getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
