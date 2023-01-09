@@ -9,8 +9,12 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 public class ProjectService implements PanacheMongoRepository<Project> {
 
-    public Response getProjects(String product, Double thickness) {
-        String filterQuery = generateFilterQuery(product, thickness);
+    public Response getProjects(String product,
+                                Double minThickness,
+                                Double maxThickness,
+                                Double minHeight,
+                                Double maxHeight) {
+        String filterQuery = generateFilterQuery(product, minThickness, maxThickness, minHeight, maxHeight);
 
         if (filterQuery != null) {
             return Response.status(Response.Status.OK).entity(Project.find(filterQuery).list()).build();
@@ -18,20 +22,49 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         return Response.status(Response.Status.OK).entity(Project.listAll()).build();
     }
 
-    private String generateFilterQuery(String product, Double thickness) {
+    private String generateFilterQuery(String product,
+                                       Double minThickness,
+                                       Double maxThickness,
+                                       Double minHeight,
+                                       Double maxHeight) {
         String filterQuery = "{";
-        if (thickness != null) {
-            filterQuery += "thickness: {$gte:" + thickness + "},";
-        }
+
         if (product != null && !product.isEmpty()) {
             filterQuery += "product: \"" + product.toUpperCase() + "\",";
         }
+
+        filterQuery += generateThicknessFilterQuery(minThickness, maxThickness);
+        filterQuery += generateHeightFilterQuery(minHeight, maxHeight);
 
         if (!filterQuery.equals("{")) {
             filterQuery += "}";
             return filterQuery;
         } else {
             return null;
+        }
+    }
+
+    private String generateThicknessFilterQuery(Double minThickness, Double maxThickness) {
+        if (minThickness != null && maxThickness != null) {
+            return "thickness: {$gte:" + minThickness + ", $lte:" + maxThickness + "},";
+        } else if (minThickness != null) {
+            return "thickness: {$gte:" + minThickness + "},";
+        } else if (maxThickness != null) {
+            return "thickness: {$lte:" + maxThickness + "},";
+        } else {
+            return "";
+        }
+    }
+
+    private String generateHeightFilterQuery(Double minHeight, Double maxHeight) {
+        if (minHeight != null && maxHeight != null) {
+            return "height: {$gte:" + minHeight + ", $lte:" + maxHeight + "},";
+        } else if (minHeight != null) {
+            return "height: {$gte:" + minHeight + "},";
+        } else if (maxHeight != null) {
+            return "height: {$lte:" + maxHeight + "},";
+        } else {
+            return "";
         }
     }
 

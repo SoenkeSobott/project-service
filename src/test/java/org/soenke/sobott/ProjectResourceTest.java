@@ -36,35 +36,6 @@ public class ProjectResourceTest {
     }
 
     @Test
-    public void testProjectEndpointWithEmptyThicknessFilter() {
-        given()
-                .when().get("/projects?thickness=null")
-                .then()
-                .statusCode(404);
-    }
-
-    @Test
-    public void testProjectsEndpointThicknessFiltered() {
-        createProject("project-number-123", "toSmall", 10.0);
-        createProject("project-number-918", "theSame", 25.0);
-        createProject("project-number-911", "greater", 50.0);
-        createProject("project-number-900", "wayGreater", 80.0);
-
-
-        given()
-                .when().get("/projects?thickness=25.0")
-                .then()
-                .statusCode(200)
-                .body("size()", is(3))
-                .body("[0].projectNumber", is("project-number-918"))
-                .body("[0].projectName", is("theSame"))
-                .body("[1].projectNumber", is("project-number-911"))
-                .body("[1].projectName", is("greater"))
-                .body("[2].projectNumber", is("project-number-900"))
-                .body("[2].projectName", is("wayGreater"));
-    }
-
-    @Test
     public void testProjectsEndpointProductFiltered() {
         createProject("project-number-123", "DUO-1", "DUO");
         createProject("project-number-918", "DUO-2", "DUO");
@@ -108,19 +79,143 @@ public class ProjectResourceTest {
     }
 
     @Test
-    public void testProjectsEndpointFilteredWithAllFilters() {
-        createFullProject("project-number-123", "DUO but to small", 20.0, "DUO");
-        createFullProject("project-number-918", "DUO-1", 25.0, "DUO");
-        createFullProject("project-number-911", "Big but not Duo", 30.5, "OtherProduct");
-        createFullProject("project-number-900", "DUO-2", 87.3, "DUO");
+    public void testProjectEndpointWithEmptyThicknessFilters() {
+        given()
+                .when().get("/projects?minThickness=null")
+                .then()
+                .statusCode(404);
 
         given()
-                .when().get("/projects?product=DUO&thickness=25.0")
+                .when().get("/projects?maxThickness=null")
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void testProjectsEndpointMinAndMaxThicknessFiltered() {
+        createProject("project-number-123", "tooSmall", 10.0);
+        createProject("project-number-918", "theSameAsMin", 25.0);
+        createProject("project-number-911", "between", 50.0);
+        createProject("project-number-917", "theSameAsMax", 55.3);
+        createProject("project-number-900", "tooBig", 80.0);
+
+        given()
+                .when().get("/projects?minThickness=25.0&maxThickness=55.3")
                 .then()
                 .statusCode(200)
-                .body("size()", is(2))
+                .body("size()", is(3))
+                .body("[0].projectNumber", is("project-number-918"))
+                .body("[0].projectName", is("theSameAsMin"))
+                .body("[1].projectNumber", is("project-number-911"))
+                .body("[1].projectName", is("between"))
+                .body("[2].projectNumber", is("project-number-917"))
+                .body("[2].projectName", is("theSameAsMax"));
+    }
+
+    @Test
+    public void testProjectsEndpointOnlyMinThicknessFiltered() {
+        createProject("project-number-123", "tooSmall", 10.0);
+        createProject("project-number-918", "theSameAsMin", 25.0);
+        createProject("project-number-911", "higher", 50.0);
+        createProject("project-number-900", "wayHigher", 80.0);
+
+        given()
+                .when().get("/projects?minThickness=25.0")
+                .then()
+                .statusCode(200)
+                .body("size()", is(3))
+                .body("[0].projectName", is("theSameAsMin"))
+                .body("[1].projectName", is("higher"))
+                .body("[2].projectName", is("wayHigher"));
+    }
+
+    @Test
+    public void testProjectsEndpointOnlyMaxThicknessFiltered() {
+        createProject("project-number-918", "wayLower", 25.0);
+        createProject("project-number-911", "lower", 50.0);
+        createProject("project-number-910", "theSameAsMax", 55.3);
+        createProject("project-number-900", "tooBig", 80.0);
+
+        given()
+                .when().get("/projects?maxThickness=55.3")
+                .then()
+                .statusCode(200)
+                .body("size()", is(3))
+                .body("[0].projectName", is("wayLower"))
+                .body("[1].projectName", is("lower"))
+                .body("[2].projectName", is("theSameAsMax"));
+    }
+
+    @Test
+    public void testProjectsEndpointMinAndMaxHeightFiltered() {
+        createFullProject("1234", "TooSmall", 20.0, 10.0, "DUO");
+        createFullProject("5768", "SameAsMin", 25.0, 300.0, "DUO");
+        createFullProject("2345", "Between", 30.5, 543.3, "OtherProduct");
+        createFullProject("9453", "SameAsMax", 87.3, 667.32, "DUO");
+        createFullProject("5512", "TooBig", 100.0, 1000.0, "DUO");
+
+        given()
+                .when().get("/projects?minHeight=300&maxHeight=667.32")
+                .then()
+                .statusCode(200)
+                .body("size()", is(3))
+                .body("[0].projectName", is("SameAsMin"))
+                .body("[1].projectName", is("Between"))
+                .body("[2].projectName", is("SameAsMax"));
+    }
+
+    @Test
+    public void testProjectsEndpointOnlyMinHeightFiltered() {
+        createFullProject("1234", "TooSmall", 20.0, 10.0, "DUO");
+        createFullProject("5768", "SameAsMin", 25.0, 300.0, "DUO");
+        createFullProject("2345", "Between", 30.5, 543.3, "OtherProduct");
+        createFullProject("9453", "WayBigger", 87.3, 667.32, "DUO");
+
+        given()
+                .when().get("/projects?minHeight=300")
+                .then()
+                .statusCode(200)
+                .body("size()", is(3))
+                .body("[0].projectName", is("SameAsMin"))
+                .body("[1].projectName", is("Between"))
+                .body("[2].projectName", is("WayBigger"));
+    }
+
+    @Test
+    public void testProjectsEndpointOnlyMaxHeightFiltered() {
+        createFullProject("1234", "WaySmaller", 20.0, 10.0, "DUO");
+        createFullProject("5768", "Between", 25.0, 300.0, "DUO");
+        createFullProject("2345", "SameAsMax", 30.5, 543.3, "OtherProduct");
+        createFullProject("9453", "TooBig", 87.3, 667.32, "DUO");
+
+        given()
+                .when().get("/projects?maxHeight=543.3")
+                .then()
+                .statusCode(200)
+                .body("size()", is(3))
+                .body("[0].projectName", is("WaySmaller"))
+                .body("[1].projectName", is("Between"))
+                .body("[2].projectName", is("SameAsMax"));
+    }
+
+    @Test
+    public void testProjectsEndpointFilteredWithAllFilters() {
+        createFullProject("1231", "DUOButTooLowThickness", 20.0, 230.0, "DUO");
+        createFullProject("9458", "DUO-1", 25.0, 230.0, "DUO");
+        createFullProject("9670", "BetweenButNotDuo", 30.5, 30.0, "OtherProduct");
+        createFullProject("4587", "BetweenThicknessAndDuoButTooBigHeight", 30.5, 3000.0, "OtherProduct");
+        createFullProject("1077", "DUO-2", 87.3, 330.0, "DUO");
+        createFullProject("1077", "DUO-3", 82.0, 300.0, "DUO");
+        createFullProject("2234", "DuoButTooBigThickness", 100.0, 230.0, "DUO");
+
+        given()
+                .when().get("/projects?product=DUO&minThickness=25.0&maxThickness=87.3&minHeight=100&maxHeight=450")
+                .then()
+                .statusCode(200)
+                .body("size()", is(3))
                 .body("[0].projectName", is("DUO-1"))
-                .body("[1].projectName", is("DUO-2"));
+                .body("[1].projectName", is("DUO-2"))
+                .body("[2].projectName", is("DUO-3"));
     }
 
     protected void createProject(String projectNumber, String projectName) {
@@ -146,11 +241,16 @@ public class ProjectResourceTest {
         project.persist();
     }
 
-    protected void createFullProject(String projectNumber, String projectName, Double thickness, String product) {
+    protected void createFullProject(String projectNumber,
+                                     String projectName,
+                                     Double thickness,
+                                     Double height,
+                                     String product) {
         Project project = new Project();
         project.setProjectNumber(projectNumber);
         project.setProjectName(projectName);
         project.setThickness(thickness);
+        project.setHeight(height);
         project.setProduct(product);
         project.persist();
     }
