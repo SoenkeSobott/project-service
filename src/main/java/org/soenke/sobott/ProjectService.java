@@ -9,25 +9,33 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 public class ProjectService implements PanacheMongoRepository<Project> {
 
-    public Response getProjects(String product,
+    public Response getProjects(String searchTerm,
+                                String product,
                                 Double minThickness,
                                 Double maxThickness,
                                 Double minHeight,
                                 Double maxHeight) {
-        String filterQuery = generateFilterQuery(product, minThickness, maxThickness, minHeight, maxHeight);
+        String filterQuery = generateFilterQuery(searchTerm, product, minThickness, maxThickness, minHeight, maxHeight);
 
         if (filterQuery != null) {
             return Response.status(Response.Status.OK).entity(Project.find(filterQuery).list()).build();
         }
+        
         return Response.status(Response.Status.OK).entity(Project.listAll()).build();
     }
 
-    private String generateFilterQuery(String product,
+    private String generateFilterQuery(String searchTerm,
+                                       String product,
                                        Double minThickness,
                                        Double maxThickness,
                                        Double minHeight,
                                        Double maxHeight) {
         String filterQuery = "{";
+
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            String searchQuery = "$text: { $search: \"" + searchTerm + "\", $caseSensitive: false},";
+            filterQuery += searchQuery;
+        }
 
         if (product != null && !product.isEmpty()) {
             filterQuery += "product: \"" + product.toUpperCase() + "\",";

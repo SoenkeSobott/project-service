@@ -1,9 +1,13 @@
 package org.soenke.sobott;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.model.Indexes;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.soenke.sobott.entity.Project;
+
+import javax.inject.Inject;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -11,9 +15,18 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTest
 public class ProjectResourceTest {
 
+    @Inject
+    MongoClient mongoClient;
+
     @BeforeEach
     public void cleanDB() {
         Project.deleteAll();
+    }
+
+    @BeforeEach
+    public void setUpDB() {
+        mongoClient.getDatabase("perisolutionx").getCollection("projects")
+                .createIndex(Indexes.text("projectName"));
     }
 
     @Test
@@ -196,6 +209,24 @@ public class ProjectResourceTest {
                 .body("[0].projectName", is("WaySmaller"))
                 .body("[1].projectName", is("Between"))
                 .body("[2].projectName", is("SameAsMax"));
+    }
+
+    @Test
+    public void testProjectsEndpointProductNameFiltered() {
+        createProject("project-number-123", "Honk Kong test site", "DUO");
+        createProject("project-number-918", "Mega Factory kong", "DUO");
+        createProject("project-number-911", "Housing", "OtherProduct");
+        createProject("project-number-900", "TunnelHonkkongtestbuilding", "DUO");
+
+        given()
+                .when().get("/projects?searchTerm=KONG")
+                .then()
+                .statusCode(200)
+                .body("size()", is(2))
+                .body("[0].projectName", is("Mega Factory kong"))
+                .body("[1].projectName", is("Honk Kong test site"));
+
+        // TODO: improve search
     }
 
     @Test

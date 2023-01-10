@@ -17,12 +17,13 @@ public class ProjectResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProjects(
+            @QueryParam(value = "searchTerm") String searchTerm,
             @QueryParam(value = "product") String product,
             @QueryParam(value = "minThickness") Double minThickness,
             @QueryParam(value = "maxThickness") Double maxThickness,
             @QueryParam(value = "minHeight") Double minHeight,
             @QueryParam(value = "maxHeight") Double maxHeight
     ) {
-        return projectService.getProjects(product, minThickness, maxThickness, minHeight, maxHeight);
+        return projectService.getProjects(searchTerm, product, minThickness, maxThickness, minHeight, maxHeight);
     }
 }
