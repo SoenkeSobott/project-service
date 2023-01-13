@@ -1,10 +1,12 @@
 package org.soenke.sobott;
 
+import org.soenke.sobott.entity.FilterPojo;
+
 import javax.inject.Inject;
-import javax.ws.rs.GET;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -14,16 +16,10 @@ public class ProjectResource {
     @Inject
     ProjectService projectService;
 
-    @GET
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProjects(
-            @QueryParam(value = "searchTerm") String searchTerm,
-            @QueryParam(value = "product") String product,
-            @QueryParam(value = "minThickness") Double minThickness,
-            @QueryParam(value = "maxThickness") Double maxThickness,
-            @QueryParam(value = "minHeight") Double minHeight,
-            @QueryParam(value = "maxHeight") Double maxHeight
-    ) {
-        return projectService.getProjects(searchTerm, product, minThickness, maxThickness, minHeight, maxHeight);
+    public Response getProjectsFiltered(FilterPojo filters) {
+        return projectService.getProjects(filters);
     }
 }

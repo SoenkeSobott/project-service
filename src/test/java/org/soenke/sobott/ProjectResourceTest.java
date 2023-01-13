@@ -36,7 +36,8 @@ public class ProjectResourceTest {
         createProject("project-number-911", "project-name-911");
 
         given()
-                .when().get("/projects")
+                .contentType("application/json")
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
@@ -55,8 +56,11 @@ public class ProjectResourceTest {
         createProject("project-number-911", "Other Product", "OtherProduct");
         createProject("project-number-900", "DUO-3", "DUO");
 
+        String filterJson = "{\"product\": \"DUO\"}";
         given()
-                .when().get("/projects?product=DUO")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
@@ -72,8 +76,11 @@ public class ProjectResourceTest {
         createProject("project-number-911", "Other Product", "OtherProduct");
         createProject("project-number-900", "DUO-3", "DUO");
 
+        String filterJson = "{\"product\": \"Duo\"}";
         given()
-                .when().get("/projects?product=Duo")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
@@ -81,27 +88,17 @@ public class ProjectResourceTest {
                 .body("[1].projectName", is("DUO-2"))
                 .body("[2].projectName", is("DUO-3"));
 
+        filterJson = "{\"product\": \"duO\"}";
         given()
-                .when().get("/projects?product=duO")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
                 .body("[0].projectName", is("DUO-1"))
                 .body("[1].projectName", is("DUO-2"))
                 .body("[2].projectName", is("DUO-3"));
-    }
-
-    @Test
-    public void testProjectEndpointWithEmptyThicknessFilters() {
-        given()
-                .when().get("/projects?minThickness=null")
-                .then()
-                .statusCode(404);
-
-        given()
-                .when().get("/projects?maxThickness=null")
-                .then()
-                .statusCode(404);
     }
 
     @Test
@@ -112,8 +109,11 @@ public class ProjectResourceTest {
         createProject("project-number-917", "theSameAsMax", 55.3);
         createProject("project-number-900", "tooBig", 80.0);
 
+        String filterJson = "{\"minThickness\":25, \"maxThickness\":55.3}";
         given()
-                .when().get("/projects?minThickness=25.0&maxThickness=55.3")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
@@ -132,8 +132,11 @@ public class ProjectResourceTest {
         createProject("project-number-911", "higher", 50.0);
         createProject("project-number-900", "wayHigher", 80.0);
 
+        String filterJson = "{\"minThickness\":25}";
         given()
-                .when().get("/projects?minThickness=25.0")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
@@ -149,8 +152,11 @@ public class ProjectResourceTest {
         createProject("project-number-910", "theSameAsMax", 55.3);
         createProject("project-number-900", "tooBig", 80.0);
 
+        String filterJson = "{\"maxThickness\":55.3}";
         given()
-                .when().get("/projects?maxThickness=55.3")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
@@ -167,8 +173,11 @@ public class ProjectResourceTest {
         createFullProject("9453", "SameAsMax", 87.3, 667.32, "DUO");
         createFullProject("5512", "TooBig", 100.0, 1000.0, "DUO");
 
+        String filterJson = "{\"minHeight\":300, \"maxHeight\":667.32}";
         given()
-                .when().get("/projects?minHeight=300&maxHeight=667.32")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
@@ -184,8 +193,11 @@ public class ProjectResourceTest {
         createFullProject("2345", "Between", 30.5, 543.3, "OtherProduct");
         createFullProject("9453", "WayBigger", 87.3, 667.32, "DUO");
 
+        String filterJson = "{\"minHeight\":300}";
         given()
-                .when().get("/projects?minHeight=300")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
@@ -201,8 +213,11 @@ public class ProjectResourceTest {
         createFullProject("2345", "SameAsMax", 30.5, 543.3, "OtherProduct");
         createFullProject("9453", "TooBig", 87.3, 667.32, "DUO");
 
+        String filterJson = "{\"maxHeight\":543.3}";
         given()
-                .when().get("/projects?maxHeight=543.3")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
@@ -217,16 +232,19 @@ public class ProjectResourceTest {
         createProject("project-number-918", "Mega Factory kong", "DUO");
         createProject("project-number-911", "Housing", "OtherProduct");
         createProject("project-number-900", "TunnelHonkkongtestbuilding", "DUO");
+        // TODO: improve search to also get the last project TunnelHonkkongtestbuilding
 
+        String filterJson = "{\"searchTerm\": \"KONG\"}";
         given()
-                .when().get("/projects?searchTerm=KONG")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2))
                 .body("[0].projectName", is("Mega Factory kong"))
                 .body("[1].projectName", is("Honk Kong test site"));
 
-        // TODO: improve search
     }
 
     @Test
@@ -237,16 +255,25 @@ public class ProjectResourceTest {
         createFullProject("4587", "BetweenThicknessAndDuoButTooBigHeight", 30.5, 3000.0, "OtherProduct");
         createFullProject("1077", "DUO-2", 87.3, 330.0, "DUO");
         createFullProject("1077", "DUO-3", 82.0, 300.0, "DUO");
+        createFullProject("1077", "EverythingOkButNotSearchTermMatch", 82.0, 300.0, "DUO");
+        createFullProject("1077", "Duo", 82.0, 500.0, "DUO");
         createFullProject("2234", "DuoButTooBigThickness", 100.0, 230.0, "DUO");
+        // TODO: project for each case
 
+        String filterJson = "{\"searchTerm\": \"Duo\", " +
+                "\"product\": \"Duo\", " +
+                "\"minThickness\":25, \"maxThickness\":87.3," +
+                "\"minHeight\":100, \"maxHeight\":450}";
         given()
-                .when().get("/projects?product=DUO&minThickness=25.0&maxThickness=87.3&minHeight=100&maxHeight=450")
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("DUO-1"))
+                .body("[0].projectName", is("DUO-3"))
                 .body("[1].projectName", is("DUO-2"))
-                .body("[2].projectName", is("DUO-3"));
+                .body("[2].projectName", is("DUO-1"));
     }
 
     protected void createProject(String projectNumber, String projectName) {

@@ -1,6 +1,7 @@
 package org.soenke.sobott;
 
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
+import org.soenke.sobott.entity.FilterPojo;
 import org.soenke.sobott.entity.Project;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -9,18 +10,20 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 public class ProjectService implements PanacheMongoRepository<Project> {
 
-    public Response getProjects(String searchTerm,
-                                String product,
-                                Double minThickness,
-                                Double maxThickness,
-                                Double minHeight,
-                                Double maxHeight) {
-        String filterQuery = generateFilterQuery(searchTerm, product, minThickness, maxThickness, minHeight, maxHeight);
-
-        if (filterQuery != null) {
-            return Response.status(Response.Status.OK).entity(Project.find(filterQuery).list()).build();
+    public Response getProjects(FilterPojo filters) {
+        if (filters != null) {
+            String filterQuery = generateFilterQuery(
+                    filters.getSearchTerm(),
+                    filters.getProduct(),
+                    filters.getMinThickness(),
+                    filters.getMaxThickness(),
+                    filters.getMinHeight(),
+                    filters.getMaxHeight());
+            if (filterQuery != null) {
+                return Response.status(Response.Status.OK).entity(Project.find(filterQuery).list()).build();
+            }
         }
-        
+
         return Response.status(Response.Status.OK).entity(Project.listAll()).build();
     }
 
