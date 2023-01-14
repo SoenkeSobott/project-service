@@ -1,6 +1,6 @@
 package org.soenke.sobott.entity;
 
-public class WallFilterPojo {
+public class HeightAndThicknessFilterPojo {
     private Double minThickness;
     private Double maxThickness;
     private Double minHeight;

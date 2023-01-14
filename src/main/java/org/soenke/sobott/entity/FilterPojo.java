@@ -4,8 +4,8 @@ public class FilterPojo {
 
     private String searchTerm;
     private String product;
-    private WallFilterPojo wallFilter;
-
+    private HeightAndThicknessFilterPojo wallFilter;
+    private HeightAndThicknessFilterPojo columnFilter;
 
     // Getters & Setters
 
@@ -25,12 +25,20 @@ public class FilterPojo {
         this.product = product;
     }
 
-    public WallFilterPojo getWallFilter() {
+    public HeightAndThicknessFilterPojo getWallFilter() {
         return wallFilter;
     }
 
-    public void setWallFilter(WallFilterPojo wallFilter) {
+    public void setWallFilter(HeightAndThicknessFilterPojo wallFilter) {
         this.wallFilter = wallFilter;
+    }
+
+    public HeightAndThicknessFilterPojo getColumnFilter() {
+        return columnFilter;
+    }
+
+    public void setColumnFilter(HeightAndThicknessFilterPojo columnFilter) {
+        this.columnFilter = columnFilter;
     }
 }
 

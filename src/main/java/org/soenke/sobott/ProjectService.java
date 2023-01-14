@@ -2,8 +2,8 @@ package org.soenke.sobott;
 
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import org.soenke.sobott.entity.FilterPojo;
+import org.soenke.sobott.entity.HeightAndThicknessFilterPojo;
 import org.soenke.sobott.entity.Project;
-import org.soenke.sobott.entity.WallFilterPojo;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
@@ -16,7 +16,8 @@ public class ProjectService implements PanacheMongoRepository<Project> {
             String filterQuery = generateFilterQuery(
                     filters.getSearchTerm(),
                     filters.getProduct(),
-                    filters.getWallFilter());
+                    filters.getWallFilter(),
+                    filters.getColumnFilter());
             if (filterQuery != null) {
                 return Response.status(Response.Status.OK).entity(Project.find(filterQuery).list()).build();
             }
@@ -27,7 +28,8 @@ public class ProjectService implements PanacheMongoRepository<Project> {
 
     private String generateFilterQuery(String searchTerm,
                                        String product,
-                                       WallFilterPojo wallFilter) {
+                                       HeightAndThicknessFilterPojo wallFilter,
+                                       HeightAndThicknessFilterPojo columnFilter) {
         String filterQuery = "{$and: [";
 
         if (searchTerm != null && !searchTerm.isEmpty()) {
@@ -39,9 +41,15 @@ public class ProjectService implements PanacheMongoRepository<Project> {
             filterQuery += "{product: \"" + product.toUpperCase() + "\"},";
         }
 
-        if (wallFilter != null) {
-            filterQuery += generateThicknessFilterQuery(wallFilter.getMinThickness(), wallFilter.getMaxThickness());
-            filterQuery += generateHeightFilterQuery(wallFilter.getMinHeight(), wallFilter.getMaxHeight());
+        if (wallFilter != null && columnFilter != null) {
+            filterQuery += "{$or: [";
+            filterQuery += generateWallFilterQuery(wallFilter);
+            filterQuery += generateColumnFilterQuery(columnFilter);
+            filterQuery += "]},";
+        } else if (wallFilter != null) {
+            filterQuery += generateWallFilterQuery(wallFilter);
+        } else if (columnFilter != null) {
+            filterQuery += generateColumnFilterQuery(columnFilter);
         }
 
         if (!filterQuery.equals("{")) {
@@ -52,9 +60,22 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         }
     }
 
-    private String generateThicknessFilterQuery(Double minThickness, Double maxThickness) {
-        System.out.println(minThickness);
-        String query = "{$and: [{mainStructure: \"Wall\"},";
+    private String generateWallFilterQuery(HeightAndThicknessFilterPojo wallFilter) {
+        String filterQuery = "{$and: [";
+        filterQuery += generateThicknessFilterQuery("Wall", wallFilter.getMinThickness(), wallFilter.getMaxThickness());
+        filterQuery += generateHeightFilterQuery("Wall", wallFilter.getMinHeight(), wallFilter.getMaxHeight());
+        return filterQuery + "]}";
+    }
+
+    private String generateColumnFilterQuery(HeightAndThicknessFilterPojo columnFilter) {
+        String filterQuery = "";
+        filterQuery += generateThicknessFilterQuery("Column", columnFilter.getMinThickness(), columnFilter.getMaxThickness());
+        filterQuery += generateHeightFilterQuery("Column", columnFilter.getMinHeight(), columnFilter.getMaxHeight());
+        return filterQuery;
+    }
+
+    private String generateThicknessFilterQuery(String structure, Double minThickness, Double maxThickness) {
+        String query = "{$and: [{mainStructure: \"" + structure + "\"},";
         if (minThickness != null && maxThickness != null) {
             return query + "{thickness: {$gte:" + minThickness + ", $lte:" + maxThickness + "}}]},";
         } else if (minThickness != null) {
@@ -66,8 +87,8 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         }
     }
 
-    private String generateHeightFilterQuery(Double minHeight, Double maxHeight) {
-        String query = "{$and: [{mainStructure: \"Wall\"},";
+    private String generateHeightFilterQuery(String structure, Double minHeight, Double maxHeight) {
+        String query = "{$and: [{mainStructure: \"" + structure + "\"},";
         if (minHeight != null && maxHeight != null) {
             return query + "{height: {$gte:" + minHeight + ", $lte:" + maxHeight + "}}]},";
         } else if (minHeight != null) {
