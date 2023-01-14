@@ -1,11 +1,14 @@
 package org.soenke.sobott.entity;
 
+import java.util.List;
+
 public class FilterPojo {
 
     private String searchTerm;
     private String product;
     private HeightAndThicknessFilterPojo wallFilter;
     private HeightAndThicknessFilterPojo columnFilter;
+    private List<String> infrastructureElements;
 
     // Getters & Setters
 
@@ -39,6 +42,14 @@ public class FilterPojo {
 
     public void setColumnFilter(HeightAndThicknessFilterPojo columnFilter) {
         this.columnFilter = columnFilter;
+    }
+
+    public List<String> getInfrastructureElements() {
+        return infrastructureElements;
+    }
+
+    public void setInfrastructureElements(List<String> infrastructureElements) {
+        this.infrastructureElements = infrastructureElements;
     }
 }
 

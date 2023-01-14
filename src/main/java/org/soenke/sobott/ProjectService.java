@@ -7,6 +7,8 @@ import org.soenke.sobott.entity.Project;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ProjectService implements PanacheMongoRepository<Project> {
@@ -17,7 +19,8 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                     filters.getSearchTerm(),
                     filters.getProduct(),
                     filters.getWallFilter(),
-                    filters.getColumnFilter());
+                    filters.getColumnFilter(),
+                    filters.getInfrastructureElements());
             if (filterQuery != null) {
                 return Response.status(Response.Status.OK).entity(Project.find(filterQuery).list()).build();
             }
@@ -29,7 +32,8 @@ public class ProjectService implements PanacheMongoRepository<Project> {
     private String generateFilterQuery(String searchTerm,
                                        String product,
                                        HeightAndThicknessFilterPojo wallFilter,
-                                       HeightAndThicknessFilterPojo columnFilter) {
+                                       HeightAndThicknessFilterPojo columnFilter,
+                                       List<String> infrastructureElements) {
         String filterQuery = "{$and: [";
 
         if (searchTerm != null && !searchTerm.isEmpty()) {
@@ -52,7 +56,14 @@ public class ProjectService implements PanacheMongoRepository<Project> {
             filterQuery += generateColumnFilterQuery(columnFilter);
         }
 
-        if (!filterQuery.equals("{")) {
+        if (infrastructureElements != null && infrastructureElements.size() > 0) {
+            System.out.println(infrastructureElements + "");
+            filterQuery += "{$and: [{segmentLevelOne: \"Infrastructure\"},";
+            filterQuery += "{segmentLevelTwo: { $in: [" + wrapWithQuotesAndJoin(infrastructureElements) + "]}}]},";
+            System.out.println(filterQuery);
+        }
+
+        if (!filterQuery.equals("{$and: [")) {
             filterQuery += "]}";
             return filterQuery;
         } else {
@@ -98,6 +109,11 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         } else {
             return "";
         }
+    }
+
+    private String wrapWithQuotesAndJoin(List<String> strings) {
+        return strings.stream()
+                .collect(Collectors.joining("\", \"", "\"", "\""));
     }
 
 }
