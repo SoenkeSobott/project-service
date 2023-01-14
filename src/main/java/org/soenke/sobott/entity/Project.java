@@ -20,7 +20,7 @@ public class Project extends PanacheMongoEntity {
     private String planViewSize; // One object with two values?
     private String location; // Location object?
     private String product;
-    private String structure;
+    private String mainStructure;
     private String solutionOne;
     private String solutionTwo;
     private String solutionThree;
@@ -115,12 +115,12 @@ public class Project extends PanacheMongoEntity {
         this.product = product;
     }
 
-    public String getStructure() {
-        return structure;
+    public String getMainStructure() {
+        return mainStructure;
     }
 
-    public void setStructure(String structure) {
-        this.structure = structure;
+    public void setMainStructure(String structure) {
+        this.mainStructure = structure;
     }
 
     public String getSolutionOne() {
