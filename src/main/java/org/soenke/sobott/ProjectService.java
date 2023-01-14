@@ -28,15 +28,15 @@ public class ProjectService implements PanacheMongoRepository<Project> {
     private String generateFilterQuery(String searchTerm,
                                        String product,
                                        WallFilterPojo wallFilter) {
-        String filterQuery = "{";
+        String filterQuery = "{$and: [";
 
         if (searchTerm != null && !searchTerm.isEmpty()) {
-            String searchQuery = "$text: { $search: \"" + searchTerm + "\", $caseSensitive: false},";
+            String searchQuery = "{$text: { $search: \"" + searchTerm + "\", $caseSensitive: false}},";
             filterQuery += searchQuery;
         }
 
         if (product != null && !product.isEmpty()) {
-            filterQuery += "product: \"" + product.toUpperCase() + "\",";
+            filterQuery += "{product: \"" + product.toUpperCase() + "\"},";
         }
 
         if (wallFilter != null) {
@@ -45,7 +45,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         }
 
         if (!filterQuery.equals("{")) {
-            filterQuery += "}";
+            filterQuery += "]}";
             return filterQuery;
         } else {
             return null;
@@ -53,26 +53,27 @@ public class ProjectService implements PanacheMongoRepository<Project> {
     }
 
     private String generateThicknessFilterQuery(Double minThickness, Double maxThickness) {
-        String query = "$and: [{mainStructure: \"Wall\"},";
+        System.out.println(minThickness);
+        String query = "{$and: [{mainStructure: \"Wall\"},";
         if (minThickness != null && maxThickness != null) {
-            return query + "{thickness: {$gte:" + minThickness + ", $lte:" + maxThickness + "}}],";
+            return query + "{thickness: {$gte:" + minThickness + ", $lte:" + maxThickness + "}}]},";
         } else if (minThickness != null) {
-            return query + "{thickness: {$gte:" + minThickness + "}}],";
+            return query + "{thickness: {$gte:" + minThickness + "}}]},";
         } else if (maxThickness != null) {
-            return query + "{thickness: {$lte:" + maxThickness + "}}],";
+            return query + "{thickness: {$lte:" + maxThickness + "}}]},";
         } else {
             return "";
         }
     }
 
     private String generateHeightFilterQuery(Double minHeight, Double maxHeight) {
-        String query = "$and: [{mainStructure: \"Wall\"},";
+        String query = "{$and: [{mainStructure: \"Wall\"},";
         if (minHeight != null && maxHeight != null) {
-            return query + "{height: {$gte:" + minHeight + ", $lte:" + maxHeight + "}}],";
+            return query + "{height: {$gte:" + minHeight + ", $lte:" + maxHeight + "}}]},";
         } else if (minHeight != null) {
-            return query + "{height: {$gte:" + minHeight + "}}],";
+            return query + "{height: {$gte:" + minHeight + "}}]},";
         } else if (maxHeight != null) {
-            return query + "{height: {$lte:" + maxHeight + "}}],";
+            return query + "{height: {$lte:" + maxHeight + "}}]},";
         } else {
             return "";
         }
