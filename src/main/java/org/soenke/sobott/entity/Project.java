@@ -16,15 +16,23 @@ public class Project extends PanacheMongoEntity {
     private List<BillOfQuantityEntry> billOfQuantity;
     private List<String> pictures;
     private Double height;
+    private Double maxPourHeight;
     private Double thickness;
+    private Double width;
+    private Double m2OfFormwork;
+    private Double m2OfConcrete;
     private String planViewSize; // One object with two values?
     private String location; // Location object?
+    private String coordinates;
     private String product;
     private String mainStructure;
-    private String solutionOne;
-    private String solutionTwo;
-    private String solutionThree;
-    private String solutionFour;
+    private String SegmentLevelOne;
+    private String SegmentLevelTwo;
+    private String SegmentLevelThree;
+    private String solutionTagOne;
+    private String solutionTagTwo;
+    private String solutionTagThree;
+    private String solutionTagFour;
 
 
     public String getProjectNumber() {
@@ -83,12 +91,44 @@ public class Project extends PanacheMongoEntity {
         this.height = height;
     }
 
+    public Double getMaxPourHeight() {
+        return maxPourHeight;
+    }
+
+    public void setMaxPourHeight(Double maxPourHeight) {
+        this.maxPourHeight = maxPourHeight;
+    }
+
     public Double getThickness() {
         return thickness;
     }
 
     public void setThickness(Double thickness) {
         this.thickness = thickness;
+    }
+
+    public Double getWidth() {
+        return width;
+    }
+
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    public Double getM2OfFormwork() {
+        return m2OfFormwork;
+    }
+
+    public void setM2OfFormwork(Double m2OfFormwork) {
+        this.m2OfFormwork = m2OfFormwork;
+    }
+
+    public Double getM2OfConcrete() {
+        return m2OfConcrete;
+    }
+
+    public void setM2OfConcrete(Double m2OfConcrete) {
+        this.m2OfConcrete = m2OfConcrete;
     }
 
     public String getPlanViewSize() {
@@ -119,40 +159,72 @@ public class Project extends PanacheMongoEntity {
         return mainStructure;
     }
 
-    public void setMainStructure(String structure) {
-        this.mainStructure = structure;
+    public void setMainStructure(String mainStructure) {
+        this.mainStructure = mainStructure;
     }
 
-    public String getSolutionOne() {
-        return solutionOne;
+    public String getCoordinates() {
+        return coordinates;
     }
 
-    public void setSolutionOne(String solutionOne) {
-        this.solutionOne = solutionOne;
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
     }
 
-    public String getSolutionTwo() {
-        return solutionTwo;
+    public String getSegmentLevelOne() {
+        return SegmentLevelOne;
     }
 
-    public void setSolutionTwo(String solutionTwo) {
-        this.solutionTwo = solutionTwo;
+    public void setSegmentLevelOne(String segmentLevelOne) {
+        SegmentLevelOne = segmentLevelOne;
     }
 
-    public String getSolutionThree() {
-        return solutionThree;
+    public String getSegmentLevelTwo() {
+        return SegmentLevelTwo;
     }
 
-    public void setSolutionThree(String solutionThree) {
-        this.solutionThree = solutionThree;
+    public void setSegmentLevelTwo(String segmentLevelTwo) {
+        SegmentLevelTwo = segmentLevelTwo;
     }
 
-    public String getSolutionFour() {
-        return solutionFour;
+    public String getSegmentLevelThree() {
+        return SegmentLevelThree;
     }
 
-    public void setSolutionFour(String solutionFour) {
-        this.solutionFour = solutionFour;
+    public void setSegmentLevelThree(String segmentLevelThree) {
+        SegmentLevelThree = segmentLevelThree;
+    }
+
+    public String getSolutionTagOne() {
+        return solutionTagOne;
+    }
+
+    public void setSolutionTagOne(String solutionTagOne) {
+        this.solutionTagOne = solutionTagOne;
+    }
+
+    public String getSolutionTagTwo() {
+        return solutionTagTwo;
+    }
+
+    public void setSolutionTagTwo(String solutionTagTwo) {
+        this.solutionTagTwo = solutionTagTwo;
+    }
+
+    public String getSolutionTagThree() {
+        return solutionTagThree;
+    }
+
+    public void setSolutionTagThree(String solutionTagThree) {
+        this.solutionTagThree = solutionTagThree;
+    }
+
+    public String getSolutionTagFour() {
+        return solutionTagFour;
+    }
+
+    public void setSolutionTagFour(String solutionTagFour) {
+        this.solutionTagFour = solutionTagFour;
     }
 
 }
