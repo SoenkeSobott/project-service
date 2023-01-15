@@ -20,7 +20,8 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                     filters.getProduct(),
                     filters.getWallFilter(),
                     filters.getColumnFilter(),
-                    filters.getInfrastructureElements());
+                    filters.getInfrastructureElements(),
+                    filters.getSolutionTags());
             if (filterQuery != null) {
                 return Response.status(Response.Status.OK).entity(Project.find(filterQuery).list()).build();
             }
@@ -33,7 +34,8 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                                        String product,
                                        HeightAndThicknessFilterPojo wallFilter,
                                        HeightAndThicknessFilterPojo columnFilter,
-                                       List<String> infrastructureElements) {
+                                       List<String> infrastructureElements,
+                                       List<String> solutionTags) {
         String filterQuery = "{$and: [";
 
         if (searchTerm != null && !searchTerm.isEmpty()) {
@@ -57,10 +59,12 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         }
 
         if (infrastructureElements != null && infrastructureElements.size() > 0) {
-            System.out.println(infrastructureElements + "");
             filterQuery += "{$and: [{segmentLevelOne: \"Infrastructure\"},";
             filterQuery += "{segmentLevelTwo: { $in: [" + wrapWithQuotesAndJoin(infrastructureElements) + "]}}]},";
-            System.out.println(filterQuery);
+        }
+
+        if (solutionTags != null && solutionTags.size() > 0) {
+            filterQuery += "{solutionTags: { $in: [" + wrapWithQuotesAndJoin(solutionTags) + "]}},";
         }
 
         if (!filterQuery.equals("{$and: [")) {

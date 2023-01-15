@@ -29,11 +29,7 @@ public class Project extends PanacheMongoEntity {
     private String SegmentLevelOne;
     private String SegmentLevelTwo;
     private String SegmentLevelThree;
-    private String solutionTagOne;
-    private String solutionTagTwo;
-    private String solutionTagThree;
-    private String solutionTagFour;
-
+    private List<String> solutionTags;
 
     public String getProjectNumber() {
         return projectNumber;
@@ -195,36 +191,12 @@ public class Project extends PanacheMongoEntity {
         SegmentLevelThree = segmentLevelThree;
     }
 
-    public String getSolutionTagOne() {
-        return solutionTagOne;
+    public List<String> getSolutionTags() {
+        return solutionTags;
     }
 
-    public void setSolutionTagOne(String solutionTagOne) {
-        this.solutionTagOne = solutionTagOne;
-    }
-
-    public String getSolutionTagTwo() {
-        return solutionTagTwo;
-    }
-
-    public void setSolutionTagTwo(String solutionTagTwo) {
-        this.solutionTagTwo = solutionTagTwo;
-    }
-
-    public String getSolutionTagThree() {
-        return solutionTagThree;
-    }
-
-    public void setSolutionTagThree(String solutionTagThree) {
-        this.solutionTagThree = solutionTagThree;
-    }
-
-    public String getSolutionTagFour() {
-        return solutionTagFour;
-    }
-
-    public void setSolutionTagFour(String solutionTagFour) {
-        this.solutionTagFour = solutionTagFour;
+    public void setSolutionTags(List<String> solutionTags) {
+        this.solutionTags = solutionTags;
     }
 
 }
