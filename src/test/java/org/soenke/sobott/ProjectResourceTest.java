@@ -7,6 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.soenke.sobott.entity.Project;
+import org.soenke.sobott.enums.Segment;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -340,10 +341,10 @@ public class ProjectResourceTest {
 
     @Test
     public void testProjectsEndpointSegmentInfrastructureFiltered() {
-        createProjectWithSegmentLevelOneAndTwo("3423", "DUO-1", "Infrastructure", "Bridges");
-        createProjectWithSegmentLevelOneAndTwo("9900", "DUO-2", "Infrastructure", "Tunnels");
-        createProjectWithSegmentLevelOneAndTwo("2341", "DUO-3", "Infrastructure", "Water Plants");
-        createProjectWithSegmentLevelOneAndTwo("0993", "DUO-4", "Infrastructure", "Airports");
+        createProjectWithSegmentLevelOneAndTwo("3423", "DUO-1", Segment.Infrastructure, "Bridges");
+        createProjectWithSegmentLevelOneAndTwo("9900", "DUO-2", Segment.Infrastructure, "Tunnels");
+        createProjectWithSegmentLevelOneAndTwo("2341", "DUO-3", Segment.Infrastructure, "Water Plants");
+        createProjectWithSegmentLevelOneAndTwo("0993", "DUO-4", Segment.Infrastructure, "Airports");
 
         String filterJson = "{\"infrastructureElements\": [\"Tunnels\", \"Water Plants\"]}";
         given()
@@ -355,6 +356,25 @@ public class ProjectResourceTest {
                 .body("size()", is(2))
                 .body("[0].projectName", is("DUO-2"))
                 .body("[1].projectName", is("DUO-3"));
+    }
+
+    @Test
+    public void testProjectsEndpointSegmentIndustrialFiltered() {
+        createProjectWithSegmentLevelOneAndTwo("3423", "DUO-1", Segment.Industrial, "Power");
+        createProjectWithSegmentLevelOneAndTwo("9900", "DUO-2", Segment.Industrial, "Chemicals");
+        createProjectWithSegmentLevelOneAndTwo("2341", "DUO-3", Segment.Industrial, "Industrialized Manufacturing");
+        createProjectWithSegmentLevelOneAndTwo("0993", "DUO-4", Segment.Industrial, "Oil & Gas");
+
+        String filterJson = "{\"industrialElements\": [\"Oil & Gas\", \"Industrialized Manufacturing\"]}";
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
+                .then()
+                .statusCode(200)
+                .body("size()", is(2))
+                .body("[0].projectName", is("DUO-3"))
+                .body("[1].projectName", is("DUO-4"));
     }
 
     @Test
@@ -392,6 +412,7 @@ public class ProjectResourceTest {
                 "\"columnFilter\": {\"minThickness\":25, \"maxThickness\":137.3," +
                 "\"minHeight\":100, \"maxHeight\":450}, " +
                 "\"infrastructureElements\": [\"Tunnels\", \"Bridges\"]," +
+                "\"industrialElements\": [\"Oil & Gas\", \"Industrialized Manufacturing\"]," +
                 "\"solutionTags\": [\"Basement\", \"Anchor To Existing Wall\", \"Shaft\"]}";
         given()
                 .contentType("application/json")
@@ -399,14 +420,15 @@ public class ProjectResourceTest {
                 .when().post("/projects")
                 .then()
                 .statusCode(200)
-                .body("size()", is(7))
-                .body("[0].projectName", is("DUO CorrectWallHeightAndThicknessButWrongColumnHeightAndThickness"))
-                .body("[1].projectName", is("DUO CorrectColumnHeightAndThicknessButWrongWallHeightAndThickness"))
-                .body("[2].projectName", is("DUO-5"))
-                .body("[3].projectName", is("DUO-4"))
-                .body("[4].projectName", is("DUO-3"))
-                .body("[5].projectName", is("DUO-2"))
-                .body("[6].projectName", is("DUO-1"));
+                .body("size()", is(8))
+                .body("[0].projectName", is("DUO-7"))
+                .body("[1].projectName", is("DUO CorrectWallHeightAndThicknessButWrongColumnHeightAndThickness"))
+                .body("[2].projectName", is("DUO CorrectColumnHeightAndThicknessButWrongWallHeightAndThickness"))
+                .body("[3].projectName", is("DUO-5"))
+                .body("[4].projectName", is("DUO-4"))
+                .body("[5].projectName", is("DUO-3"))
+                .body("[6].projectName", is("DUO-2"))
+                .body("[7].projectName", is("DUO-1"));
     }
 
     protected void createProjectsForAllFiltersTest() {
@@ -440,6 +462,10 @@ public class ProjectResourceTest {
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
         createFullProject("2234", "Duo ButTooBigThickness", "Wall", 100.0, 230.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("8686", "DUO-7", "Wall", 87.3, 330.0, "DUO", "Industrial", "Oil & Gas",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("8686", "DUO-2 with wrong industrial", "Wall", 87.3, 330.0, "DUO", "Industrial", "Power",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 
     protected void createProjectWithStructureThicknessAndHeight(String projectNumber, String projectName) {
@@ -467,12 +493,12 @@ public class ProjectResourceTest {
         project.persist();
     }
 
-    protected void createProjectWithSegmentLevelOneAndTwo(String projectNumber, String projectName, String segmentLevelOne,
+    protected void createProjectWithSegmentLevelOneAndTwo(String projectNumber, String projectName, Segment segmentLevelOne,
                                                           String segmentLevelTwo) {
         Project project = new Project();
         project.setProjectNumber(projectNumber);
         project.setProjectName(projectName);
-        project.setSegmentLevelOne(segmentLevelOne);
+        project.setSegmentLevelOne(segmentLevelOne.getValue());
         project.setSegmentLevelTwo(segmentLevelTwo);
         project.persist();
     }

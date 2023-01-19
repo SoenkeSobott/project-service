@@ -4,6 +4,7 @@ import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import org.soenke.sobott.entity.FilterPojo;
 import org.soenke.sobott.entity.HeightAndThicknessFilterPojo;
 import org.soenke.sobott.entity.Project;
+import org.soenke.sobott.enums.Segment;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
@@ -21,6 +22,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                     filters.getWallFilter(),
                     filters.getColumnFilter(),
                     filters.getInfrastructureElements(),
+                    filters.getIndustrialElements(),
                     filters.getSolutionTags());
             if (filterQuery != null) {
                 return Response.status(Response.Status.OK).entity(Project.find(filterQuery).list()).build();
@@ -35,6 +37,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                                        HeightAndThicknessFilterPojo wallFilter,
                                        HeightAndThicknessFilterPojo columnFilter,
                                        List<String> infrastructureElements,
+                                       List<String> industrialElements,
                                        List<String> solutionTags) {
         String filterQuery = "{$and: [";
 
@@ -47,21 +50,8 @@ public class ProjectService implements PanacheMongoRepository<Project> {
             filterQuery += "{product: \"" + product.toUpperCase() + "\"},";
         }
 
-        if (wallFilter != null && columnFilter != null) {
-            filterQuery += "{$or: [";
-            filterQuery += generateWallFilterQuery(wallFilter);
-            filterQuery += generateColumnFilterQuery(columnFilter);
-            filterQuery += "]},";
-        } else if (wallFilter != null) {
-            filterQuery += generateWallFilterQuery(wallFilter);
-        } else if (columnFilter != null) {
-            filterQuery += generateColumnFilterQuery(columnFilter);
-        }
-
-        if (infrastructureElements != null && infrastructureElements.size() > 0) {
-            filterQuery += "{$and: [{segmentLevelOne: \"Infrastructure\"},";
-            filterQuery += "{segmentLevelTwo: { $in: [" + wrapWithQuotesAndJoin(infrastructureElements) + "]}}]},";
-        }
+        filterQuery += generateStructureFilterQuery(wallFilter, columnFilter);
+        filterQuery += generateSegmentFilterQuery(infrastructureElements, industrialElements);
 
         if (solutionTags != null && solutionTags.size() > 0) {
             filterQuery += "{solutionTags: { $in: [" + wrapWithQuotesAndJoin(solutionTags) + "]}},";
@@ -73,6 +63,21 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         } else {
             return null;
         }
+    }
+
+    private String generateStructureFilterQuery(HeightAndThicknessFilterPojo wallFilter, HeightAndThicknessFilterPojo columnFilter) {
+        String filterQuery = "";
+        if (wallFilter != null && columnFilter != null) {
+            filterQuery += "{$or: [";
+            filterQuery += generateWallFilterQuery(wallFilter);
+            filterQuery += generateColumnFilterQuery(columnFilter);
+            filterQuery += "]},";
+        } else if (wallFilter != null) {
+            filterQuery += generateWallFilterQuery(wallFilter);
+        } else if (columnFilter != null) {
+            filterQuery += generateColumnFilterQuery(columnFilter);
+        }
+        return filterQuery;
     }
 
     private String generateWallFilterQuery(HeightAndThicknessFilterPojo wallFilter) {
@@ -113,6 +118,30 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         } else {
             return "";
         }
+    }
+
+    private String generateSegmentFilterQuery(List<String> infrastructureElements,
+                                              List<String> industrialElements) {
+        String filterQuery = "";
+        if (infrastructureElements != null && infrastructureElements.size() > 0
+                && industrialElements != null && industrialElements.size() > 0) {
+            filterQuery += "{$or: [";
+            filterQuery += generateSpecificSegmentFilterQuery(Segment.Infrastructure, infrastructureElements);
+            filterQuery += generateSpecificSegmentFilterQuery(Segment.Industrial, industrialElements);
+            filterQuery += "]},";
+        } else if (infrastructureElements != null && infrastructureElements.size() > 0) {
+            filterQuery += generateSpecificSegmentFilterQuery(Segment.Infrastructure, infrastructureElements);
+        } else if (industrialElements != null && industrialElements.size() > 0) {
+            filterQuery += generateSpecificSegmentFilterQuery(Segment.Industrial, industrialElements);
+        }
+        return filterQuery;
+    }
+
+    private String generateSpecificSegmentFilterQuery(Segment segment, List<String> elements) {
+        String filterQuery = "";
+        filterQuery += "{$and: [{segmentLevelOne: \"" + segment + "\"},";
+        filterQuery += "{segmentLevelTwo: { $in: [" + wrapWithQuotesAndJoin(elements) + "]}}]},";
+        return filterQuery;
     }
 
     private String wrapWithQuotesAndJoin(List<String> strings) {
