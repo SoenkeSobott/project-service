@@ -8,6 +8,7 @@ public class FilterPojo {
     private String product;
     private HeightAndThicknessFilterPojo wallFilter;
     private LengthWidthAndHeightFilterPojo columnFilter;
+    private HeightAndThicknessFilterPojo culvertFilter;
     private List<String> infrastructureElements;
     private List<String> industrialElements;
     private List<String> solutionTags;
@@ -44,6 +45,14 @@ public class FilterPojo {
 
     public void setColumnFilter(LengthWidthAndHeightFilterPojo columnFilter) {
         this.columnFilter = columnFilter;
+    }
+
+    public HeightAndThicknessFilterPojo getCulvertFilter() {
+        return culvertFilter;
+    }
+
+    public void setCulvertFilter(HeightAndThicknessFilterPojo culvertFilter) {
+        this.culvertFilter = culvertFilter;
     }
 
     public List<String> getInfrastructureElements() {

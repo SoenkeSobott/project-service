@@ -30,6 +30,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                     filters.getProduct(),
                     filters.getWallFilter(),
                     filters.getColumnFilter(),
+                    filters.getCulvertFilter(),
                     filters.getInfrastructureElements(),
                     filters.getIndustrialElements(),
                     filters.getSolutionTags());
@@ -45,6 +46,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                                        String product,
                                        HeightAndThicknessFilterPojo wallFilter,
                                        LengthWidthAndHeightFilterPojo columnFilter,
+                                       HeightAndThicknessFilterPojo culvertFilter,
                                        List<String> infrastructureElements,
                                        List<String> industrialElements,
                                        List<String> solutionTags) {
@@ -59,7 +61,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
             filterQuery += "{product: \"" + product.toUpperCase() + "\"},";
         }
 
-        filterQuery += structureFilter.generateStructureFilterQuery(wallFilter, columnFilter);
+        filterQuery += structureFilter.generateStructureFilterQuery(wallFilter, columnFilter, culvertFilter);
         filterQuery += segmentFilter.generateSegmentFilterQuery(infrastructureElements, industrialElements);
 
         if (solutionTags != null && solutionTags.size() > 0) {

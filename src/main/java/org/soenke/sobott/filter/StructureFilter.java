@@ -2,35 +2,38 @@ package org.soenke.sobott.filter;
 
 import org.soenke.sobott.entity.HeightAndThicknessFilterPojo;
 import org.soenke.sobott.entity.LengthWidthAndHeightFilterPojo;
+import org.soenke.sobott.enums.Structure;
 
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class StructureFilter {
 
-    public String generateStructureFilterQuery(HeightAndThicknessFilterPojo wallFilter, LengthWidthAndHeightFilterPojo columnFilter) {
-        String filterQuery = "";
-        if (wallFilter != null && columnFilter != null) {
-            filterQuery += "{$or: [";
+    public String generateStructureFilterQuery(HeightAndThicknessFilterPojo wallFilter,
+                                               LengthWidthAndHeightFilterPojo columnFilter,
+                                               HeightAndThicknessFilterPojo culvertFilter) {
+        String filterQuery = "{$or: [";
+        if (wallFilter != null) {
             filterQuery += generateWallFilterQuery(wallFilter);
-            filterQuery += generateColumnFilterQuery(columnFilter);
-            if (filterQuery.equals("{$or: [")) {
-                // Nothing was added to query
-                return "";
-            }
-            filterQuery += "]},";
-        } else if (wallFilter != null) {
-            filterQuery += generateWallFilterQuery(wallFilter);
-        } else if (columnFilter != null) {
+        }
+        if (columnFilter != null) {
             filterQuery += generateColumnFilterQuery(columnFilter);
         }
+        if (culvertFilter != null) {
+            filterQuery += generateCulvertFilterQuery(culvertFilter);
+        }
+        if (filterQuery.equals("{$or: [")) {
+            // Nothing was added to query
+            return "";
+        }
+        filterQuery += "]},";
         return filterQuery;
     }
 
     private String generateWallFilterQuery(HeightAndThicknessFilterPojo wallFilter) {
         String filterQuery = "{$and: [";
-        filterQuery += generateMinMaxFilterQuery("Wall", "thickness", wallFilter.getMinThickness(), wallFilter.getMaxThickness());
-        filterQuery += generateMinMaxFilterQuery("Wall", "height", wallFilter.getMinHeight(), wallFilter.getMaxHeight());
+        filterQuery += generateMinMaxFilterQuery(Structure.Wall, "thickness", wallFilter.getMinThickness(), wallFilter.getMaxThickness());
+        filterQuery += generateMinMaxFilterQuery(Structure.Wall, "height", wallFilter.getMinHeight(), wallFilter.getMaxHeight());
         if (filterQuery.equals("{$and: [")) {
             // Nothing was added to query
             return "";
@@ -40,9 +43,9 @@ public class StructureFilter {
 
     private String generateColumnFilterQuery(LengthWidthAndHeightFilterPojo columnFilter) {
         String filterQuery = "{$and: [";
-        filterQuery += generateMinMaxFilterQuery("Column", "length", columnFilter.getMinLength(), columnFilter.getMaxLength());
-        filterQuery += generateMinMaxFilterQuery("Column", "width", columnFilter.getMinWidth(), columnFilter.getMaxWidth());
-        filterQuery += generateMinMaxFilterQuery("Column", "height", columnFilter.getMinHeight(), columnFilter.getMaxHeight());
+        filterQuery += generateMinMaxFilterQuery(Structure.Column, "length", columnFilter.getMinLength(), columnFilter.getMaxLength());
+        filterQuery += generateMinMaxFilterQuery(Structure.Column, "width", columnFilter.getMinWidth(), columnFilter.getMaxWidth());
+        filterQuery += generateMinMaxFilterQuery(Structure.Column, "height", columnFilter.getMinHeight(), columnFilter.getMaxHeight());
         if (filterQuery.equals("{$and: [")) {
             // Nothing was added to query
             return "";
@@ -50,8 +53,19 @@ public class StructureFilter {
         return filterQuery + "]}";
     }
 
-    private String generateMinMaxFilterQuery(String structure, String metric, Double min, Double max) {
-        String query = "{$and: [{mainStructure: \"" + structure + "\"},";
+    private String generateCulvertFilterQuery(HeightAndThicknessFilterPojo culvertFilter) {
+        String filterQuery = "{$and: [";
+        filterQuery += generateMinMaxFilterQuery(Structure.Culvert, "thickness", culvertFilter.getMinThickness(), culvertFilter.getMaxThickness());
+        filterQuery += generateMinMaxFilterQuery(Structure.Culvert, "height", culvertFilter.getMinHeight(), culvertFilter.getMaxHeight());
+        if (filterQuery.equals("{$and: [")) {
+            // Nothing was added to query
+            return "";
+        }
+        return filterQuery + "]}";
+    }
+
+    private String generateMinMaxFilterQuery(Structure structure, String metric, Double min, Double max) {
+        String query = "{$and: [{mainStructure: \"" + structure.getValue() + "\"},";
         if (min != null && max != null) {
             return query + "{" + metric + ": {$gte:" + min + ", $lte:" + max + "}}]},";
         } else if (min != null) {
