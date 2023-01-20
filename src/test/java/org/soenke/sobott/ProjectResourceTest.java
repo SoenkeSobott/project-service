@@ -424,6 +424,39 @@ public class ProjectResourceTest {
     }
 
     @Test
+    public void testProjectsEndpointFilteredWithAllFiltersOnDefault() {
+        createProjectWithStructureThicknessAndHeight("project-number-123", "DUO-1");
+        createProjectWithProduct("12312343", "DUO-2", "DUO");
+        createProjectWithStructureThicknessAndHeight("8502", "DUO-3", "Column", 50.0, 100.0);
+        createProjectWithStructureThicknessAndHeight("23123", "DUO-4", "Column", 50.0, 100.0);
+        createProjectWithProduct("32233", "DUO-5", "DUO");
+
+        String filterJson = "{\"searchTerm\": \"\", " +
+                "\"product\": \"\", " +
+                "\"wallFilter\": {\"minThickness\":null, \"maxThickness\":null," +
+                "\"minHeight\":null, \"maxHeight\":null}," +
+                "\"columnFilter\": {\"minLength\":null, \"maxLength\":null, " +
+                "\"minWidth\":null, \"maxWidth\":null," +
+                "\"minHeight\":null, \"maxHeight\":null}," +
+                "\"infrastructureElements\": []," +
+                "\"industrialElements\": []," +
+                "\"solutionTags\": []}";
+
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
+                .then()
+                .statusCode(200)
+                .body("size()", is(5))
+                .body("[0].projectName", is("DUO-1"))
+                .body("[1].projectName", is("DUO-2"))
+                .body("[2].projectName", is("DUO-3"))
+                .body("[3].projectName", is("DUO-4"))
+                .body("[4].projectName", is("DUO-5"));
+    }
+
+    @Test
     public void testProjectsEndpointFilteredWithAllFilters() {
         createProjectsForAllFiltersTest();
 

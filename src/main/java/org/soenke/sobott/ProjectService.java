@@ -72,6 +72,10 @@ public class ProjectService implements PanacheMongoRepository<Project> {
             filterQuery += "{$or: [";
             filterQuery += generateWallFilterQuery(wallFilter);
             filterQuery += generateColumnFilterQuery(columnFilter);
+            if (filterQuery.equals("{$or: [")) {
+                // Nothing was added to query
+                return "";
+            }
             filterQuery += "]},";
         } else if (wallFilter != null) {
             filterQuery += generateWallFilterQuery(wallFilter);
@@ -85,6 +89,10 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         String filterQuery = "{$and: [";
         filterQuery += generateMinMaxFilterQuery("Wall", "thickness", wallFilter.getMinThickness(), wallFilter.getMaxThickness());
         filterQuery += generateMinMaxFilterQuery("Wall", "height", wallFilter.getMinHeight(), wallFilter.getMaxHeight());
+        if (filterQuery.equals("{$and: [")) {
+            // Nothing was added to query
+            return "";
+        }
         return filterQuery + "]}";
     }
 
@@ -93,6 +101,10 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         filterQuery += generateMinMaxFilterQuery("Column", "length", columnFilter.getMinLength(), columnFilter.getMaxLength());
         filterQuery += generateMinMaxFilterQuery("Column", "width", columnFilter.getMinWidth(), columnFilter.getMaxWidth());
         filterQuery += generateMinMaxFilterQuery("Column", "height", columnFilter.getMinHeight(), columnFilter.getMaxHeight());
+        if (filterQuery.equals("{$and: [")) {
+            // Nothing was added to query
+            return "";
+        }
         return filterQuery + "]}";
     }
 
