@@ -7,7 +7,7 @@ public class FilterPojo {
     private String searchTerm;
     private String product;
     private HeightAndThicknessFilterPojo wallFilter;
-    private HeightAndThicknessFilterPojo columnFilter;
+    private LengthWidthAndHeightFilterPojo columnFilter;
     private List<String> infrastructureElements;
     private List<String> industrialElements;
     private List<String> solutionTags;
@@ -38,11 +38,11 @@ public class FilterPojo {
         this.wallFilter = wallFilter;
     }
 
-    public HeightAndThicknessFilterPojo getColumnFilter() {
+    public LengthWidthAndHeightFilterPojo getColumnFilter() {
         return columnFilter;
     }
 
-    public void setColumnFilter(HeightAndThicknessFilterPojo columnFilter) {
+    public void setColumnFilter(LengthWidthAndHeightFilterPojo columnFilter) {
         this.columnFilter = columnFilter;
     }
 

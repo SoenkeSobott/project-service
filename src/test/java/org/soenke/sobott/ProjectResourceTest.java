@@ -275,14 +275,14 @@ public class ProjectResourceTest {
     }
 
     @Test
-    public void testProjectsEndpointColumnThicknessFiltered() {
-        createProjectWithStructureThicknessAndHeight("1231", "DUO-1", "Column", 20.0, 230.0);
-        createProjectWithStructureThicknessAndHeight("2344", "DUO-2", "Column", 30.0, 330.0);
-        createProjectWithStructureThicknessAndHeight("9696", "DUO-3", "Column", 40.0, 430.0);
-        createProjectWithStructureThicknessAndHeight("8493", "DUO-4", "Wall", 50.0, 530.0);
-        createProjectWithStructureThicknessAndHeight("1230", "DUO-5", "Column", 60.0, 630.0);
+    public void testProjectsEndpointColumnLengthFiltered() {
+        createProjectWithStructureLengthWidthAndHeight("1231", "DUO-1", "Column", 20.0, 20.0, 230.0);
+        createProjectWithStructureLengthWidthAndHeight("2344", "DUO-2", "Column", 30.0, 20.0, 330.0);
+        createProjectWithStructureLengthWidthAndHeight("9696", "DUO-3", "Column", 40.0, 20.0, 430.0);
+        createProjectWithStructureLengthWidthAndHeight("8493", "DUO-4", "Wall", 50.0, 20.0, 530.0);
+        createProjectWithStructureLengthWidthAndHeight("1230", "DUO-5", "Column", 60.0, 20.0, 630.0);
 
-        String filterJson = "{\"columnFilter\": {\"minThickness\":30, \"maxThickness\":59.0}}";
+        String filterJson = "{\"columnFilter\": {\"minLength\":30, \"maxLength\":59.0}}";
         given()
                 .contentType("application/json")
                 .body(filterJson)
@@ -295,12 +295,32 @@ public class ProjectResourceTest {
     }
 
     @Test
+    public void testProjectsEndpointColumnWidthFiltered() {
+        createProjectWithStructureLengthWidthAndHeight("1231", "DUO-1", "Column", 20.0, 20.0, 230.0);
+        createProjectWithStructureLengthWidthAndHeight("2344", "DUO-2", "Column", 30.0, 30.0, 330.0);
+        createProjectWithStructureLengthWidthAndHeight("9696", "DUO-3", "Wall", 40.0, 50.0, 430.0);
+        createProjectWithStructureLengthWidthAndHeight("8493", "DUO-4", "Column", 50.0, 70.0, 530.0);
+        createProjectWithStructureLengthWidthAndHeight("1230", "DUO-5", "Column", 60.0, 120.0, 630.0);
+
+        String filterJson = "{\"columnFilter\": {\"minWidth\":30, \"maxWidth\":119.0}}";
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
+                .then()
+                .statusCode(200)
+                .body("size()", is(2))
+                .body("[0].projectName", is("DUO-2"))
+                .body("[1].projectName", is("DUO-4"));
+    }
+
+    @Test
     public void testProjectsEndpointColumnHeightFiltered() {
-        createProjectWithStructureThicknessAndHeight("1231", "DUO-1", "Column", 20.0, 230.0);
-        createProjectWithStructureThicknessAndHeight("2344", "DUO-2", "Column", 30.0, 330.0);
-        createProjectWithStructureThicknessAndHeight("9696", "DUO-3", "Column", 40.0, 430.0);
-        createProjectWithStructureThicknessAndHeight("8493", "DUO-4", "Wall", 50.0, 530.0);
-        createProjectWithStructureThicknessAndHeight("1230", "DUO-5", "Column", 60.0, 630.0);
+        createProjectWithStructureLengthWidthAndHeight("1231", "DUO-1", "Column", 20.0, 20.0, 230.0);
+        createProjectWithStructureLengthWidthAndHeight("2344", "DUO-2", "Column", 30.0, 30.0, 330.0);
+        createProjectWithStructureLengthWidthAndHeight("9696", "DUO-3", "Wall", 40.0, 50.0, 430.0);
+        createProjectWithStructureLengthWidthAndHeight("8493", "DUO-4", "Column", 50.0, 70.0, 530.0);
+        createProjectWithStructureLengthWidthAndHeight("1230", "DUO-5", "Column", 60.0, 120.0, 630.0);
 
         String filterJson = "{\"columnFilter\": {\"minHeight\":230, \"maxHeight\":530.0}}";
         given()
@@ -312,21 +332,23 @@ public class ProjectResourceTest {
                 .body("size()", is(3))
                 .body("[0].projectName", is("DUO-1"))
                 .body("[1].projectName", is("DUO-2"))
-                .body("[2].projectName", is("DUO-3"));
+                .body("[2].projectName", is("DUO-4"));
     }
 
 
     @Test
-    public void testProjectsEndpointColumnThicknessAndHeightFiltered() {
-        createProjectWithStructureThicknessAndHeight("1231", "DUO-1", "Column", 20.0, 230.0);
-        createProjectWithStructureThicknessAndHeight("2344", "DUO-2", "Column", 30.0, 330.0);
-        createProjectWithStructureThicknessAndHeight("9696", "DUO-3", "Column", 40.0, 430.0);
-        createProjectWithStructureThicknessAndHeight("8493", "DUO-4", "Wall", 50.0, 530.0);
-        createProjectWithStructureThicknessAndHeight("1230", "DUO-5", "Column", 60.0, 630.0);
-        createProjectWithStructureThicknessAndHeight("0909", "DUO-6", "Column", 70.0, 730.0);
+    public void testProjectsEndpointColumnLengthWidthAndHeightFiltered() {
+        createProjectWithStructureLengthWidthAndHeight("1231", "DUO-1", "Column", 20.0, 20.0, 230.0);
+        createProjectWithStructureLengthWidthAndHeight("2344", "DUO-2", "Column", 30.0, 30.0, 330.0);
+        createProjectWithStructureLengthWidthAndHeight("9696", "DUO-3", "Wall", 40.0, 50.0, 430.0);
+        createProjectWithStructureLengthWidthAndHeight("8493", "DUO-4", "Column", 50.0, 70.0, 530.0);
+        createProjectWithStructureLengthWidthAndHeight("1230", "DUO-5", "Column", 59.0, 119.0, 610.0);
+        createProjectWithStructureLengthWidthAndHeight("3232", "DUO-5", "Column", 59.0, 119.0, 630.0);
+        createProjectWithStructureLengthWidthAndHeight("1123", "DUO-5", "Column", 60.0, 120.0, 730.0);
 
-        String filterJson = "{\"columnFilter\": {\"minThickness\":30, \"maxThickness\":65.0, " +
-                "\"minHeight\":0, \"maxHeight\":1000}}";
+        String filterJson = "{\"columnFilter\": {\"minLength\":30, \"maxLength\":59.0, " +
+                "\"minWidth\":30, \"maxWidth\":119.0," +
+                "\"minHeight\":0, \"maxHeight\":629}}";
         given()
                 .contentType("application/json")
                 .body(filterJson)
@@ -335,7 +357,7 @@ public class ProjectResourceTest {
                 .statusCode(200)
                 .body("size()", is(3))
                 .body("[0].projectName", is("DUO-2"))
-                .body("[1].projectName", is("DUO-3"))
+                .body("[1].projectName", is("DUO-4"))
                 .body("[2].projectName", is("DUO-5"));
     }
 
@@ -409,8 +431,9 @@ public class ProjectResourceTest {
                 "\"product\": \"Duo\", " +
                 "\"wallFilter\": {\"minThickness\":25, \"maxThickness\":87.3," +
                 "\"minHeight\":100, \"maxHeight\":450}," +
-                "\"columnFilter\": {\"minThickness\":25, \"maxThickness\":137.3," +
-                "\"minHeight\":100, \"maxHeight\":450}, " +
+                "\"columnFilter\": {\"minLength\":30, \"maxLength\":59.0, " +
+                "\"minWidth\":30, \"maxWidth\":119.0," +
+                "\"minHeight\":0, \"maxHeight\":629}," +
                 "\"infrastructureElements\": [\"Tunnels\", \"Bridges\"]," +
                 "\"industrialElements\": [\"Oil & Gas\", \"Industrialized Manufacturing\"]," +
                 "\"solutionTags\": [\"Basement\", \"Anchor To Existing Wall\", \"Shaft\"]}";
@@ -421,9 +444,9 @@ public class ProjectResourceTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(8))
-                .body("[0].projectName", is("DUO-7"))
-                .body("[1].projectName", is("DUO CorrectWallHeightAndThicknessButWrongColumnHeightAndThickness"))
-                .body("[2].projectName", is("DUO CorrectColumnHeightAndThicknessButWrongWallHeightAndThickness"))
+                .body("[0].projectName", is("DUO CorrectColumnSizes"))
+                .body("[1].projectName", is("DUO-7"))
+                .body("[2].projectName", is("DUO CorrectWallHeightAndThickness"))
                 .body("[3].projectName", is("DUO-5"))
                 .body("[4].projectName", is("DUO-4"))
                 .body("[5].projectName", is("DUO-3"))
@@ -432,39 +455,47 @@ public class ProjectResourceTest {
     }
 
     protected void createProjectsForAllFiltersTest() {
-        createFullProject("1231", "DUO ButTooLowThickness", "Wall", 20.0, 230.0, "DUO", "Infrastructure", "Tunnels",
+        createWallProjectWithAllFields();
+        createFullProject("3232", "DUO CorrectColumnSizes", "Column", 120.0, 40.0, 40.0, 120.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("9458", "DUO-1", "Wall", 25.0, 230.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("4994", "DUO ColumnLengthTooSmall", "Column", 120.0, 20.0, 40.0, 120.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("9670", "BetweenButNot Duo", "Wall", 30.5, 30.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("0901", "DUO ColumnWidthTooHigh", "Column", 120.0, 40.0, 180.0, 120.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("4587", "BetweenThicknessAnd Duo ButTooBigHeight", "Wall", 30.5, 3000.0, "OtherProduct", "Infrastructure", "Tunnels",
+    }
+
+    protected void createWallProjectWithAllFields() {
+        createFullProject("1231", "DUO ButTooLowThickness", "Wall", 20.0, 20.0, 20.0, 230.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("1077", "DUO-2", "Wall", 87.3, 330.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("9458", "DUO-1", "Wall", 25.0, 20.0, 20.0, 230.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("2454", "DUO-3", "Wall", 82.0, 300.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("9670", "BetweenButNot Duo", "Wall", 30.5, 20.0, 20.0, 30.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("4055", "DUO-3 ButWaterPlants", "Wall", 82.0, 300.0, "DUO", "Infrastructure", "Water Plants",
+        createFullProject("4587", "BetweenThicknessAnd Duo ButTooBigHeight", "Wall", 30.5, 20.0, 20.0, 3000.0, "OtherProduct", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("3234", "DUO-4", "Wall", 82.0, 300.0, "DUO", "Infrastructure", "Bridges",
+        createFullProject("1077", "DUO-2", "Wall", 87.3, 20.0, 20.0, 330.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("4055", "DUO-5", "Wall", 82.0, 300.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("2454", "DUO-3", "Wall", 82.0, 20.0, 20.0, 300.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("3232", "DUO CorrectColumnHeightAndThicknessButWrongWallHeightAndThickness", "Column", 120.0, 120.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("4055", "DUO-3 ButWaterPlants", "Wall", 82.0, 20.0, 20.0, 300.0, "DUO", "Infrastructure", "Water Plants",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("9283", "DUO CorrectWallHeightAndThicknessButWrongColumnHeightAndThickness", "Wall", 50.0, 200.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("3234", "DUO-4", "Wall", 82.0, 20.0, 20.0, 300.0, "DUO", "Infrastructure", "Bridges",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("9845", "EverythingOkButNotSearchTermMatch", "Wall", 82.0, 300.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("4055", "DUO-5", "Wall", 82.0, 20.0, 20.0, 300.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("4342", "DUO-6", "Wall", 82.0, 300.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("9283", "DUO CorrectWallHeightAndThickness", "Wall", 50.0, 20.0, 20.0, 200.0, "DUO", "Infrastructure", "Tunnels",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("9845", "EverythingOkButNotSearchTermMatch", "Wall", 82.0, 20.0, 20.0, 300.0, "DUO", "Infrastructure", "Tunnels",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("4342", "DUO-6", "Wall", 82.0, 20.0, 20.0, 300.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Straight Wall", "Double Sided"));
-        createFullProject("2356", "Duo", "Wall", 82.0, 500.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("2356", "Duo", "Wall", 82.0, 20.0, 20.0, 500.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("2234", "Duo ButTooBigThickness", "Wall", 100.0, 230.0, "DUO", "Infrastructure", "Tunnels",
+        createFullProject("2234", "Duo ButTooBigThickness", "Wall", 100.0, 20.0, 20.0, 230.0, "DUO", "Infrastructure", "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("8686", "DUO-7", "Wall", 87.3, 330.0, "DUO", "Industrial", "Oil & Gas",
+        createFullProject("8686", "DUO-7", "Wall", 87.3, 20.0, 20.0, 330.0, "DUO", "Industrial", "Oil & Gas",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        createFullProject("8686", "DUO-2 with wrong industrial", "Wall", 87.3, 330.0, "DUO", "Industrial", "Power",
+        createFullProject("5523", "DUO-2 with wrong industrial", "Wall", 87.3, 20.0, 20.0, 330.0, "DUO", "Industrial", "Power",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 
@@ -481,6 +512,17 @@ public class ProjectResourceTest {
         project.setProjectName(projectName);
         project.setMainStructure(structure);
         project.setThickness(thickness);
+        project.setHeight(height);
+        project.persist();
+    }
+
+    protected void createProjectWithStructureLengthWidthAndHeight(String projectNumber, String projectName, String structure, Double length, Double width, Double height) {
+        Project project = new Project();
+        project.setProjectNumber(projectNumber);
+        project.setProjectName(projectName);
+        project.setMainStructure(structure);
+        project.setLength(length);
+        project.setWidth(width);
         project.setHeight(height);
         project.persist();
     }
@@ -516,6 +558,8 @@ public class ProjectResourceTest {
                                      String projectName,
                                      String structure,
                                      Double thickness,
+                                     Double length,
+                                     Double width,
                                      Double height,
                                      String product,
                                      String segmentLevelOne,
@@ -526,6 +570,8 @@ public class ProjectResourceTest {
         project.setProjectName(projectName);
         project.setMainStructure(structure);
         project.setThickness(thickness);
+        project.setLength(length);
+        project.setWidth(width);
         project.setHeight(height);
         project.setProduct(product);
         project.setSegmentLevelOne(segmentLevelOne);

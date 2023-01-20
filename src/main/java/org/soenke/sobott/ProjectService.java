@@ -3,6 +3,7 @@ package org.soenke.sobott;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import org.soenke.sobott.entity.FilterPojo;
 import org.soenke.sobott.entity.HeightAndThicknessFilterPojo;
+import org.soenke.sobott.entity.LengthWidthAndHeightFilterPojo;
 import org.soenke.sobott.entity.Project;
 import org.soenke.sobott.enums.Segment;
 
@@ -35,7 +36,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
     private String generateFilterQuery(String searchTerm,
                                        String product,
                                        HeightAndThicknessFilterPojo wallFilter,
-                                       HeightAndThicknessFilterPojo columnFilter,
+                                       LengthWidthAndHeightFilterPojo columnFilter,
                                        List<String> infrastructureElements,
                                        List<String> industrialElements,
                                        List<String> solutionTags) {
@@ -65,7 +66,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         }
     }
 
-    private String generateStructureFilterQuery(HeightAndThicknessFilterPojo wallFilter, HeightAndThicknessFilterPojo columnFilter) {
+    private String generateStructureFilterQuery(HeightAndThicknessFilterPojo wallFilter, LengthWidthAndHeightFilterPojo columnFilter) {
         String filterQuery = "";
         if (wallFilter != null && columnFilter != null) {
             filterQuery += "{$or: [";
@@ -82,39 +83,27 @@ public class ProjectService implements PanacheMongoRepository<Project> {
 
     private String generateWallFilterQuery(HeightAndThicknessFilterPojo wallFilter) {
         String filterQuery = "{$and: [";
-        filterQuery += generateThicknessFilterQuery("Wall", wallFilter.getMinThickness(), wallFilter.getMaxThickness());
-        filterQuery += generateHeightFilterQuery("Wall", wallFilter.getMinHeight(), wallFilter.getMaxHeight());
+        filterQuery += generateMinMaxFilterQuery("Wall", "thickness", wallFilter.getMinThickness(), wallFilter.getMaxThickness());
+        filterQuery += generateMinMaxFilterQuery("Wall", "height", wallFilter.getMinHeight(), wallFilter.getMaxHeight());
         return filterQuery + "]}";
     }
 
-    private String generateColumnFilterQuery(HeightAndThicknessFilterPojo columnFilter) {
-        String filterQuery = "";
-        filterQuery += generateThicknessFilterQuery("Column", columnFilter.getMinThickness(), columnFilter.getMaxThickness());
-        filterQuery += generateHeightFilterQuery("Column", columnFilter.getMinHeight(), columnFilter.getMaxHeight());
-        return filterQuery;
+    private String generateColumnFilterQuery(LengthWidthAndHeightFilterPojo columnFilter) {
+        String filterQuery = "{$and: [";
+        filterQuery += generateMinMaxFilterQuery("Column", "length", columnFilter.getMinLength(), columnFilter.getMaxLength());
+        filterQuery += generateMinMaxFilterQuery("Column", "width", columnFilter.getMinWidth(), columnFilter.getMaxWidth());
+        filterQuery += generateMinMaxFilterQuery("Column", "height", columnFilter.getMinHeight(), columnFilter.getMaxHeight());
+        return filterQuery + "]}";
     }
 
-    private String generateThicknessFilterQuery(String structure, Double minThickness, Double maxThickness) {
+    private String generateMinMaxFilterQuery(String structure, String metric, Double min, Double max) {
         String query = "{$and: [{mainStructure: \"" + structure + "\"},";
-        if (minThickness != null && maxThickness != null) {
-            return query + "{thickness: {$gte:" + minThickness + ", $lte:" + maxThickness + "}}]},";
-        } else if (minThickness != null) {
-            return query + "{thickness: {$gte:" + minThickness + "}}]},";
-        } else if (maxThickness != null) {
-            return query + "{thickness: {$lte:" + maxThickness + "}}]},";
-        } else {
-            return "";
-        }
-    }
-
-    private String generateHeightFilterQuery(String structure, Double minHeight, Double maxHeight) {
-        String query = "{$and: [{mainStructure: \"" + structure + "\"},";
-        if (minHeight != null && maxHeight != null) {
-            return query + "{height: {$gte:" + minHeight + ", $lte:" + maxHeight + "}}]},";
-        } else if (minHeight != null) {
-            return query + "{height: {$gte:" + minHeight + "}}]},";
-        } else if (maxHeight != null) {
-            return query + "{height: {$lte:" + maxHeight + "}}]},";
+        if (min != null && max != null) {
+            return query + "{" + metric + ": {$gte:" + min + ", $lte:" + max + "}}]},";
+        } else if (min != null) {
+            return query + "{" + metric + ": {$gte:" + min + "}}]},";
+        } else if (max != null) {
+            return query + "{" + metric + ": {$lte:" + max + "}}]},";
         } else {
             return "";
         }

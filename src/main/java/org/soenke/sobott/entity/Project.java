@@ -16,9 +16,11 @@ public class Project extends PanacheMongoEntity {
     private List<BillOfQuantityEntry> billOfQuantity;
     private List<String> pictures;
     private Double height;
-    private Double maxPourHeight;
     private Double thickness;
+    private Double length;
     private Double width;
+    private Double areaWidth;
+    private Double maxPourHeight;
     private Double m2OfFormwork;
     private Double m2OfConcrete;
     private String planViewSize; // One object with two values?
@@ -87,14 +89,6 @@ public class Project extends PanacheMongoEntity {
         this.height = height;
     }
 
-    public Double getMaxPourHeight() {
-        return maxPourHeight;
-    }
-
-    public void setMaxPourHeight(Double maxPourHeight) {
-        this.maxPourHeight = maxPourHeight;
-    }
-
     public Double getThickness() {
         return thickness;
     }
@@ -103,12 +97,36 @@ public class Project extends PanacheMongoEntity {
         this.thickness = thickness;
     }
 
+    public Double getLength() {
+        return length;
+    }
+
+    public void setLength(Double length) {
+        this.length = length;
+    }
+
     public Double getWidth() {
         return width;
     }
 
     public void setWidth(Double width) {
         this.width = width;
+    }
+
+    public Double getAreaWidth() {
+        return areaWidth;
+    }
+
+    public void setAreaWidth(Double areaWidth) {
+        this.areaWidth = areaWidth;
+    }
+
+    public Double getMaxPourHeight() {
+        return maxPourHeight;
+    }
+
+    public void setMaxPourHeight(Double maxPourHeight) {
+        this.maxPourHeight = maxPourHeight;
     }
 
     public Double getM2OfFormwork() {
