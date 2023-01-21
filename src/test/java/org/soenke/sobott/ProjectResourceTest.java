@@ -199,6 +199,7 @@ public class ProjectResourceTest {
                 "\"minHeight\":0, \"maxHeight\":1000}," +
                 "\"infrastructureElements\": [\"Tunnels\", \"Bridges\"]," +
                 "\"industrialElements\": [\"Oil & Gas\", \"Industrialized Manufacturing\"]," +
+                "\"residentialElements\": [\"Multi-Family housing up to 10 floors\", \"Single-Family Housing\"]," +
                 "\"solutionTags\": [\"Basement\", \"Anchor To Existing Wall\", \"Shaft\"]}";
         given()
                 .contentType("application/json")
@@ -206,22 +207,24 @@ public class ProjectResourceTest {
                 .when().post("/projects")
                 .then()
                 .statusCode(200)
-                .body("size()", is(9))
-                .body("[0].projectName", is("DUO Culvert"))
-                .body("[1].projectName", is("DUO CorrectColumnSizes"))
-                .body("[2].projectName", is("DUO-7"))
-                .body("[3].projectName", is("DUO CorrectWallHeightAndThickness"))
-                .body("[4].projectName", is("DUO-5"))
-                .body("[5].projectName", is("DUO-4"))
-                .body("[6].projectName", is("DUO-3"))
-                .body("[7].projectName", is("DUO-2"))
-                .body("[8].projectName", is("DUO-1"));
+                .body("size()", is(10))
+                .body("[0].projectName", is("DUO Residential"))
+                .body("[1].projectName", is("DUO Culvert"))
+                .body("[2].projectName", is("DUO CorrectColumnSizes"))
+                .body("[3].projectName", is("DUO-7"))
+                .body("[4].projectName", is("DUO CorrectWallHeightAndThickness"))
+                .body("[5].projectName", is("DUO-5"))
+                .body("[6].projectName", is("DUO-4"))
+                .body("[7].projectName", is("DUO-3"))
+                .body("[8].projectName", is("DUO-2"))
+                .body("[9].projectName", is("DUO-1"));
     }
 
     protected void createProjectsForAllFiltersTest() {
         createWallProjectWithAllFields();
-        createColumnProjectsWithAllField();
-        createCulvertProjectsWithAllField();
+        createColumnProjectsWithAllFields();
+        createCulvertProjectsWithAllFields();
+        createResidentialProjectsWithAllFields();
     }
 
     protected void createWallProjectWithAllFields() {
@@ -259,7 +262,7 @@ public class ProjectResourceTest {
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 
-    protected void createColumnProjectsWithAllField() {
+    protected void createColumnProjectsWithAllFields() {
         createFullProject("3232", "DUO CorrectColumnSizes", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
         createFullProject("4994", "DUO ColumnLengthTooSmall", Structure.Column, 120.0, 20.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
@@ -268,12 +271,19 @@ public class ProjectResourceTest {
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 
-    protected void createCulvertProjectsWithAllField() {
+    protected void createCulvertProjectsWithAllFields() {
         createFullProject("3232", "DUO Culvert", Structure.Culvert, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
         createFullProject("3232", "DUO CulvertToLowThickness", Structure.Culvert, 29.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
         createFullProject("3232", "DUO CulvertToHighHeight", Structure.Culvert, 60.0, 40.0, 400.0, 1120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+    }
+
+    protected void createResidentialProjectsWithAllFields() {
+        createFullProject("3232", "DUO Residential", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Residential, "Single-Family Housing",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("3232", "DUO ResidentialWrongLevelTwo", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Residential, "Multi-Family housing above 10 floors",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 

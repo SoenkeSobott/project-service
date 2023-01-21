@@ -11,6 +11,7 @@ public class FilterPojo {
     private HeightAndThicknessFilterPojo culvertFilter;
     private List<String> infrastructureElements;
     private List<String> industrialElements;
+    private List<String> residentialElements;
     private List<String> solutionTags;
 
     // Getters & Setters
@@ -69,6 +70,14 @@ public class FilterPojo {
 
     public void setIndustrialElements(List<String> industrialElements) {
         this.industrialElements = industrialElements;
+    }
+
+    public List<String> getResidentialElements() {
+        return residentialElements;
+    }
+
+    public void setResidentialElements(List<String> residentialElements) {
+        this.residentialElements = residentialElements;
     }
 
     public List<String> getSolutionTags() {

@@ -9,19 +9,23 @@ import java.util.List;
 public class SegmentFilter {
 
     public String generateSegmentFilterQuery(List<String> infrastructureElements,
-                                             List<String> industrialElements) {
-        String filterQuery = "";
-        if (infrastructureElements != null && infrastructureElements.size() > 0
-                && industrialElements != null && industrialElements.size() > 0) {
-            filterQuery += "{$or: [";
+                                             List<String> industrialElements,
+                                             List<String> residentialElements) {
+        String filterQuery = "{$or: [";
+        if (infrastructureElements != null && infrastructureElements.size() > 0) {
             filterQuery += generateSpecificSegmentFilterQuery(SegmentLevelOne.Infrastructure, infrastructureElements);
-            filterQuery += generateSpecificSegmentFilterQuery(SegmentLevelOne.Industrial, industrialElements);
-            filterQuery += "]},";
-        } else if (infrastructureElements != null && infrastructureElements.size() > 0) {
-            filterQuery += generateSpecificSegmentFilterQuery(SegmentLevelOne.Infrastructure, infrastructureElements);
-        } else if (industrialElements != null && industrialElements.size() > 0) {
+        }
+        if (industrialElements != null && industrialElements.size() > 0) {
             filterQuery += generateSpecificSegmentFilterQuery(SegmentLevelOne.Industrial, industrialElements);
         }
+        if (residentialElements != null && residentialElements.size() > 0) {
+            filterQuery += generateSpecificSegmentFilterQuery(SegmentLevelOne.Residential, residentialElements);
+        }
+        if (filterQuery.equals("{$or: [")) {
+            // Nothing was added to query
+            return "";
+        }
+        filterQuery += "]},";
         return filterQuery;
     }
 
