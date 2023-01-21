@@ -75,6 +75,29 @@ public class SegmentFilterTest {
                 .body("[2].projectName", is("DUO-4"));
     }
 
+    @Test
+    public void testProjectsEndpointSegmentNonResidentialFiltered() {
+        createProjectWithSegmentLevelOneAndTwo("3423", "DUO-1", SegmentLevelOne.NonResidential, "Office Buildings");
+        createProjectWithSegmentLevelOneAndTwo("9900", "DUO-2", SegmentLevelOne.NonResidential, "Retail Buildings");
+        createProjectWithSegmentLevelOneAndTwo("2341", "DUO-3", SegmentLevelOne.NonResidential, "Leisure & Hospitality Buildings");
+        createProjectWithSegmentLevelOneAndTwo("0993", "DUO-4", SegmentLevelOne.NonResidential, "Transportation & Logistics Buildings");
+        createProjectWithSegmentLevelOneAndTwo("0989", "DUO-5", SegmentLevelOne.NonResidential, "Cultural & Institutional Buildings");
+        createProjectWithSegmentLevelOneAndTwo("2412", "DUO-6", SegmentLevelOne.NonResidential, "Healthcare Buildings");
+
+        String filterJson = "{\"nonResidentialElements\": [\"Healthcare Buildings\", \"Transportation & Logistics Buildings\", \"Leisure & Hospitality Buildings\", \"Office Buildings\"]}";
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
+                .then()
+                .statusCode(200)
+                .body("size()", is(4))
+                .body("[0].projectName", is("DUO-1"))
+                .body("[1].projectName", is("DUO-3"))
+                .body("[2].projectName", is("DUO-4"))
+                .body("[3].projectName", is("DUO-6"));
+    }
+
     protected void createProjectWithSegmentLevelOneAndTwo(String projectNumber, String projectName, SegmentLevelOne segmentLevelOne,
                                                           String segmentLevelTwo) {
         Project project = new Project();

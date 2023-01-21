@@ -200,6 +200,7 @@ public class ProjectResourceTest {
                 "\"infrastructureElements\": [\"Tunnels\", \"Bridges\"]," +
                 "\"industrialElements\": [\"Oil & Gas\", \"Industrialized Manufacturing\"]," +
                 "\"residentialElements\": [\"Multi-Family housing up to 10 floors\", \"Single-Family Housing\"]," +
+                "\"nonResidentialElements\": [\"Healthcare Buildings\", \"Transportation & Logistics Buildings\"]," +
                 "\"solutionTags\": [\"Basement\", \"Anchor To Existing Wall\", \"Shaft\"]}";
         given()
                 .contentType("application/json")
@@ -207,17 +208,18 @@ public class ProjectResourceTest {
                 .when().post("/projects")
                 .then()
                 .statusCode(200)
-                .body("size()", is(10))
-                .body("[0].projectName", is("DUO Residential"))
-                .body("[1].projectName", is("DUO Culvert"))
-                .body("[2].projectName", is("DUO CorrectColumnSizes"))
-                .body("[3].projectName", is("DUO-7"))
-                .body("[4].projectName", is("DUO CorrectWallHeightAndThickness"))
-                .body("[5].projectName", is("DUO-5"))
-                .body("[6].projectName", is("DUO-4"))
-                .body("[7].projectName", is("DUO-3"))
-                .body("[8].projectName", is("DUO-2"))
-                .body("[9].projectName", is("DUO-1"));
+                .body("size()", is(11))
+                .body("[0].projectName", is("DUO NonResidential"))
+                .body("[1].projectName", is("DUO Residential"))
+                .body("[2].projectName", is("DUO Culvert"))
+                .body("[3].projectName", is("DUO CorrectColumnSizes"))
+                .body("[4].projectName", is("DUO-7"))
+                .body("[5].projectName", is("DUO CorrectWallHeightAndThickness"))
+                .body("[6].projectName", is("DUO-5"))
+                .body("[7].projectName", is("DUO-4"))
+                .body("[8].projectName", is("DUO-3"))
+                .body("[9].projectName", is("DUO-2"))
+                .body("[10].projectName", is("DUO-1"));
     }
 
     protected void createProjectsForAllFiltersTest() {
@@ -225,6 +227,7 @@ public class ProjectResourceTest {
         createColumnProjectsWithAllFields();
         createCulvertProjectsWithAllFields();
         createResidentialProjectsWithAllFields();
+        createNonResidentialProjectsWithAllFields();
     }
 
     protected void createWallProjectWithAllFields() {
@@ -284,6 +287,13 @@ public class ProjectResourceTest {
         createFullProject("3232", "DUO Residential", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Residential, "Single-Family Housing",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
         createFullProject("3232", "DUO ResidentialWrongLevelTwo", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Residential, "Multi-Family housing above 10 floors",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+    }
+
+    protected void createNonResidentialProjectsWithAllFields() {
+        createFullProject("3232", "DUO NonResidential", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.NonResidential, "Healthcare Buildings",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("3232", "DUO NonResidentialWrongLevelTwo", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.NonResidential, "Leisure & Hospitality Buildings",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 

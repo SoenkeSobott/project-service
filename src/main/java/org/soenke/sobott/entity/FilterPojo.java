@@ -12,6 +12,7 @@ public class FilterPojo {
     private List<String> infrastructureElements;
     private List<String> industrialElements;
     private List<String> residentialElements;
+    private List<String> nonResidentialElements;
     private List<String> solutionTags;
 
     // Getters & Setters
@@ -78,6 +79,14 @@ public class FilterPojo {
 
     public void setResidentialElements(List<String> residentialElements) {
         this.residentialElements = residentialElements;
+    }
+
+    public List<String> getNonResidentialElements() {
+        return nonResidentialElements;
+    }
+
+    public void setNonResidentialElements(List<String> nonResidentialElements) {
+        this.nonResidentialElements = nonResidentialElements;
     }
 
     public List<String> getSolutionTags() {
