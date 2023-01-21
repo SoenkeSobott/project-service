@@ -1,6 +1,6 @@
 package org.soenke.sobott.filter;
 
-import org.soenke.sobott.enums.Segment;
+import org.soenke.sobott.enums.SegmentLevelOne;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
@@ -14,20 +14,20 @@ public class SegmentFilter {
         if (infrastructureElements != null && infrastructureElements.size() > 0
                 && industrialElements != null && industrialElements.size() > 0) {
             filterQuery += "{$or: [";
-            filterQuery += generateSpecificSegmentFilterQuery(Segment.Infrastructure, infrastructureElements);
-            filterQuery += generateSpecificSegmentFilterQuery(Segment.Industrial, industrialElements);
+            filterQuery += generateSpecificSegmentFilterQuery(SegmentLevelOne.Infrastructure, infrastructureElements);
+            filterQuery += generateSpecificSegmentFilterQuery(SegmentLevelOne.Industrial, industrialElements);
             filterQuery += "]},";
         } else if (infrastructureElements != null && infrastructureElements.size() > 0) {
-            filterQuery += generateSpecificSegmentFilterQuery(Segment.Infrastructure, infrastructureElements);
+            filterQuery += generateSpecificSegmentFilterQuery(SegmentLevelOne.Infrastructure, infrastructureElements);
         } else if (industrialElements != null && industrialElements.size() > 0) {
-            filterQuery += generateSpecificSegmentFilterQuery(Segment.Industrial, industrialElements);
+            filterQuery += generateSpecificSegmentFilterQuery(SegmentLevelOne.Industrial, industrialElements);
         }
         return filterQuery;
     }
 
-    private String generateSpecificSegmentFilterQuery(Segment segment, List<String> elements) {
+    private String generateSpecificSegmentFilterQuery(SegmentLevelOne segmentLevelOne, List<String> elements) {
         String filterQuery = "";
-        filterQuery += "{$and: [{segmentLevelOne: \"" + segment + "\"},";
+        filterQuery += "{$and: [{segmentLevelOne: \"" + segmentLevelOne + "\"},";
         filterQuery += "{segmentLevelTwo: { $in: [" + FilterUtils.wrapWithQuotesAndJoin(elements) + "]}}]},";
         return filterQuery;
     }

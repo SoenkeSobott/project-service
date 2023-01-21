@@ -1,6 +1,6 @@
 package org.soenke.sobott.enums;
 
-public enum Segment {
+public enum SegmentLevelOne {
     Residential("Residential"),
     NonResidential("Non-Residential"),
     Infrastructure("Infrastructure"),
@@ -8,7 +8,7 @@ public enum Segment {
 
     private final String value;
 
-    Segment(String value) {
+    SegmentLevelOne(String value) {
         this.value = value;
     }
 

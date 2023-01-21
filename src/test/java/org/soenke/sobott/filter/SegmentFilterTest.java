@@ -4,7 +4,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.soenke.sobott.entity.Project;
-import org.soenke.sobott.enums.Segment;
+import org.soenke.sobott.enums.SegmentLevelOne;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -19,10 +19,10 @@ public class SegmentFilterTest {
 
     @Test
     public void testProjectsEndpointSegmentInfrastructureFiltered() {
-        createProjectWithSegmentLevelOneAndTwo("3423", "DUO-1", Segment.Infrastructure, "Bridges");
-        createProjectWithSegmentLevelOneAndTwo("9900", "DUO-2", Segment.Infrastructure, "Tunnels");
-        createProjectWithSegmentLevelOneAndTwo("2341", "DUO-3", Segment.Infrastructure, "Water Plants");
-        createProjectWithSegmentLevelOneAndTwo("0993", "DUO-4", Segment.Infrastructure, "Airports");
+        createProjectWithSegmentLevelOneAndTwo("3423", "DUO-1", SegmentLevelOne.Infrastructure, "Bridges");
+        createProjectWithSegmentLevelOneAndTwo("9900", "DUO-2", SegmentLevelOne.Infrastructure, "Tunnels");
+        createProjectWithSegmentLevelOneAndTwo("2341", "DUO-3", SegmentLevelOne.Infrastructure, "Water Plants");
+        createProjectWithSegmentLevelOneAndTwo("0993", "DUO-4", SegmentLevelOne.Infrastructure, "Airports");
 
         String filterJson = "{\"infrastructureElements\": [\"Tunnels\", \"Water Plants\"]}";
         given()
@@ -38,10 +38,10 @@ public class SegmentFilterTest {
 
     @Test
     public void testProjectsEndpointSegmentIndustrialFiltered() {
-        createProjectWithSegmentLevelOneAndTwo("3423", "DUO-1", Segment.Industrial, "Power");
-        createProjectWithSegmentLevelOneAndTwo("9900", "DUO-2", Segment.Industrial, "Chemicals");
-        createProjectWithSegmentLevelOneAndTwo("2341", "DUO-3", Segment.Industrial, "Industrialized Manufacturing");
-        createProjectWithSegmentLevelOneAndTwo("0993", "DUO-4", Segment.Industrial, "Oil & Gas");
+        createProjectWithSegmentLevelOneAndTwo("3423", "DUO-1", SegmentLevelOne.Industrial, "Power");
+        createProjectWithSegmentLevelOneAndTwo("9900", "DUO-2", SegmentLevelOne.Industrial, "Chemicals");
+        createProjectWithSegmentLevelOneAndTwo("2341", "DUO-3", SegmentLevelOne.Industrial, "Industrialized Manufacturing");
+        createProjectWithSegmentLevelOneAndTwo("0993", "DUO-4", SegmentLevelOne.Industrial, "Oil & Gas");
 
         String filterJson = "{\"industrialElements\": [\"Oil & Gas\", \"Industrialized Manufacturing\"]}";
         given()
@@ -55,7 +55,7 @@ public class SegmentFilterTest {
                 .body("[1].projectName", is("DUO-4"));
     }
 
-    protected void createProjectWithSegmentLevelOneAndTwo(String projectNumber, String projectName, Segment segmentLevelOne,
+    protected void createProjectWithSegmentLevelOneAndTwo(String projectNumber, String projectName, SegmentLevelOne segmentLevelOne,
                                                           String segmentLevelTwo) {
         Project project = new Project();
         project.setProjectNumber(projectNumber);
