@@ -198,6 +198,38 @@ public class ProjectResourceTest {
     }
 
     @Test
+    public void testSolutionTagsEndpointWithColumnFilter() {
+        createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("basement", "tank", "shaft"));
+        createFullProject("3421", "DUO-2", Structure.Column, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("basement", "anchor to existing wall", "shaft"));
+        createFullProject("1077", "DUO-3", Structure.Column, 87.3, 10.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("column w/o tie-rod", "anchor to existing wall", "shaft"));
+        createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "NotShow", "AlsoSomethingElse"));
+        createFullProject("8686", "DUO-5", Structure.Column, 87.3, null, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+                Arrays.asList("slab & beam in one pour", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Culvert, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+                Arrays.asList("TagNotShow", "AlsoNoShow"));
+
+        String filterJson = "{\"columnFilter\": {\"minLength\":15, \"maxLength\":100.0, " +
+                "\"minWidth\":0, \"maxWidth\":500.0," +
+                "\"minHeight\":0, \"maxHeight\":1000}}";
+
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects/solution-tags")
+                .then()
+                .statusCode(200)
+                .body("solutionTags.size()", is(4))
+                .body("solutionTags[0]", is("basement"))
+                .body("solutionTags[1]", is("tank"))
+                .body("solutionTags[2]", is("shaft"))
+                .body("solutionTags[3]", is("anchor to existing wall"));
+    }
+
+    @Test
     public void testSolutionTagsEndpointWithNoFilterReturnsAllSolutionTags() {
         createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Tank", "Shaft"));
@@ -218,38 +250,38 @@ public class ProjectResourceTest {
                 .then()
                 .statusCode(200)
                 .body("solutionTags.size()", is(32))
-                .body("solutionTags[0]", is("High Quality Concrete Surface"))
-                .body("solutionTags[1]", is("Shaft"))
-                .body("solutionTags[2]", is("A-Frame"))
-                .body("solutionTags[3]", is("Anchor To Existing Wall"))
-                .body("solutionTags[4]", is("Basement"))
-                .body("solutionTags[5]", is("Chamfer Corner"))
-                .body("solutionTags[6]", is("Circular Wall"))
-                .body("solutionTags[7]", is("Colum With Tie-Rod And Non Tie-Rod Version"))
-                .body("solutionTags[8]", is("Column W/o Tie-Rod"))
-                .body("solutionTags[9]", is("Column With Tie-Rod"))
-                .body("solutionTags[10]", is("Concrete Shoring Beam"))
-                .body("solutionTags[11]", is("Double-Sided"))
-                .body("solutionTags[12]", is("Drainage Channel"))
-                .body("solutionTags[13]", is("Equipment Foundation"))
-                .body("solutionTags[14]", is("Inclined"))
-                .body("solutionTags[15]", is("Mock-Up"))
-                .body("solutionTags[16]", is("Monolithic"))
-                .body("solutionTags[17]", is("Single-Sided"))
-                .body("solutionTags[18]", is("Slab & Beam In One Pour"))
-                .body("solutionTags[19]", is("Sludge Pump Tank"))
-                .body("solutionTags[20]", is("Spindle Support"))
-                .body("solutionTags[21]", is("Straight Wall"))
-                .body("solutionTags[22]", is("Tank"))
-                .body("solutionTags[23]", is("Temporary Structure"))
-                .body("solutionTags[24]", is("Traveler"))
-                .body("solutionTags[25]", is("Tunnel Side Wall"))
-                .body("solutionTags[26]", is("T-Wall"))
-                .body("solutionTags[27]", is("Underground"))
-                .body("solutionTags[28]", is("Utility Tunnel"))
-                .body("solutionTags[29]", is("Wall & Slab In One Pour"))
-                .body("solutionTags[30]", is("Wall Post"))
-                .body("solutionTags[31]", is("Wall With Voids"));
+                .body("solutionTags[0]", is("high quality concrete surface"))
+                .body("solutionTags[1]", is("shaft"))
+                .body("solutionTags[2]", is("a-frame"))
+                .body("solutionTags[3]", is("anchor to existing wall"))
+                .body("solutionTags[4]", is("basement"))
+                .body("solutionTags[5]", is("chamfer corner"))
+                .body("solutionTags[6]", is("circular wall"))
+                .body("solutionTags[7]", is("colum with tie-rod and non tie-rod version"))
+                .body("solutionTags[8]", is("column w/o tie-rod"))
+                .body("solutionTags[9]", is("column with tie-rod"))
+                .body("solutionTags[10]", is("concrete shoring beam"))
+                .body("solutionTags[11]", is("double-sided"))
+                .body("solutionTags[12]", is("drainage channel"))
+                .body("solutionTags[13]", is("equipment foundation"))
+                .body("solutionTags[14]", is("inclined"))
+                .body("solutionTags[15]", is("mock-up"))
+                .body("solutionTags[16]", is("monolithic"))
+                .body("solutionTags[17]", is("single-sided"))
+                .body("solutionTags[18]", is("slab & beam in one pour"))
+                .body("solutionTags[19]", is("sludge pump tank"))
+                .body("solutionTags[20]", is("spindle support"))
+                .body("solutionTags[21]", is("straight wall"))
+                .body("solutionTags[22]", is("tank"))
+                .body("solutionTags[23]", is("temporary structure"))
+                .body("solutionTags[24]", is("traveler"))
+                .body("solutionTags[25]", is("tunnel side wall"))
+                .body("solutionTags[26]", is("t-wall"))
+                .body("solutionTags[27]", is("underground"))
+                .body("solutionTags[28]", is("utility tunnel"))
+                .body("solutionTags[29]", is("wall & slab in one pour"))
+                .body("solutionTags[30]", is("wall post"))
+                .body("solutionTags[31]", is("wall with voids"));
     }
 
     @Test
@@ -285,38 +317,38 @@ public class ProjectResourceTest {
                 .then()
                 .statusCode(200)
                 .body("solutionTags.size()", is(32))
-                .body("solutionTags[0]", is("High Quality Concrete Surface"))
-                .body("solutionTags[1]", is("Shaft"))
-                .body("solutionTags[2]", is("A-Frame"))
-                .body("solutionTags[3]", is("Anchor To Existing Wall"))
-                .body("solutionTags[4]", is("Basement"))
-                .body("solutionTags[5]", is("Chamfer Corner"))
-                .body("solutionTags[6]", is("Circular Wall"))
-                .body("solutionTags[7]", is("Colum With Tie-Rod And Non Tie-Rod Version"))
-                .body("solutionTags[8]", is("Column W/o Tie-Rod"))
-                .body("solutionTags[9]", is("Column With Tie-Rod"))
-                .body("solutionTags[10]", is("Concrete Shoring Beam"))
-                .body("solutionTags[11]", is("Double-Sided"))
-                .body("solutionTags[12]", is("Drainage Channel"))
-                .body("solutionTags[13]", is("Equipment Foundation"))
-                .body("solutionTags[14]", is("Inclined"))
-                .body("solutionTags[15]", is("Mock-Up"))
-                .body("solutionTags[16]", is("Monolithic"))
-                .body("solutionTags[17]", is("Single-Sided"))
-                .body("solutionTags[18]", is("Slab & Beam In One Pour"))
-                .body("solutionTags[19]", is("Sludge Pump Tank"))
-                .body("solutionTags[20]", is("Spindle Support"))
-                .body("solutionTags[21]", is("Straight Wall"))
-                .body("solutionTags[22]", is("Tank"))
-                .body("solutionTags[23]", is("Temporary Structure"))
-                .body("solutionTags[24]", is("Traveler"))
-                .body("solutionTags[25]", is("Tunnel Side Wall"))
-                .body("solutionTags[26]", is("T-Wall"))
-                .body("solutionTags[27]", is("Underground"))
-                .body("solutionTags[28]", is("Utility Tunnel"))
-                .body("solutionTags[29]", is("Wall & Slab In One Pour"))
-                .body("solutionTags[30]", is("Wall Post"))
-                .body("solutionTags[31]", is("Wall With Voids"));
+                .body("solutionTags[0]", is("high quality concrete surface"))
+                .body("solutionTags[1]", is("shaft"))
+                .body("solutionTags[2]", is("a-frame"))
+                .body("solutionTags[3]", is("anchor to existing wall"))
+                .body("solutionTags[4]", is("basement"))
+                .body("solutionTags[5]", is("chamfer corner"))
+                .body("solutionTags[6]", is("circular wall"))
+                .body("solutionTags[7]", is("colum with tie-rod and non tie-rod version"))
+                .body("solutionTags[8]", is("column w/o tie-rod"))
+                .body("solutionTags[9]", is("column with tie-rod"))
+                .body("solutionTags[10]", is("concrete shoring beam"))
+                .body("solutionTags[11]", is("double-sided"))
+                .body("solutionTags[12]", is("drainage channel"))
+                .body("solutionTags[13]", is("equipment foundation"))
+                .body("solutionTags[14]", is("inclined"))
+                .body("solutionTags[15]", is("mock-up"))
+                .body("solutionTags[16]", is("monolithic"))
+                .body("solutionTags[17]", is("single-sided"))
+                .body("solutionTags[18]", is("slab & beam in one pour"))
+                .body("solutionTags[19]", is("sludge pump tank"))
+                .body("solutionTags[20]", is("spindle support"))
+                .body("solutionTags[21]", is("straight wall"))
+                .body("solutionTags[22]", is("tank"))
+                .body("solutionTags[23]", is("temporary structure"))
+                .body("solutionTags[24]", is("traveler"))
+                .body("solutionTags[25]", is("tunnel side wall"))
+                .body("solutionTags[26]", is("t-wall"))
+                .body("solutionTags[27]", is("underground"))
+                .body("solutionTags[28]", is("utility tunnel"))
+                .body("solutionTags[29]", is("wall & slab in one pour"))
+                .body("solutionTags[30]", is("wall post"))
+                .body("solutionTags[31]", is("wall with voids"));
     }
 
     @Test
