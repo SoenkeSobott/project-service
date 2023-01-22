@@ -22,4 +22,12 @@ public class ProjectResource {
     public Response getProjectsFiltered(FilterPojo filters) {
         return projectService.getProjects(filters);
     }
+
+    @POST
+    @Path("/solution-tags")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSolutionTags(FilterPojo filters) {
+        return projectService.getSolutionTags(filters);
+    }
 }

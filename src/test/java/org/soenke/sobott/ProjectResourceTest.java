@@ -152,6 +152,52 @@ public class ProjectResourceTest {
     }
 
     @Test
+    public void testSolutionTagsEndpoint() {
+        createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "Tank", "Shaft"));
+        createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("1077", "DUO-3", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Column W/o Tie-Rod", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Traveler"));
+        createFullProject("8686", "DUO-5", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+                Arrays.asList("Slab & Beam In One Pour", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Wall, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+                Arrays.asList("TagNotShow", "AlsoNoShow"));
+
+        String filterJson = "{\"searchTerm\": \"Duo\", " +
+                "\"product\": \"Duo\", " +
+                "\"wallFilter\": {\"minThickness\":25, \"maxThickness\":87.3," +
+                "\"minHeight\":100, \"maxHeight\":450}," +
+                "\"columnFilter\": {\"minLength\":30, \"maxLength\":59.0, " +
+                "\"minWidth\":30, \"maxWidth\":119.0," +
+                "\"minHeight\":0, \"maxHeight\":629}," +
+                "\"culvertFilter\": {\"minThickness\":30, \"maxThickness\":120.0, " +
+                "\"minHeight\":0, \"maxHeight\":1000}," +
+                "\"infrastructureElements\": [\"Tunnels\", \"Bridges\"]," +
+                "\"industrialElements\": [\"Oil & Gas\", \"Industrialized Manufacturing\"]," +
+                "\"residentialElements\": [\"Multi-Family housing up to 10 floors\", \"Single-Family Housing\"]," +
+                "\"nonResidentialElements\": [\"Healthcare Buildings\", \"Transportation & Logistics Buildings\"]," +
+                "\"solutionTags\": null}";
+
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects/solution-tags")
+                .then()
+                .statusCode(200)
+                .body("solutionTags.size()", is(7))
+                .body("solutionTags[0]", is("Slab & Beam In One Pour"))
+                .body("solutionTags[1]", is("Anchor To Existing Wall"))
+                .body("solutionTags[2]", is("Shaft"))
+                .body("solutionTags[3]", is("Basement"))
+                .body("solutionTags[4]", is("Traveler"))
+                .body("solutionTags[5]", is("Column W/o Tie-Rod"))
+                .body("solutionTags[6]", is("Tank"));
+    }
+
+    @Test
     public void testProjectsEndpointFilteredWithAllFiltersOnDefault() {
         createProjectWithStructureThicknessAndHeight("project-number-123", "DUO-1");
         createProjectWithProduct("12312343", "DUO-2", "DUO");
