@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import org.soenke.sobott.entity.FilterPojo;
 import org.soenke.sobott.entity.Project;
+import org.soenke.sobott.enums.SolutionTag;
 import org.soenke.sobott.filter.FilterUtils;
 import org.soenke.sobott.filter.SegmentFilter;
 import org.soenke.sobott.filter.StructureFilter;
@@ -14,6 +15,8 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @ApplicationScoped
 public class ProjectService implements PanacheMongoRepository<Project> {
@@ -46,6 +49,12 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                         .distinct()
                         .forEach(solutionTags::add);
             }
+        }
+
+        if (solutionTags.size() == 0) {
+            solutionTags = Stream.of(SolutionTag.values())
+                    .map(SolutionTag::getValue)
+                    .collect(Collectors.toList());
         }
 
         String solutionTagsJsonArray = new Gson().toJson(solutionTags);

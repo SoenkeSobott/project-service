@@ -198,6 +198,128 @@ public class ProjectResourceTest {
     }
 
     @Test
+    public void testSolutionTagsEndpointWithNoFilterReturnsAllSolutionTags() {
+        createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "Tank", "Shaft"));
+        createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("1077", "DUO-3", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Column W/o Tie-Rod", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Traveler"));
+        createFullProject("8686", "DUO-5", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+                Arrays.asList("Slab & Beam In One Pour", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Wall, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+                Arrays.asList("TagNotShow", "AlsoNoShow"));
+
+        given()
+                .contentType("application/json")
+                .when().post("/projects/solution-tags")
+                .then()
+                .statusCode(200)
+                .body("solutionTags.size()", is(32))
+                .body("solutionTags[0]", is("High Quality Concrete Surface"))
+                .body("solutionTags[1]", is("Shaft"))
+                .body("solutionTags[2]", is("A-Frame"))
+                .body("solutionTags[3]", is("Anchor To Existing Wall"))
+                .body("solutionTags[4]", is("Basement"))
+                .body("solutionTags[5]", is("Chamfer Corner"))
+                .body("solutionTags[6]", is("Circular Wall"))
+                .body("solutionTags[7]", is("Colum With Tie-Rod And Non Tie-Rod Version"))
+                .body("solutionTags[8]", is("Column W/o Tie-Rod"))
+                .body("solutionTags[9]", is("Column With Tie-Rod"))
+                .body("solutionTags[10]", is("Concrete Shoring Beam"))
+                .body("solutionTags[11]", is("Double-Sided"))
+                .body("solutionTags[12]", is("Drainage Channel"))
+                .body("solutionTags[13]", is("Equipment Foundation"))
+                .body("solutionTags[14]", is("Inclined"))
+                .body("solutionTags[15]", is("Mock-Up"))
+                .body("solutionTags[16]", is("Monolithic"))
+                .body("solutionTags[17]", is("Single-Sided"))
+                .body("solutionTags[18]", is("Slab & Beam In One Pour"))
+                .body("solutionTags[19]", is("Sludge Pump Tank"))
+                .body("solutionTags[20]", is("Spindle Support"))
+                .body("solutionTags[21]", is("Straight Wall"))
+                .body("solutionTags[22]", is("Tank"))
+                .body("solutionTags[23]", is("Temporary Structure"))
+                .body("solutionTags[24]", is("Traveler"))
+                .body("solutionTags[25]", is("Tunnel Side Wall"))
+                .body("solutionTags[26]", is("T-Wall"))
+                .body("solutionTags[27]", is("Underground"))
+                .body("solutionTags[28]", is("Utility Tunnel"))
+                .body("solutionTags[29]", is("Wall & Slab In One Pour"))
+                .body("solutionTags[30]", is("Wall Post"))
+                .body("solutionTags[31]", is("Wall With Voids"));
+    }
+
+    @Test
+    public void testSolutionTagsEndpointWithEmptyFilters() {
+        createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "Tank", "Shaft"));
+        createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("1077", "DUO-3", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Column W/o Tie-Rod", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "Anchor To Existing Wall", "Traveler"));
+        createFullProject("8686", "DUO-5", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+                Arrays.asList("Slab & Beam In One Pour", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Wall, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+                Arrays.asList("TagNotShow", "AlsoNoShow"));
+
+        String filterJson = "{\"searchTerm\": \"\", " +
+                "\"product\": \"\", " +
+                "\"wallFilter\": {\"minThickness\":null, \"maxThickness\":null," +
+                "\"minHeight\":null, \"maxHeight\":null}," +
+                "\"columnFilter\": {\"minLength\":null, \"maxLength\":null, " +
+                "\"minWidth\":null, \"maxWidth\":null," +
+                "\"minHeight\":null, \"maxHeight\":null}," +
+                "\"infrastructureElements\": []," +
+                "\"industrialElements\": []," +
+                "\"solutionTags\": []}";
+
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects/solution-tags")
+                .then()
+                .statusCode(200)
+                .body("solutionTags.size()", is(32))
+                .body("solutionTags[0]", is("High Quality Concrete Surface"))
+                .body("solutionTags[1]", is("Shaft"))
+                .body("solutionTags[2]", is("A-Frame"))
+                .body("solutionTags[3]", is("Anchor To Existing Wall"))
+                .body("solutionTags[4]", is("Basement"))
+                .body("solutionTags[5]", is("Chamfer Corner"))
+                .body("solutionTags[6]", is("Circular Wall"))
+                .body("solutionTags[7]", is("Colum With Tie-Rod And Non Tie-Rod Version"))
+                .body("solutionTags[8]", is("Column W/o Tie-Rod"))
+                .body("solutionTags[9]", is("Column With Tie-Rod"))
+                .body("solutionTags[10]", is("Concrete Shoring Beam"))
+                .body("solutionTags[11]", is("Double-Sided"))
+                .body("solutionTags[12]", is("Drainage Channel"))
+                .body("solutionTags[13]", is("Equipment Foundation"))
+                .body("solutionTags[14]", is("Inclined"))
+                .body("solutionTags[15]", is("Mock-Up"))
+                .body("solutionTags[16]", is("Monolithic"))
+                .body("solutionTags[17]", is("Single-Sided"))
+                .body("solutionTags[18]", is("Slab & Beam In One Pour"))
+                .body("solutionTags[19]", is("Sludge Pump Tank"))
+                .body("solutionTags[20]", is("Spindle Support"))
+                .body("solutionTags[21]", is("Straight Wall"))
+                .body("solutionTags[22]", is("Tank"))
+                .body("solutionTags[23]", is("Temporary Structure"))
+                .body("solutionTags[24]", is("Traveler"))
+                .body("solutionTags[25]", is("Tunnel Side Wall"))
+                .body("solutionTags[26]", is("T-Wall"))
+                .body("solutionTags[27]", is("Underground"))
+                .body("solutionTags[28]", is("Utility Tunnel"))
+                .body("solutionTags[29]", is("Wall & Slab In One Pour"))
+                .body("solutionTags[30]", is("Wall Post"))
+                .body("solutionTags[31]", is("Wall With Voids"));
+    }
+
+    @Test
     public void testProjectsEndpointFilteredWithAllFiltersOnDefault() {
         createProjectWithStructureThicknessAndHeight("project-number-123", "DUO-1");
         createProjectWithProduct("12312343", "DUO-2", "DUO");
