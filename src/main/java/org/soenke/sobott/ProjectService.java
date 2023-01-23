@@ -61,6 +61,17 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         return Response.status(Response.Status.OK).entity("{\"solutionTags\": " + solutionTagsJsonArray + "}").build();
     }
 
+    public List<String> getAllSolutionTags() {
+        List<String> solutionTags = new ArrayList<>();
+        List<Project> projects = Project.findAll().list();
+        projects.stream()
+                .map(Project::getSolutionTags)
+                .flatMap(Collection::stream)
+                .distinct()
+                .forEach(solutionTags::add);
+        return solutionTags;
+    }
+
     private String generateFilterQuery(FilterPojo filters) {
         String filterQuery = "{$and: [";
 
@@ -91,5 +102,4 @@ public class ProjectService implements PanacheMongoRepository<Project> {
             return null;
         }
     }
-
 }

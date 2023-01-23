@@ -3,12 +3,10 @@ package org.soenke.sobott;
 import org.soenke.sobott.entity.FilterPojo;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/projects")
 public class ProjectResource {
@@ -29,5 +27,12 @@ public class ProjectResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSolutionTags(FilterPojo filters) {
         return projectService.getSolutionTags(filters);
+    }
+
+    @GET
+    @Path("/solution-tags/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getAllSolutionTags() {
+        return projectService.getAllSolutionTags();
     }
 }
