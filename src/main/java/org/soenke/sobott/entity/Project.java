@@ -33,6 +33,11 @@ public class Project extends PanacheMongoEntity {
     private String SegmentLevelThree;
     private List<String> solutionTags;
 
+    // PS100
+    private Double shoringHeight;
+    private Double slabThickness;
+    private Double m3OfShoring;
+
     public String getProjectNumber() {
         return projectNumber;
     }
@@ -215,6 +220,31 @@ public class Project extends PanacheMongoEntity {
 
     public void setSolutionTags(List<String> solutionTags) {
         this.solutionTags = solutionTags;
+    }
+
+    // PS100
+    public Double getShoringHeight() {
+        return shoringHeight;
+    }
+
+    public void setShoringHeight(Double shoringHeight) {
+        this.shoringHeight = shoringHeight;
+    }
+
+    public Double getSlabThickness() {
+        return slabThickness;
+    }
+
+    public void setSlabThickness(Double slabThickness) {
+        this.slabThickness = slabThickness;
+    }
+
+    public Double getM3OfShoring() {
+        return m3OfShoring;
+    }
+
+    public void setM3OfShoring(Double m3OfShoring) {
+        this.m3OfShoring = m3OfShoring;
     }
 
 }

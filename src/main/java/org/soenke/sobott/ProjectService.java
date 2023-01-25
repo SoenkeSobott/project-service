@@ -84,7 +84,8 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         }
 
         filterQuery += productFilter.generateProductFilterQuery(filters.getProduct());
-        filterQuery += structureFilter.generateStructureFilterQuery(filters.getWallFilter(), filters.getColumnFilter(), filters.getCulvertFilter());
+        filterQuery += structureFilter.generateStructureFilterQuery(filters.getWallFilter(), filters.getColumnFilter(),
+                filters.getCulvertFilter(), filters.getShoringFilter());
         filterQuery += segmentFilter.generateSegmentFilterQuery(filters.getInfrastructureElements(), filters.getIndustrialElements(),
                 filters.getResidentialElements(), filters.getNonResidentialElements());
 

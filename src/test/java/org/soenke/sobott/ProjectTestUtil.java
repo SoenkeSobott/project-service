@@ -44,6 +44,16 @@ public class ProjectTestUtil {
         project.persist();
     }
 
+    public static void createProjectWithShoringThicknessAndHeight(String projectNumber, String projectName, Double slabThickness, Double shoringHeight) {
+        Project project = new Project();
+        project.setProjectNumber(projectNumber);
+        project.setProjectName(projectName);
+        project.setMainStructure(Structure.Shoring.getValue());
+        project.setSlabThickness(slabThickness);
+        project.setShoringHeight(shoringHeight);
+        project.persist();
+    }
+
     public static void createProjectWithStructureLengthWidthAndHeight(String projectNumber, String projectName, Structure structure, Double length, Double width, Double height) {
         Project project = new Project();
         project.setProjectNumber(projectNumber);
@@ -72,6 +82,8 @@ public class ProjectTestUtil {
                                          Double length,
                                          Double width,
                                          Double height,
+                                         Double slabThickness,
+                                         Double shoringHeight,
                                          String product,
                                          SegmentLevelOne segmentLevelOne,
                                          String segmentLevelTwo,
@@ -84,6 +96,8 @@ public class ProjectTestUtil {
         project.setLength(length);
         project.setWidth(width);
         project.setHeight(height);
+        project.setSlabThickness(slabThickness);
+        project.setShoringHeight(shoringHeight);
         project.setProduct(product);
         project.setSegmentLevelOne(segmentLevelOne.getValue());
         project.setSegmentLevelTwo(segmentLevelTwo);

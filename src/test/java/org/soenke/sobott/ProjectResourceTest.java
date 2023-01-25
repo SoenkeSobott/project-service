@@ -99,17 +99,23 @@ public class ProjectResourceTest {
 
     @Test
     public void testSolutionTagsEndpoint() {
-        ProjectTestUtil.createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Tank", "Shaft"));
-        ProjectTestUtil.createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("1077", "DUO-3", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("1077", "DUO-3", Structure.Wall, 87.3, 20.0, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Column W/o Tie-Rod", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Traveler"));
-        ProjectTestUtil.createFullProject("8686", "DUO-5", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+        ProjectTestUtil.createFullProject("8686", "DUO-5", Structure.Wall, 87.3, 20.0, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
                 Arrays.asList("Slab & Beam In One Pour", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Wall, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+        ProjectTestUtil.createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Wall, 4.0, 20.0, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
                 Arrays.asList("TagNotShow", "AlsoNoShow"));
 
         String filterJson = "{\"searchTerm\": \"Duo\", " +
@@ -145,17 +151,23 @@ public class ProjectResourceTest {
 
     @Test
     public void testSolutionTagsEndpointWithColumnFilter() {
-        ProjectTestUtil.createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("basement", "tank", "shaft"));
-        ProjectTestUtil.createFullProject("3421", "DUO-2", Structure.Column, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3421", "DUO-2", Structure.Column, 60.0, 40.0, 400.0, 520.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("basement", "anchor to existing wall", "shaft"));
-        ProjectTestUtil.createFullProject("1077", "DUO-3", Structure.Column, 87.3, 10.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("1077", "DUO-3", Structure.Column, 87.3, 10.0, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("column w/o tie-rod", "anchor to existing wall", "shaft"));
-        ProjectTestUtil.createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "NotShow", "AlsoSomethingElse"));
-        ProjectTestUtil.createFullProject("8686", "DUO-5", Structure.Column, 87.3, null, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+        ProjectTestUtil.createFullProject("8686", "DUO-5", Structure.Column, 87.3, null, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
                 Arrays.asList("slab & beam in one pour", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Culvert, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+        ProjectTestUtil.createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Culvert,
+                50.0, 200.0, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
                 Arrays.asList("TagNotShow", "AlsoNoShow"));
 
         String filterJson = "{\"columnFilter\": {\"minLength\":15, \"maxLength\":100.0, " +
@@ -177,17 +189,23 @@ public class ProjectResourceTest {
 
     @Test
     public void testSolutionTagsEndpointWithFiltersThatReturnNoProjects() {
-        ProjectTestUtil.createFullProject("3232", "DUO-1", Structure.Column, 120.0, 400.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3232", "DUO-1", Structure.Column, 120.0, 400.0, 40.0, 120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("basement", "tank", "shaft"));
-        ProjectTestUtil.createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("basement", "anchor to existing wall", "shaft"));
-        ProjectTestUtil.createFullProject("1077", "DUO-3", Structure.Column, 87.3, 10.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("1077", "DUO-3", Structure.Column, 87.3, 10.0, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("column w/o tie-rod", "anchor to existing wall", "shaft"));
-        ProjectTestUtil.createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "NotShow", "AlsoSomethingElse"));
-        ProjectTestUtil.createFullProject("8686", "DUO-5", Structure.Column, 87.3, null, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+        ProjectTestUtil.createFullProject("8686", "DUO-5", Structure.Column, 87.3, null, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
                 Arrays.asList("slab & beam in one pour", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Culvert, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+        ProjectTestUtil.createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Culvert, 4.0, 20.0, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
                 Arrays.asList("TagNotShow", "AlsoNoShow"));
 
         String filterJson = "{\"columnFilter\": {\"minLength\":15, \"maxLength\":100.0, " +
@@ -205,18 +223,9 @@ public class ProjectResourceTest {
 
     @Test
     public void testSolutionTagsEndpointWithNoFilterReturnsAllSolutionTags() {
-        ProjectTestUtil.createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Tank", "Shaft"));
-        ProjectTestUtil.createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("1077", "DUO-3", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Column W/o Tie-Rod", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Traveler"));
-        ProjectTestUtil.createFullProject("8686", "DUO-5", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
-                Arrays.asList("Slab & Beam In One Pour", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Wall, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
-                Arrays.asList("TagNotShow", "AlsoNoShow"));
 
         given()
                 .contentType("application/json")
@@ -260,17 +269,23 @@ public class ProjectResourceTest {
 
     @Test
     public void testSolutionTagsEndpointWithEmptyFilters() {
-        ProjectTestUtil.createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Tank", "Shaft"));
-        ProjectTestUtil.createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("1077", "DUO-3", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("1077", "DUO-3", Structure.Wall, 87.3, 20.0, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Column W/o Tie-Rod", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Traveler"));
-        ProjectTestUtil.createFullProject("8686", "DUO-5", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+        ProjectTestUtil.createFullProject("8686", "DUO-5", Structure.Wall, 87.3, 20.0, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
                 Arrays.asList("Slab & Beam In One Pour", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Wall, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+        ProjectTestUtil.createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Wall, 4.0, 20.0, 20.0, 330.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
                 Arrays.asList("TagNotShow", "AlsoNoShow"));
 
         String filterJson = "{\"searchTerm\": \"\", " +
@@ -340,8 +355,12 @@ public class ProjectResourceTest {
                 "\"columnFilter\": {\"minLength\":null, \"maxLength\":null, " +
                 "\"minWidth\":null, \"maxWidth\":null," +
                 "\"minHeight\":null, \"maxHeight\":null}," +
+                "\"shoringFilter\": {\"minThickness\":null, \"maxThickness\":null," +
+                "\"minHeight\":null, \"maxHeight\":null}," +
                 "\"infrastructureElements\": []," +
                 "\"industrialElements\": []," +
+                "\"residentialElements\": []," +
+                "\"nonResidentialElements\": []," +
                 "\"solutionTags\": []}";
 
         given()
@@ -371,6 +390,8 @@ public class ProjectResourceTest {
                 "\"minHeight\":0, \"maxHeight\":629}," +
                 "\"culvertFilter\": {\"minThickness\":30, \"maxThickness\":120.0, " +
                 "\"minHeight\":0, \"maxHeight\":1000}," +
+                "\"shoringFilter\": {\"minThickness\":30, \"maxThickness\":65.0, " +
+                "\"minHeight\":30, \"maxHeight\":1000}," +
                 "\"infrastructureElements\": [\"Tunnels\", \"Bridges\"]," +
                 "\"industrialElements\": [\"Oil & Gas\", \"Industrialized Manufacturing\"]," +
                 "\"residentialElements\": [\"Multi-Family housing up to 10 floors\", \"Single-Family Housing\"]," +
@@ -382,92 +403,93 @@ public class ProjectResourceTest {
                 .when().post("/projects")
                 .then()
                 .statusCode(200)
-                .body("size()", is(11))
+                .body("size()", is(12))
                 .body("[0].projectName", is("DUO NonResidential"))
                 .body("[1].projectName", is("DUO Residential"))
-                .body("[2].projectName", is("DUO Culvert"))
-                .body("[3].projectName", is("DUO CorrectColumnSizes"))
-                .body("[4].projectName", is("DUO-7"))
-                .body("[5].projectName", is("DUO CorrectWallHeightAndThickness"))
-                .body("[6].projectName", is("DUO-5"))
-                .body("[7].projectName", is("DUO-4"))
-                .body("[8].projectName", is("DUO-3"))
-                .body("[9].projectName", is("DUO-2"))
-                .body("[10].projectName", is("DUO-1"));
+                .body("[2].projectName", is("Not a DUO PS100"))
+                .body("[3].projectName", is("DUO Culvert"))
+                .body("[4].projectName", is("DUO CorrectColumnSizes"))
+                .body("[5].projectName", is("DUO-7"))
+                .body("[6].projectName", is("DUO CorrectWallHeightAndThickness"))
+                .body("[7].projectName", is("DUO-5"))
+                .body("[8].projectName", is("DUO-4"))
+                .body("[9].projectName", is("DUO-3"))
+                .body("[10].projectName", is("DUO-2"))
+                .body("[11].projectName", is("DUO-1"));
     }
 
     protected void createProjectsForAllFiltersTest() {
         createWallProjectWithAllFields();
         createColumnProjectsWithAllFields();
         createCulvertProjectsWithAllFields();
+        createShoringProjectsWithAllFields();
         createResidentialProjectsWithAllFields();
         createNonResidentialProjectsWithAllFields();
     }
 
     protected void createWallProjectWithAllFields() {
-        ProjectTestUtil.createFullProject("1231", "DUO ButTooLowThickness", Structure.Wall, 20.0, 20.0, 20.0, 230.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("9458", "DUO-1", Structure.Wall, 25.0, 20.0, 20.0, 230.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("9670", "BetweenButNot Duo", Structure.Wall, 30.5, 20.0, 20.0, 30.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("4587", "BetweenThicknessAnd Duo ButTooBigHeight", Structure.Wall, 30.5, 20.0, 20.0, 3000.0, "OtherProduct", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("1077", "DUO-2", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("2454", "DUO-3", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("4055", "DUO-3 ButWaterPlants", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Water Plants",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("3234", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Bridges",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("4055", "DUO-5", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("9283", "DUO CorrectWallHeightAndThickness", Structure.Wall, 50.0, 20.0, 20.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("9845", "EverythingOkButNotSearchTermMatch", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("4342", "DUO-6", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Straight Wall", "Double Sided"));
-        ProjectTestUtil.createFullProject("2356", "Duo", Structure.Wall, 82.0, 20.0, 20.0, 500.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("2234", "Duo ButTooBigThickness", Structure.Wall, 100.0, 20.0, 20.0, 230.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("8686", "DUO-7", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("5523", "DUO-2 with wrong industrial", Structure.Wall, 87.3, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Power",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("1231", "DUO ButTooLowThickness", Structure.Wall, 20.0, 20.0, 20.0, 230.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("9458", "DUO-1", Structure.Wall, 25.0, 20.0, 20.0, 230.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("9670", "BetweenButNot Duo", Structure.Wall, 30.5, 20.0, 20.0, 30.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("4587", "BetweenThicknessAnd Duo ButTooBigHeight", Structure.Wall, 30.5, 20.0, 20.0, 3000.0, 50.0, 200.0, "OtherProduct", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("1077", "DUO-2", Structure.Wall, 87.3, 20.0, 20.0, 330.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("2454", "DUO-3", Structure.Wall, 82.0, 20.0, 20.0, 300.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("4055", "DUO-3 ButWaterPlants", Structure.Wall, 82.0, 20.0, 20.0, 300.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Water Plants", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("3234", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Bridges", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("4055", "DUO-5", Structure.Wall, 82.0, 20.0, 20.0, 300.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("9283", "DUO CorrectWallHeightAndThickness", Structure.Wall, 50.0, 20.0, 20.0, 200.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("9845", "EverythingOkButNotSearchTermMatch", Structure.Wall, 82.0, 20.0, 20.0, 300.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("4342", "DUO-6", Structure.Wall, 82.0, 20.0, 20.0, 300.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Straight Wall", "Double Sided"));
+        ProjectTestUtil.createFullProject("2356", "Duo", Structure.Wall, 82.0, 20.0, 20.0, 500.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("2234", "Duo ButTooBigThickness", Structure.Wall, 100.0, 20.0, 20.0, 230.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("8686", "DUO-7", Structure.Wall, 87.3, 20.0, 20.0, 330.0, 50.0, 200.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("5523", "DUO-2 with wrong industrial", Structure.Wall, 87.3, 20.0, 20.0, 330.0, 50.0, 200.0, "DUO", SegmentLevelOne.Industrial, "Power", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 
     protected void createColumnProjectsWithAllFields() {
-        ProjectTestUtil.createFullProject("3232", "DUO CorrectColumnSizes", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3232", "DUO CorrectColumnSizes", Structure.Column, 120.0, 40.0, 40.0, 120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("4994", "DUO ColumnLengthTooSmall", Structure.Column, 120.0, 20.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("4994", "DUO ColumnLengthTooSmall", Structure.Column, 120.0, 20.0, 40.0, 120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("0901", "DUO ColumnWidthTooHigh", Structure.Column, 120.0, 40.0, 180.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("0901", "DUO ColumnWidthTooHigh", Structure.Column, 120.0, 40.0, 180.0, 120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 
     protected void createCulvertProjectsWithAllFields() {
-        ProjectTestUtil.createFullProject("3232", "DUO Culvert", Structure.Culvert, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3232", "DUO Culvert", Structure.Culvert, 60.0, 40.0, 400.0, 520.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("3232", "DUO CulvertToLowThickness", Structure.Culvert, 29.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3232", "DUO CulvertToLowThickness", Structure.Culvert, 29.0, 40.0, 400.0, 520.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("3232", "DUO CulvertToHighHeight", Structure.Culvert, 60.0, 40.0, 400.0, 1120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+        ProjectTestUtil.createFullProject("3232", "DUO CulvertToHighHeight", Structure.Culvert, 60.0, 40.0, 400.0, 1120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 
     protected void createResidentialProjectsWithAllFields() {
-        ProjectTestUtil.createFullProject("3232", "DUO Residential", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Residential, "Single-Family Housing",
+        ProjectTestUtil.createFullProject("3232", "DUO Residential", Structure.Column, 120.0, 40.0, 40.0, 120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Residential, "Single-Family Housing",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("3232", "DUO ResidentialWrongLevelTwo", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Residential, "Multi-Family housing above 10 floors",
+        ProjectTestUtil.createFullProject("3232", "DUO ResidentialWrongLevelTwo", Structure.Column, 120.0, 40.0, 40.0, 120.0,
+                50.0, 200.0, "DUO", SegmentLevelOne.Residential, "Multi-Family housing above 10 floors",
                 Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 
+    protected void createShoringProjectsWithAllFields() {
+        ProjectTestUtil.createFullProject("3004", "Not a DUO PS100", Structure.Shoring, 87.3, 20.0, 20.0, 330.0, 50.0, 200.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("1200", "Not a DUO PS100", Structure.Shoring, 87.3, 20.0, 20.0, 330.0, 20.0, 10.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+    }
+
     protected void createNonResidentialProjectsWithAllFields() {
-        ProjectTestUtil.createFullProject("3232", "DUO NonResidential", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.NonResidential, "Healthcare Buildings",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
-        ProjectTestUtil.createFullProject("3232", "DUO NonResidentialWrongLevelTwo", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.NonResidential, "Leisure & Hospitality Buildings",
-                Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("3232", "DUO NonResidential", Structure.Column,
+                120.0, 40.0, 40.0, 120.0, 50.0, 200.0, "DUO", SegmentLevelOne.NonResidential,
+                "Healthcare Buildings", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
+        ProjectTestUtil.createFullProject("3232", "DUO NonResidentialWrongLevelTwo", Structure.Column,
+                120.0, 40.0, 40.0, 120.0, 50.0, 200.0, "DUO", SegmentLevelOne.NonResidential,
+                "Leisure & Hospitality Buildings", Arrays.asList("Basement", "Anchor To Existing Wall", "Shaft"));
     }
 }

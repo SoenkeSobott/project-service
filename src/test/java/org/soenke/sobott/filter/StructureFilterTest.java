@@ -400,4 +400,73 @@ public class StructureFilterTest {
                 .body("[2].projectName", is("DUO-4"))
                 .body("[3].projectName", is("DUO-5"));
     }
+
+    @Test
+    public void testProjectsEndpointShoringThicknessAndHeightFiltered() {
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("1231", "DUO-1", 20.0, 230.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("2344", "DUO-2", 30.0, 330.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("9696", "DUO-3", 40.0, 430.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("8493", "DUO-4", 50.0, 530.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("1230", "DUO-5", 60.0, 630.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("0909", "DUO-6", 70.0, 730.0);
+
+        String filterJson = "{\"shoringFilter\": {\"minThickness\":30, \"maxThickness\":65.0, " +
+                "\"minHeight\":0, \"maxHeight\":1000}}";
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
+                .then()
+                .statusCode(200)
+                .body("size()", is(4))
+                .body("[0].projectName", is("DUO-2"))
+                .body("[1].projectName", is("DUO-3"))
+                .body("[2].projectName", is("DUO-4"))
+                .body("[3].projectName", is("DUO-5"));
+    }
+
+    @Test
+    public void testProjectsEndpointShoringOnlyThicknessFiltered() {
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("1231", "DUO-1", 20.0, 230.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("2344", "DUO-2", 30.0, 330.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("9696", "DUO-3", 40.0, 430.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("8493", "DUO-4", 50.0, 530.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("1230", "DUO-5", 60.0, 630.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("0909", "DUO-6", 70.0, 730.0);
+
+        String filterJson = "{\"shoringFilter\": {\"minThickness\":30, \"maxThickness\":55.0}}";
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
+                .then()
+                .statusCode(200)
+                .body("size()", is(3))
+                .body("[0].projectName", is("DUO-2"))
+                .body("[1].projectName", is("DUO-3"))
+                .body("[2].projectName", is("DUO-4"));
+    }
+
+    @Test
+    public void testProjectsEndpointShoringOnlyHeightFiltered() {
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("1231", "DUO-1", 20.0, 230.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("2344", "DUO-2", 30.0, 330.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("9696", "DUO-3", 40.0, 430.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("8493", "DUO-4", 50.0, 530.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("1230", "DUO-5", 60.0, 630.0);
+        ProjectTestUtil.createProjectWithShoringThicknessAndHeight("0909", "DUO-6", 70.0, 730.0);
+
+        String filterJson = "{\"shoringFilter\": {\"minHeight\":430, \"maxHeight\":1000}}";
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
+                .then()
+                .statusCode(200)
+                .body("size()", is(4))
+                .body("[0].projectName", is("DUO-3"))
+                .body("[1].projectName", is("DUO-4"))
+                .body("[2].projectName", is("DUO-5"))
+                .body("[3].projectName", is("DUO-6"));
+    }
 }

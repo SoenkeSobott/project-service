@@ -3,7 +3,8 @@ package org.soenke.sobott.enums;
 public enum Structure {
     Wall("Wall"),
     Column("Column"),
-    Culvert("Culvert");
+    Culvert("Culvert"),
+    Shoring("Shoring");
 
     private final String value;
 

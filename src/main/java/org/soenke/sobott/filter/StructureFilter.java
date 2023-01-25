@@ -11,7 +11,8 @@ public class StructureFilter {
 
     public String generateStructureFilterQuery(HeightAndThicknessFilterPojo wallFilter,
                                                LengthWidthAndHeightFilterPojo columnFilter,
-                                               HeightAndThicknessFilterPojo culvertFilter) {
+                                               HeightAndThicknessFilterPojo culvertFilter,
+                                               HeightAndThicknessFilterPojo shoringFilter) {
         String filterQuery = "{$or: [";
         if (wallFilter != null) {
             filterQuery += generateWallFilterQuery(wallFilter);
@@ -21,6 +22,9 @@ public class StructureFilter {
         }
         if (culvertFilter != null) {
             filterQuery += generateCulvertFilterQuery(culvertFilter);
+        }
+        if (shoringFilter != null) {
+            filterQuery += generateShoringFilterQuery(shoringFilter);
         }
         if (filterQuery.equals("{$or: [")) {
             // Nothing was added to query
@@ -57,6 +61,17 @@ public class StructureFilter {
         String filterQuery = "{$and: [";
         filterQuery += generateMinMaxFilterQuery(Structure.Culvert, "thickness", culvertFilter.getMinThickness(), culvertFilter.getMaxThickness());
         filterQuery += generateMinMaxFilterQuery(Structure.Culvert, "height", culvertFilter.getMinHeight(), culvertFilter.getMaxHeight());
+        if (filterQuery.equals("{$and: [")) {
+            // Nothing was added to query
+            return "";
+        }
+        return filterQuery + "]}";
+    }
+
+    private String generateShoringFilterQuery(HeightAndThicknessFilterPojo shoringFilter) {
+        String filterQuery = "{$and: [";
+        filterQuery += generateMinMaxFilterQuery(Structure.Shoring, "slabThickness", shoringFilter.getMinThickness(), shoringFilter.getMaxThickness());
+        filterQuery += generateMinMaxFilterQuery(Structure.Shoring, "shoringHeight", shoringFilter.getMinHeight(), shoringFilter.getMaxHeight());
         if (filterQuery.equals("{$and: [")) {
             // Nothing was added to query
             return "";
