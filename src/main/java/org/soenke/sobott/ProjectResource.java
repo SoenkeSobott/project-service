@@ -33,6 +33,6 @@ public class ProjectResource {
     @Path("/solution-tags/all")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> getAllSolutionTags() {
-        return projectService.getAllSolutionTags();
+        return projectService.getAllSolutionTagsInProjects();
     }
 }

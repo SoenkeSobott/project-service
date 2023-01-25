@@ -230,6 +230,34 @@ public class ProjectResourceTest {
     }
 
     @Test
+    public void testSolutionTagsEndpointWithFiltersThatReturnNoProjects() {
+        createFullProject("3232", "DUO-1", Structure.Column, 120.0, 400.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("basement", "tank", "shaft"));
+        createFullProject("3421", "DUO-2", Structure.Culvert, 60.0, 40.0, 400.0, 520.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("basement", "anchor to existing wall", "shaft"));
+        createFullProject("1077", "DUO-3", Structure.Column, 87.3, 10.0, 20.0, 330.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("column w/o tie-rod", "anchor to existing wall", "shaft"));
+        createFullProject("2454", "DUO-4", Structure.Wall, 82.0, 20.0, 20.0, 300.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
+                Arrays.asList("Basement", "NotShow", "AlsoSomethingElse"));
+        createFullProject("8686", "DUO-5", Structure.Column, 87.3, null, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+                Arrays.asList("slab & beam in one pour", "Anchor To Existing Wall", "Shaft"));
+        createFullProject("4233", "DUO-6 ButWrongWallThickness", Structure.Culvert, 4.0, 20.0, 20.0, 330.0, "DUO", SegmentLevelOne.Industrial, "Oil & Gas",
+                Arrays.asList("TagNotShow", "AlsoNoShow"));
+
+        String filterJson = "{\"columnFilter\": {\"minLength\":15, \"maxLength\":100.0, " +
+                "\"minWidth\":0, \"maxWidth\":500.0," +
+                "\"minHeight\":500, \"maxHeight\":1000}}";
+
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects/solution-tags")
+                .then()
+                .statusCode(200)
+                .body("solutionTags.size()", is(0));
+    }
+
+    @Test
     public void testSolutionTagsEndpointWithNoFilterReturnsAllSolutionTags() {
         createFullProject("3232", "DUO-1", Structure.Column, 120.0, 40.0, 40.0, 120.0, "DUO", SegmentLevelOne.Infrastructure, "Tunnels",
                 Arrays.asList("Basement", "Tank", "Shaft"));

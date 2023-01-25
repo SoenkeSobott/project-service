@@ -48,20 +48,18 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                         .flatMap(Collection::stream)
                         .distinct()
                         .forEach(solutionTags::add);
+            } else {
+                solutionTags = getAllSolutionTags();
             }
-        }
-
-        if (solutionTags.size() == 0) {
-            solutionTags = Stream.of(SolutionTag.values())
-                    .map(SolutionTag::getValue)
-                    .collect(Collectors.toList());
+        } else {
+            solutionTags = getAllSolutionTags();
         }
 
         String solutionTagsJsonArray = new Gson().toJson(solutionTags);
         return Response.status(Response.Status.OK).entity("{\"solutionTags\": " + solutionTagsJsonArray + "}").build();
     }
 
-    public List<String> getAllSolutionTags() {
+    public List<String> getAllSolutionTagsInProjects() {
         List<String> solutionTags = new ArrayList<>();
         List<Project> projects = Project.findAll().list();
         projects.stream()
@@ -101,5 +99,11 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         } else {
             return null;
         }
+    }
+
+    protected List<String> getAllSolutionTags() {
+        return Stream.of(SolutionTag.values())
+                .map(SolutionTag::getValue)
+                .collect(Collectors.toList());
     }
 }
