@@ -6,6 +6,7 @@ import org.soenke.sobott.entity.FilterPojo;
 import org.soenke.sobott.entity.Project;
 import org.soenke.sobott.enums.SolutionTag;
 import org.soenke.sobott.filter.FilterUtils;
+import org.soenke.sobott.filter.ProductFilter;
 import org.soenke.sobott.filter.SegmentFilter;
 import org.soenke.sobott.filter.StructureFilter;
 
@@ -20,6 +21,9 @@ import java.util.stream.Stream;
 
 @ApplicationScoped
 public class ProjectService implements PanacheMongoRepository<Project> {
+
+    @Inject
+    ProductFilter productFilter;
 
     @Inject
     StructureFilter structureFilter;
@@ -79,11 +83,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
             filterQuery += searchQuery;
         }
 
-        String product = filters.getProduct();
-        if (product != null && !product.isEmpty()) {
-            filterQuery += "{product: \"" + product.toUpperCase() + "\"},";
-        }
-
+        filterQuery += productFilter.generateProductFilterQuery(filters.getProduct());
         filterQuery += structureFilter.generateStructureFilterQuery(filters.getWallFilter(), filters.getColumnFilter(), filters.getCulvertFilter());
         filterQuery += segmentFilter.generateSegmentFilterQuery(filters.getInfrastructureElements(), filters.getIndustrialElements(),
                 filters.getResidentialElements(), filters.getNonResidentialElements());
