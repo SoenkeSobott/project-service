@@ -34,9 +34,9 @@ public class ProjectResourceTest {
 
     @Test
     public void testProjectEndpointWithNoFilters() {
-        ProjectTestUtil.createBaseProject("project-number-123", "project-name-123");
-        ProjectTestUtil.createBaseProject("project-number-918", "project-name-918");
-        ProjectTestUtil.createBaseProject("project-number-911", "project-name-911");
+        ProjectTestUtil.createBaseProject("project-number-123", "Aasd");
+        ProjectTestUtil.createBaseProject("project-number-918", "fdfd");
+        ProjectTestUtil.createBaseProject("project-number-911", "xy");
 
         given()
                 .contentType("application/json")
@@ -45,11 +45,11 @@ public class ProjectResourceTest {
                 .statusCode(200)
                 .body("size()", is(3))
                 .body("[0].projectNumber", is("project-number-123"))
-                .body("[0].projectName", is("project-name-123"))
+                .body("[0].projectName", is("Aasd"))
                 .body("[1].projectNumber", is("project-number-918"))
-                .body("[1].projectName", is("project-name-918"))
+                .body("[1].projectName", is("fdfd"))
                 .body("[2].projectNumber", is("project-number-911"))
-                .body("[2].projectName", is("project-name-911"));
+                .body("[2].projectName", is("xy"));
     }
 
     @Test

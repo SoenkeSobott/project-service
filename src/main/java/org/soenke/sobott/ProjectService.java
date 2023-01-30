@@ -2,6 +2,7 @@ package org.soenke.sobott;
 
 import com.google.gson.Gson;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
+import io.quarkus.panache.common.Sort;
 import org.soenke.sobott.entity.FilterPojo;
 import org.soenke.sobott.entity.Project;
 import org.soenke.sobott.enums.SolutionTag;
@@ -38,7 +39,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                 return Response.status(Response.Status.OK).entity(Project.find(filterQuery).list()).build();
             }
         }
-        return Response.status(Response.Status.OK).entity(Project.listAll()).build();
+        return Response.status(Response.Status.OK).entity(Project.listAll(Sort.by("projectName"))).build();
     }
 
     public Response getSolutionTags(FilterPojo filters) {
