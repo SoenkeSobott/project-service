@@ -34,22 +34,25 @@ public class ProjectResourceTest {
 
     @Test
     public void testProjectEndpointWithNoFilters() {
-        ProjectTestUtil.createBaseProject("project-number-123", "Aasd");
         ProjectTestUtil.createBaseProject("project-number-918", "fdfd");
         ProjectTestUtil.createBaseProject("project-number-911", "xy");
+        ProjectTestUtil.createBaseProject("project-number-123", "Aasd");
+        ProjectTestUtil.createBaseProject("project-number-878", "70 XY");
 
         given()
                 .contentType("application/json")
                 .when().post("/projects")
                 .then()
                 .statusCode(200)
-                .body("size()", is(3))
-                .body("[0].projectNumber", is("project-number-123"))
-                .body("[0].projectName", is("Aasd"))
-                .body("[1].projectNumber", is("project-number-918"))
-                .body("[1].projectName", is("fdfd"))
-                .body("[2].projectNumber", is("project-number-911"))
-                .body("[2].projectName", is("xy"));
+                .body("size()", is(4))
+                .body("[0].projectNumber", is("project-number-878"))
+                .body("[0].projectName", is("70 XY"))
+                .body("[1].projectNumber", is("project-number-123"))
+                .body("[1].projectName", is("Aasd"))
+                .body("[2].projectNumber", is("project-number-918"))
+                .body("[2].projectName", is("fdfd"))
+                .body("[3].projectNumber", is("project-number-911"))
+                .body("[3].projectName", is("xy"));
     }
 
     @Test
@@ -68,8 +71,8 @@ public class ProjectResourceTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(2))
-                .body("[0].projectName", is("Mega Factory kong"))
-                .body("[1].projectName", is("Honk Kong test site"));
+                .body("[0].projectName", is("Honk Kong test site"))
+                .body("[1].projectName", is("Mega Factory kong"));
 
     }
 
@@ -340,18 +343,18 @@ public class ProjectResourceTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(12))
-                .body("[0].projectName", is("DUO NonResidential"))
-                .body("[1].projectName", is("DUO Residential"))
-                .body("[2].projectName", is("Not a DUO PS100"))
-                .body("[3].projectName", is("DUO Culvert"))
-                .body("[4].projectName", is("DUO CorrectColumnSizes"))
-                .body("[5].projectName", is("DUO-7"))
-                .body("[6].projectName", is("DUO CorrectWallHeightAndThickness"))
-                .body("[7].projectName", is("DUO-5"))
+                .body("[0].projectName", is("DUO CorrectColumnSizes"))
+                .body("[1].projectName", is("DUO CorrectWallHeightAndThickness"))
+                .body("[2].projectName", is("DUO Culvert"))
+                .body("[3].projectName", is("DUO NonResidential"))
+                .body("[4].projectName", is("DUO Residential"))
+                .body("[5].projectName", is("DUO-1"))
+                .body("[6].projectName", is("DUO-2"))
+                .body("[7].projectName", is("DUO-3"))
                 .body("[8].projectName", is("DUO-4"))
-                .body("[9].projectName", is("DUO-3"))
-                .body("[10].projectName", is("DUO-2"))
-                .body("[11].projectName", is("DUO-1"));
+                .body("[9].projectName", is("DUO-5"))
+                .body("[10].projectName", is("DUO-7"))
+                .body("[11].projectName", is("Not a DUO PS100"));
     }
 
     protected void createProjectsForAllFiltersTest() {

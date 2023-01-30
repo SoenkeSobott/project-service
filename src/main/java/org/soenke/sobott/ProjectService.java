@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,7 +37,9 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         if (filters != null) {
             String filterQuery = generateFilterQuery(filters);
             if (filterQuery != null) {
-                return Response.status(Response.Status.OK).entity(Project.find(filterQuery).list()).build();
+                List<Project> projects = Project.find(filterQuery).list();
+                projects.sort(Comparator.comparing(Project::getProjectName));
+                return Response.status(Response.Status.OK).entity(projects).build();
             }
         }
         return Response.status(Response.Status.OK).entity(Project.listAll(Sort.by("projectName"))).build();

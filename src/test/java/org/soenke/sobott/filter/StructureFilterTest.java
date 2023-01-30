@@ -35,9 +35,9 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("theSameAsMin"))
-                .body("[1].projectName", is("between"))
-                .body("[2].projectName", is("theSameAsMax"));
+                .body("[0].projectName", is("between"))
+                .body("[1].projectName", is("theSameAsMax"))
+                .body("[2].projectName", is("theSameAsMin"));
     }
 
     @Test
@@ -55,8 +55,8 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("theSameAsMin"))
-                .body("[1].projectName", is("higher"))
+                .body("[0].projectName", is("higher"))
+                .body("[1].projectName", is("theSameAsMin"))
                 .body("[2].projectName", is("wayHigher"));
     }
 
@@ -75,9 +75,9 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("wayLower"))
-                .body("[1].projectName", is("lower"))
-                .body("[2].projectName", is("theSameAsMax"));
+                .body("[0].projectName", is("lower"))
+                .body("[1].projectName", is("theSameAsMax"))
+                .body("[2].projectName", is("wayLower"));
     }
 
     @Test
@@ -97,9 +97,9 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("SameAsMin"))
-                .body("[1].projectName", is("Between"))
-                .body("[2].projectName", is("SameAsMax"));
+                .body("[0].projectName", is("Between"))
+                .body("[1].projectName", is("SameAsMax"))
+                .body("[2].projectName", is("SameAsMin"));
     }
 
     @Test
@@ -117,8 +117,8 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("SameAsMin"))
-                .body("[1].projectName", is("Between"))
+                .body("[0].projectName", is("Between"))
+                .body("[1].projectName", is("SameAsMin"))
                 .body("[2].projectName", is("WayBigger"));
     }
 
@@ -137,9 +137,9 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("WaySmaller"))
-                .body("[1].projectName", is("Between"))
-                .body("[2].projectName", is("SameAsMax"));
+                .body("[0].projectName", is("Between"))
+                .body("[1].projectName", is("SameAsMax"))
+                .body("[2].projectName", is("WaySmaller"));
     }
 
     @Test
@@ -270,9 +270,9 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("theSameAsMin"))
-                .body("[1].projectName", is("between"))
-                .body("[2].projectName", is("theSameAsMax"));
+                .body("[0].projectName", is("between"))
+                .body("[1].projectName", is("theSameAsMax"))
+                .body("[2].projectName", is("theSameAsMin"));
     }
 
     @Test
@@ -290,8 +290,8 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("theSameAsMin"))
-                .body("[1].projectName", is("higher"))
+                .body("[0].projectName", is("higher"))
+                .body("[1].projectName", is("theSameAsMin"))
                 .body("[2].projectName", is("wayHigher"));
     }
 
@@ -310,9 +310,9 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("wayLower"))
-                .body("[1].projectName", is("lower"))
-                .body("[2].projectName", is("theSameAsMax"));
+                .body("[0].projectName", is("lower"))
+                .body("[1].projectName", is("theSameAsMax"))
+                .body("[2].projectName", is("wayLower"));
     }
 
     @Test
@@ -332,9 +332,9 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("SameAsMin"))
-                .body("[1].projectName", is("Between"))
-                .body("[2].projectName", is("SameAsMax"));
+                .body("[0].projectName", is("Between"))
+                .body("[1].projectName", is("SameAsMax"))
+                .body("[2].projectName", is("SameAsMin"));
     }
 
     @Test
@@ -352,8 +352,8 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("SameAsMin"))
-                .body("[1].projectName", is("Between"))
+                .body("[0].projectName", is("Between"))
+                .body("[1].projectName", is("SameAsMin"))
                 .body("[2].projectName", is("WayBigger"));
     }
 
@@ -372,9 +372,9 @@ public class StructureFilterTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].projectName", is("WaySmaller"))
-                .body("[1].projectName", is("Between"))
-                .body("[2].projectName", is("SameAsMax"));
+                .body("[0].projectName", is("Between"))
+                .body("[1].projectName", is("SameAsMax"))
+                .body("[2].projectName", is("WaySmaller"));
     }
 
     @Test
