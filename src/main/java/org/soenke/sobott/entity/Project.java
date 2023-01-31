@@ -14,6 +14,7 @@ public class Project extends PanacheMongoEntity {
     private String drawingNumber;
     private String drawingLink;
     private List<BillOfQuantityEntry> billOfQuantity;
+    private String originBQLink;
     private List<String> pictures;
     private Double height;
     private Double thickness;
@@ -76,6 +77,14 @@ public class Project extends PanacheMongoEntity {
 
     public void setBillOfQuantity(List<BillOfQuantityEntry> billOfQuantity) {
         this.billOfQuantity = billOfQuantity;
+    }
+
+    public String getOriginBQLink() {
+        return originBQLink;
+    }
+
+    public void setOriginBQLink(String originBQLink) {
+        this.originBQLink = originBQLink;
     }
 
     public List<String> getPictures() {
