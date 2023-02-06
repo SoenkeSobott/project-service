@@ -2,6 +2,7 @@ package org.soenke.sobott;
 
 import com.mongodb.client.MongoClient;
 import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.soenke.sobott.entity.Article;
@@ -9,6 +10,7 @@ import org.soenke.sobott.entity.Article;
 import javax.inject.Inject;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
@@ -23,7 +25,7 @@ public class WarehouseResourceTest {
     }
 
     @Test
-    public void testProjectEndpointWithNoFilters() {
+    public void testGetAllArticlesEndpoint() {
         createArticle("12345", "Test description", 0);
         createArticle("56788", "House Project 00X", 23);
         createArticle("123BB", "MegaProject0815", 2012);
@@ -42,6 +44,37 @@ public class WarehouseResourceTest {
                 .body("[2].articleNumber", is("123BB"))
                 .body("[2].articleDescription", is("MegaProject0815"))
                 .body("[2].quantity", is(2012));
+    }
+
+    @Test
+    public void testUpdateArticleQuantityEndpoint() {
+        createArticle("12345", "Test description", 0);
+
+        // Check present
+        Article article = Article.find("articleNumber", "12345").firstResult();
+        Assertions.assertEquals("12345", article.getArticleNumber());
+        Assertions.assertEquals(0, article.getQuantity());
+
+        // Update quantity
+        given()
+                .when().post("/warehouse/articles?articleNumber=12345&newQuantity=230")
+                .then()
+                .statusCode(200)
+                .body(containsString("Updated Article quantity"));
+
+        // Check quantity updated
+        article = Article.find("articleNumber", "12345").firstResult();
+        Assertions.assertEquals("12345", article.getArticleNumber());
+        Assertions.assertEquals(230, article.getQuantity());
+    }
+
+    @Test
+    public void testUpdateArticleQuantityEndpointWithInvalidArticleNumber() {
+        given()
+                .when().post("/warehouse/articles?articleNumber=12345&newQuantity=230")
+                .then()
+                .statusCode(404)
+                .body(containsString("Article not found"));
     }
 
     protected void createArticle(String articleNumber, String articleDescription, Integer quantity) {

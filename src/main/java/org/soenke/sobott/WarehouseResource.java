@@ -1,9 +1,7 @@
 package org.soenke.sobott;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -18,5 +16,13 @@ public class WarehouseResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllArticles() {
         return warehouseService.getAllArticles();
+    }
+
+    @POST
+    @Path("/articles")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateArticleQuantity(@QueryParam(value = "articleNumber") String articleNumber,
+                                          @QueryParam(value = "newQuantity") Integer newQuantity) {
+        return warehouseService.updateArticleQuantity(articleNumber, newQuantity);
     }
 }
