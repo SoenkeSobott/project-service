@@ -9,6 +9,10 @@ public class ArticleAvailableQuantity {
         this.availableQuantity = availableQuantity;
     }
 
+    public ArticleAvailableQuantity() {
+        // empty
+    }
+
     public String getArticleNumber() {
         return articleNumber;
     }

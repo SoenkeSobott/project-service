@@ -33,15 +33,18 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
             return Response.status(Response.Status.BAD_REQUEST).entity("No article numbers passed").build();
         }
         List<String> articleNumbersList = List.of(articleNumbers.split(","));
-        List<ArticleAvailableQuantity> articlesAvailableQuantity = new ArrayList<>();
+        List<ArticleAvailableQuantity> articleAvailabilityQuantities = new ArrayList<>();
         articleNumbersList.forEach(articleNumber -> {
             Article article = Article.findByArticleNumber(articleNumber);
             if (article != null) {
-                articlesAvailableQuantity.add(new ArticleAvailableQuantity(articleNumber, article.getQuantity()));
+                ArticleAvailableQuantity articleAvailableQuantity = new ArticleAvailableQuantity();
+                articleAvailableQuantity.setArticleNumber(articleNumber);
+                articleAvailableQuantity.setAvailableQuantity(article.getQuantity());
+                articleAvailabilityQuantities.add(articleAvailableQuantity);
             }
         });
 
-        String json = new Gson().toJson(articlesAvailableQuantity);
+        String json = new Gson().toJson(articleAvailabilityQuantities);
         return Response.status(Response.Status.OK).entity(json).build();
     }
 }
