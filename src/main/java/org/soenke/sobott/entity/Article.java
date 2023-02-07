@@ -8,7 +8,11 @@ public class Article extends PanacheMongoEntity {
     private String articleNumber;
     private String articleDescription;
     private Integer quantity;
-    
+
+    public static Article findByArticleNumber(String articleNumber) {
+        return find("articleNumber", articleNumber).firstResult();
+    }
+
     public String getArticleNumber() {
         return articleNumber;
     }

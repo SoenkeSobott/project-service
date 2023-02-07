@@ -69,6 +69,57 @@ public class WarehouseResourceTest {
     }
 
     @Test
+    public void testGetArticlesAvailability() {
+        createArticle("12345", "Test description", 0);
+        createArticle("34234", "Test description", 23);
+        createArticle("64445", "Test description", 900);
+        createArticle("23423", "Test description", 12);
+
+        // Update quantity
+        given()
+                .when().get("/warehouse/articles/availability?articleNumbers=12345,64445,34234")
+                .then()
+                .statusCode(200)
+                .body("size()", is(3))
+                .body("[0].articleNumber", is("12345"))
+                .body("[0].availableQuantity", is(0))
+                .body("[1].articleNumber", is("64445"))
+                .body("[1].availableQuantity", is(900))
+                .body("[2].articleNumber", is("34234"))
+                .body("[2].availableQuantity", is(23));
+    }
+
+    @Test
+    public void testGetArticlesAvailabilityWithInvalidArticleNumbers() {
+        createArticle("12345", "Test description", 22);
+        createArticle("64445", "Test description", 900);
+
+        // Update quantity
+        given()
+                .when().get("/warehouse/articles/availability?articleNumbers=99393,12345,23423")
+                .then()
+                .statusCode(200)
+                .body("size()", is(1))
+                .body("[0].articleNumber", is("12345"))
+                .body("[0].availableQuantity", is(22));
+    }
+
+    @Test
+    public void testGetArticlesAvailabilityWithEmptyQuery() {
+        createArticle("12345", "Test description", 0);
+        createArticle("34234", "Test description", 23);
+        createArticle("64445", "Test description", 900);
+        createArticle("23423", "Test description", 12);
+
+        // Update quantity
+        given()
+                .when().get("/warehouse/articles/availability")
+                .then()
+                .statusCode(400)
+                .body(containsString("No article numbers passed"));
+    }
+
+    @Test
     public void testUpdateArticleQuantityEndpointWithInvalidArticleNumber() {
         given()
                 .when().post("/warehouse/articles?articleNumber=12345&newQuantity=230")

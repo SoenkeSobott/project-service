@@ -25,4 +25,11 @@ public class WarehouseResource {
                                           @QueryParam(value = "newQuantity") Integer newQuantity) {
         return warehouseService.updateArticleQuantity(articleNumber, newQuantity);
     }
+
+    @GET
+    @Path("/articles/availability")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getArticlesAvailability(@QueryParam(value = "articleNumbers") String articleNumbers) {
+        return warehouseService.getArticlesAvailability(articleNumbers);
+    }
 }
