@@ -1,6 +1,5 @@
 package org.soenke.sobott;
 
-import com.google.gson.Gson;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import org.soenke.sobott.entity.Article;
 import org.soenke.sobott.entity.ArticleAvailableQuantity;
@@ -51,7 +50,6 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
             }
         });
 
-        String json = new Gson().toJson(articleAvailabilityQuantities);
-        return Response.status(Response.Status.OK).entity(json).build();
+        return Response.status(Response.Status.OK).entity(articleAvailabilityQuantities).build();
     }
 }
