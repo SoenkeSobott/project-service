@@ -1,12 +1,19 @@
 package org.soenke.sobott.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ArticleAvailableQuantity {
     @JsonProperty
     private String articleNumber;
     @JsonProperty
     private Integer availableQuantity;
+
+    public ArticleAvailableQuantity(String articleNumber, Integer availableQuantity) {
+        this.articleNumber = articleNumber;
+        this.availableQuantity = availableQuantity;
+    }
 
     public String getArticleNumber() {
         return articleNumber;

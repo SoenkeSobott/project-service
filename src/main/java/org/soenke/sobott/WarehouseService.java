@@ -39,10 +39,7 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
         articleNumbersList.forEach(articleNumber -> {
             Article article = Article.findByArticleNumber(articleNumber);
             if (article != null) {
-                ArticleAvailableQuantity articleAvailableQuantity = new ArticleAvailableQuantity();
-                articleAvailableQuantity.setArticleNumber(articleNumber);
-                articleAvailableQuantity.setAvailableQuantity(article.getQuantity());
-                articleAvailabilityQuantities.add(articleAvailableQuantity);
+                articleAvailabilityQuantities.add(new ArticleAvailableQuantity(articleNumber, article.getQuantity()));
             }
         });
 
