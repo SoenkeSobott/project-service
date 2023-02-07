@@ -1,5 +1,8 @@
 package org.soenke.sobott.entity;
 
+import javax.enterprise.context.RequestScoped;
+
+@RequestScoped
 public class ArticleAvailableQuantity {
     private String articleNumber;
     private Integer availableQuantity;
