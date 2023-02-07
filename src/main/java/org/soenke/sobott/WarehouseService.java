@@ -9,9 +9,13 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class WarehouseService implements PanacheMongoRepository<Article> {
+
+    Logger LOGGER = Logger.getLogger(WarehouseService.class.getName());
 
     public Response getAllArticles() {
         return Response.status(Response.Status.OK).entity(Article.listAll()).build();
@@ -36,7 +40,10 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
         List<ArticleAvailableQuantity> articleAvailabilityQuantities = new ArrayList<>();
         articleNumbersList.forEach(articleNumber -> {
             Article article = Article.findByArticleNumber(articleNumber);
+            LOGGER.log(Level.SEVERE, "Article number origin: " + articleNumber);
             if (article != null) {
+                LOGGER.log(Level.SEVERE, "Article number: " + article.getArticleNumber());
+                LOGGER.log(Level.SEVERE, "Article quantity: " + article.getQuantity());
                 ArticleAvailableQuantity articleAvailableQuantity = new ArticleAvailableQuantity();
                 articleAvailableQuantity.setArticleNumber(articleNumber);
                 articleAvailableQuantity.setAvailableQuantity(article.getQuantity());
