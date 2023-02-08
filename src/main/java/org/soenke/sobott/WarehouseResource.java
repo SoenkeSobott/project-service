@@ -22,8 +22,8 @@ public class WarehouseResource {
     @Path("/articles")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateArticleQuantity(@QueryParam(value = "articleNumber") String articleNumber,
-                                          @QueryParam(value = "newQuantity") Integer newQuantity) {
-        return warehouseService.updateArticleQuantity(articleNumber, newQuantity);
+                                          @QueryParam(value = "newAvailability") Integer newAvailability) {
+        return warehouseService.updateArticleAvailability(articleNumber, newAvailability);
     }
 
     @GET

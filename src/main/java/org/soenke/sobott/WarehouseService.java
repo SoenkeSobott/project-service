@@ -19,10 +19,13 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
         return Response.status(Response.Status.OK).entity(Article.listAll()).build();
     }
 
-    public Response updateArticleQuantity(String articleNumber, Integer newQuantity) {
+    public Response updateArticleAvailability(String articleNumber, Integer newAvailability) {
+        if (newAvailability == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Availability empty").build();
+        }
         Article articleInDB = Article.findByArticleNumber(articleNumber);
         if (articleInDB != null) {
-            articleInDB.setAvailability(newQuantity);
+            articleInDB.setAvailability(newAvailability);
             articleInDB.persistOrUpdate();
             return Response.status(Response.Status.OK).entity("Updated Article availability").build();
         }

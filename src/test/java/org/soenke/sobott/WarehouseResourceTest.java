@@ -60,7 +60,7 @@ public class WarehouseResourceTest {
 
         // Update quantity
         given()
-                .when().post("/warehouse/articles?articleNumber=12345&newQuantity=230")
+                .when().post("/warehouse/articles?articleNumber=12345&newAvailability=230")
                 .then()
                 .statusCode(200)
                 .body(containsString("Updated Article availability"));
@@ -69,6 +69,23 @@ public class WarehouseResourceTest {
         article = Article.find("articleNumber", "12345").firstResult();
         Assertions.assertEquals("12345", article.getArticleNumber());
         Assertions.assertEquals(230, article.getAvailability());
+    }
+
+    @Test
+    public void testUpdateArticleQuantityEndpointWithoutNewAvailabilityQueryParam() {
+        createArticle("12345", "Test description", 100f, 0);
+
+        // Check present
+        Article article = Article.find("articleNumber", "12345").firstResult();
+        Assertions.assertEquals("12345", article.getArticleNumber());
+        Assertions.assertEquals(0, article.getAvailability());
+
+        // Update quantity
+        given()
+                .when().post("/warehouse/articles?articleNumber=12345")
+                .then()
+                .statusCode(400)
+                .body(containsString("Availability empty"));
     }
 
     @Test
@@ -125,7 +142,7 @@ public class WarehouseResourceTest {
     @Test
     public void testUpdateArticleQuantityEndpointWithInvalidArticleNumber() {
         given()
-                .when().post("/warehouse/articles?articleNumber=12345&newQuantity=230")
+                .when().post("/warehouse/articles?articleNumber=12345&newAvailability=230")
                 .then()
                 .statusCode(404)
                 .body(containsString("Article not found"));
