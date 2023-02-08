@@ -22,9 +22,9 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
     public Response updateArticleQuantity(String articleNumber, Integer newQuantity) {
         Article articleInDB = Article.findByArticleNumber(articleNumber);
         if (articleInDB != null) {
-            articleInDB.setQuantity(newQuantity);
+            articleInDB.setAvailability(newQuantity);
             articleInDB.persistOrUpdate();
-            return Response.status(Response.Status.OK).entity("Updated Article quantity").build();
+            return Response.status(Response.Status.OK).entity("Updated Article availability").build();
         }
 
         return Response.status(Response.Status.NOT_FOUND).entity("Article not found").build();
@@ -39,7 +39,8 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
         articleNumbersList.forEach(articleNumber -> {
             Article article = Article.findByArticleNumber(articleNumber);
             if (article != null) {
-                articleAvailabilityQuantities.add(new ArticleAvailableQuantity(articleNumber, article.getQuantity()));
+                articleAvailabilityQuantities.add(new ArticleAvailableQuantity(articleNumber, article.getListPrice(),
+                        article.getAvailability()));
             }
         });
 

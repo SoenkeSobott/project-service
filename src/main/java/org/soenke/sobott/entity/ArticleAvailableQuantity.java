@@ -8,11 +8,14 @@ public class ArticleAvailableQuantity {
     @JsonProperty
     private String articleNumber;
     @JsonProperty
-    private Integer availableQuantity;
+    private Float listPrice;
+    @JsonProperty
+    private Integer availability;
 
-    public ArticleAvailableQuantity(String articleNumber, Integer availableQuantity) {
+    public ArticleAvailableQuantity(String articleNumber, Float listPrice, Integer availability) {
         this.articleNumber = articleNumber;
-        this.availableQuantity = availableQuantity;
+        this.listPrice = listPrice;
+        this.availability = availability;
     }
 
     public String getArticleNumber() {
@@ -23,12 +26,20 @@ public class ArticleAvailableQuantity {
         this.articleNumber = articleNumber;
     }
 
-    public Integer getAvailableQuantity() {
-        return availableQuantity;
+    public Float getListPrice() {
+        return listPrice;
     }
 
-    public void setAvailableQuantity(Integer availableQuantity) {
-        this.availableQuantity = availableQuantity;
+    public void setListPrice(Float listPrice) {
+        this.listPrice = listPrice;
+    }
+
+    public Integer getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Integer availability) {
+        this.availability = availability;
     }
 }
 

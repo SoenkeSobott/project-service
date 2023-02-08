@@ -7,7 +7,8 @@ import io.quarkus.mongodb.panache.common.MongoEntity;
 public class Article extends PanacheMongoEntity {
     private String articleNumber;
     private String articleDescription;
-    private Integer quantity;
+    private Float listPrice;
+    private Integer availability;
 
     public static Article findByArticleNumber(String articleNumber) {
         return find("articleNumber", articleNumber).firstResult();
@@ -29,11 +30,20 @@ public class Article extends PanacheMongoEntity {
         this.articleDescription = articleDescription;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Float getListPrice() {
+        return listPrice;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setListPrice(Float listPrice) {
+        this.listPrice = listPrice;
     }
+
+    public Integer getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Integer availability) {
+        this.availability = availability;
+    }
+
 }
