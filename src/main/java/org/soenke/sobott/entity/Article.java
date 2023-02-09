@@ -7,11 +7,17 @@ import io.quarkus.mongodb.panache.common.MongoEntity;
 public class Article extends PanacheMongoEntity {
     private String articleNumber;
     private String articleDescription;
+    private Float weight;
     private Float listPrice;
     private Integer availability;
 
     public static Article findByArticleNumber(String articleNumber) {
         return find("articleNumber", articleNumber).firstResult();
+    }
+
+    public static Article findByContainingArticleNumber(String articleNumber) {
+        String query = "{\"articleNumber\" : {$regex : \"" + articleNumber + "\"}}";
+        return find(query).firstResult();
     }
 
     public String getArticleNumber() {
@@ -28,6 +34,14 @@ public class Article extends PanacheMongoEntity {
 
     public void setArticleDescription(String articleDescription) {
         this.articleDescription = articleDescription;
+    }
+
+    public Float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Float weight) {
+        this.weight = weight;
     }
 
     public Float getListPrice() {
