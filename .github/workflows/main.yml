@@ -6,7 +6,7 @@ on:
       - 'master'
 
 jobs:  
-  TestAndDeploy:
+  Test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,7 +19,10 @@ jobs:
           cache: maven
       - name: Build with Maven and test
         run: mvn --batch-mode --update-snapshots verify
-      
+  
+  Deploy:
+    runs-on: ubuntu-latest
+    steps: 
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
