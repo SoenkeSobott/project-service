@@ -34,6 +34,10 @@ public class Project extends PanacheMongoEntity {
     private String SegmentLevelThree;
     private List<String> solutionTags;
 
+    public static Project findByProjectNumber(String projectNumber) {
+        return find("projectNumber", projectNumber).firstResult();
+    }
+
     // PS100
     private Double shoringHeight;
     private Double slabThickness;

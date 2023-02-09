@@ -21,6 +21,13 @@ public class ProjectResource {
         return projectService.getProjects(filters);
     }
 
+    @GET
+    @Path("{projectNumber}/price")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProjectPrice(@PathParam(value = "projectNumber") String projectNumber) {
+        return projectService.getProjectPrice(projectNumber);
+    }
+
     @POST
     @Path("/solution-tags")
     @Consumes(MediaType.APPLICATION_JSON)
