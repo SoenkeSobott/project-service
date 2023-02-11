@@ -16,7 +16,7 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
     Logger LOGGER = Logger.getLogger(WarehouseService.class.getName());
 
     public Response getAllArticles() {
-        return Response.status(Response.Status.OK).entity(Article.getFirst100Articles()).build();
+        return Response.status(Response.Status.OK).entity(Article.getFirstArticles(500)).build();
     }
 
     public Response updateArticleAvailability(String articleNumber, Integer newAvailability) {

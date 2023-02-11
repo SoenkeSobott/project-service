@@ -18,8 +18,8 @@ public class Article extends PanacheMongoEntity {
         return find("articleNumber", articleNumber).firstResult();
     }
 
-    public static List<Article> getFirst100Articles() {
-        return findAll().page(Page.ofSize(1000)).list();
+    public static List<Article> getFirstArticles(Integer amount) {
+        return findAll().page(Page.ofSize(amount)).list();
     }
 
     public static Article findByContainingArticleNumber(String articleNumber) {
