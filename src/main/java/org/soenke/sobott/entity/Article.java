@@ -2,6 +2,9 @@ package org.soenke.sobott.entity;
 
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import io.quarkus.mongodb.panache.common.MongoEntity;
+import io.quarkus.panache.common.Page;
+
+import java.util.List;
 
 @MongoEntity(collection = "articles")
 public class Article extends PanacheMongoEntity {
@@ -13,6 +16,10 @@ public class Article extends PanacheMongoEntity {
 
     public static Article findByArticleNumber(String articleNumber) {
         return find("articleNumber", articleNumber).firstResult();
+    }
+
+    public static List<Article> getFirst100Articles() {
+        return findAll().page(Page.ofSize(100)).list();
     }
 
     public static Article findByContainingArticleNumber(String articleNumber) {
