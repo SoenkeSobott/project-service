@@ -19,7 +19,7 @@ public class Article extends PanacheMongoEntity {
     }
 
     public static List<Article> getFirst100Articles() {
-        return findAll().page(Page.ofSize(100)).list();
+        return findAll().page(Page.ofSize(1000)).list();
     }
 
     public static Article findByContainingArticleNumber(String articleNumber) {
