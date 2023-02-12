@@ -19,9 +19,9 @@ public class WarehouseResourceTest {
 
     @Test
     public void testGetAllArticlesEndpoint() {
-        createArticle("12345", "Test description", 200.34f, 89000f, 0);
-        createArticle("56788", "House Project 00X", 20.34f, 1080f, 23);
-        createArticle("123BB", "MegaProject0815", 24f, 1022f, 2012);
+        createArticle("12345", "Test description", 200.34f, 89000f, 2333);
+        createArticle("123BB", "MegaProject0815", 24f, 1022f, 0);
+        createArticle("56788", "House Project 00X", 20.34f, 1080f, 273);
 
         given()
                 .when().get("/warehouse/articles")
@@ -32,24 +32,24 @@ public class WarehouseResourceTest {
                 .body("[0].articleDescription", is("Test description"))
                 .body("[0].weight", is(200.34f))
                 .body("[0].listPrice", is(89000f))
-                .body("[0].availability", is(0))
+                .body("[0].availability", is(2333))
                 .body("[1].articleNumber", is("56788"))
                 .body("[1].articleDescription", is("House Project 00X"))
                 .body("[1].weight", is(20.34f))
                 .body("[1].listPrice", is(1080f))
-                .body("[1].availability", is(23))
+                .body("[1].availability", is(273))
                 .body("[2].articleNumber", is("123BB"))
                 .body("[2].articleDescription", is("MegaProject0815"))
                 .body("[2].weight", is(24f))
                 .body("[2].listPrice", is(1022f))
-                .body("[2].availability", is(2012));
+                .body("[2].availability", is(0));
     }
 
     @Test
     public void testSearchArticlesEndpointByArticleNumber() {
         createArticle("12345", "Test description", 200.34f, 89000f, 0);
         createArticle("56788", "House Project 00X", 20.34f, 1080f, 23);
-        createArticle("12344", "MegaProject0815", 24f, 1022f, 2012);
+        createArticle("12344", "MegaProject0815", 24f, 1022f, 202);
         createArticle("34534", "My Mega Building 100x.11", 24f, 1022f, 2012);
         createArticle("00900", "MegaProject0815", 24f, 1022f, 2012);
         createArticle("10001", "MegaProject0815", 24f, 1022f, 2012);
@@ -59,28 +59,28 @@ public class WarehouseResourceTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].articleNumber", is("12345"))
+                .body("[0].articleNumber", is("34534"))
                 .body("[1].articleNumber", is("12344"))
-                .body("[2].articleNumber", is("34534"));
+                .body("[2].articleNumber", is("12345"));
     }
 
     @Test
     public void testSearchArticlesEndpointByDescription() {
         createArticle("12345", "Test description", 200.34f, 89000f, 0);
         createArticle("56788", "House Project 00X", 20.34f, 1080f, 23);
-        createArticle("12344", "MegaProject0815", 24f, 1022f, 2012);
+        createArticle("12344", "MegaProject0815", 24f, 1022f, 122);
         createArticle("34534", "My Mega Building 100x.11", 24f, 1022f, 2012);
-        createArticle("00900", "MegaProject0815", 24f, 1022f, 2012);
-        createArticle("10001", "Jec De wid", 24f, 1022f, 2012);
+        createArticle("00900", "MegaProject0815", 24f, 1022f, 323);
+        createArticle("10001", "Jec De wid", 24f, 1022f, 11);
 
         given()
                 .when().get("/warehouse/articles?searchTerm=jec")
                 .then()
                 .statusCode(200)
                 .body("size()", is(3))
-                .body("[0].articleNumber", is("56788"))
+                .body("[0].articleNumber", is("00900"))
                 .body("[1].articleNumber", is("12344"))
-                .body("[2].articleNumber", is("00900"));
+                .body("[2].articleNumber", is("56788"));
     }
 
 //    @Test

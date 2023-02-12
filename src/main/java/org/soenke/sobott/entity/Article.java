@@ -3,6 +3,7 @@ package org.soenke.sobott.entity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import io.quarkus.mongodb.panache.common.MongoEntity;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 
 import java.util.List;
 
@@ -19,11 +20,11 @@ public class Article extends PanacheMongoEntity {
     }
 
     public static List<Article> getFirstArticles(Integer amount) {
-        return findAll().page(Page.ofSize(amount)).list();
+        return findAll(Sort.by("availability").descending()).page(Page.ofSize(amount)).list();
     }
 
     public static List<Article> searchArticles(String searchTerm) {
-        return find("articleDescription like ?1 or articleNumber like ?1", searchTerm).page(Page.ofSize(1000)).list();
+        return find("articleDescription like ?1 or articleNumber like ?1", Sort.by("availability").descending(), searchTerm).page(Page.ofSize(1000)).list();
     }
 
     public String getArticleNumber() {
