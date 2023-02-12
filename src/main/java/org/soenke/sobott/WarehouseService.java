@@ -1,6 +1,5 @@
 package org.soenke.sobott;
 
-import com.google.gson.Gson;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import org.soenke.sobott.entity.Article;
 import org.soenke.sobott.entity.ArticleAvailableQuantity;
@@ -24,10 +23,7 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
         } else {
             articles = Article.searchArticles(searchTerm);
         }
-        String json = "{\"articleCount\": " + articles.size() + "," +
-                "\"articles\":" + new Gson().toJson(articles) + "}";
-
-        return Response.status(Response.Status.OK).entity(json).build();
+        return Response.status(Response.Status.OK).entity(articles).build();
     }
 
     public Response updateArticleAvailability(String articleNumber, Integer newAvailability) {
