@@ -23,27 +23,7 @@ public class Article extends PanacheMongoEntity {
     }
 
     public static List<Article> searchArticles(String searchTerm) {
-        String query = "{\n" +
-                "  compound: {\n" +
-                "        should: [\n" +
-                "            {\n" +
-                "                autocomplete: {\n" +
-                "                  query: \"" + searchTerm + "\",\n" +
-                "                  path: \"articleNumber\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            {\n" +
-                "                autocomplete: {\n" +
-                "                  query: \"" + searchTerm + "\",\n" +
-                "                  path: \"articleDescription\"\n" +
-                "                }\n" +
-                "            }\n" +
-                "        ],\n" +
-                "    }\n" +
-                "}";
-
-        return Article.find(query)
-                .page(Page.ofSize(1000)).list(); // Limit to top 1000 atm
+        return find("articleDescription like ?1 or articleNumber like ?1", searchTerm).page(Page.ofSize(1000)).list();
     }
 
     public static Article findByContainingArticleNumber(String articleNumber) {

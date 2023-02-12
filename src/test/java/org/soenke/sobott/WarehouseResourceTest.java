@@ -51,6 +51,47 @@ public class WarehouseResourceTest {
                 .body("[2].availability", is(2012));
     }
 
+    @Test
+    public void testSearchArticlesEndpointByArticleNumber() {
+        createArticle("12345", "Test description", 200.34f, 89000f, 0);
+        createArticle("56788", "House Project 00X", 20.34f, 1080f, 23);
+        createArticle("12344", "MegaProject0815", 24f, 1022f, 2012);
+        createArticle("34534", "My Mega Building 100x.11", 24f, 1022f, 2012);
+        createArticle("00900", "MegaProject0815", 24f, 1022f, 2012);
+        createArticle("10001", "MegaProject0815", 24f, 1022f, 2012);
+
+        given()
+                .when().get("/warehouse/articles/search?searchTerm=34")
+                .then()
+                .statusCode(200)
+                .body("articles.size()", is(3))
+                .body("articleCount", is(3))
+                .body("articles[0].articleNumber", is("12345"))
+                .body("articles[1].articleNumber", is("12344"))
+                .body("articles[2].articleNumber", is("34534"));
+    }
+
+    @Test
+    public void testSearchArticlesEndpointByDescription() {
+        createArticle("12345", "Test description", 200.34f, 89000f, 0);
+        createArticle("56788", "House Project 00X", 20.34f, 1080f, 23);
+        createArticle("12344", "MegaProject0815", 24f, 1022f, 2012);
+        createArticle("34534", "My Mega Building 100x.11", 24f, 1022f, 2012);
+        createArticle("00900", "MegaProject0815", 24f, 1022f, 2012);
+        createArticle("10001", "Jec De wid", 24f, 1022f, 2012);
+
+        given()
+                .when().get("/warehouse/articles/search?searchTerm=jec")
+                .then()
+                .statusCode(200)
+                .body("articles.size()", is(3))
+                .body("articleCount", is(3))
+                .body("articles[0].articleNumber", is("56788"))
+                .body("articles[1].articleNumber", is("12344"))
+                .body("articles[2].articleNumber", is("00900"));
+
+    }
+
 //    @Test
 //    public void testUpdateArticleQuantityEndpoint() {
 //        createArticle("12345", "Test description", 200.34f, 100f, 0);
