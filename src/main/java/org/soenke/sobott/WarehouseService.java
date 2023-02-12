@@ -16,8 +16,15 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
 
     Logger LOGGER = Logger.getLogger(WarehouseService.class.getName());
 
-    public Response getAllArticles() {
-        return Response.status(Response.Status.OK).entity(Article.getFirstArticles(500)).build();
+    public Response searchArticles(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return Response.status(Response.Status.OK).entity(Article.getFirstArticles(1000)).build();
+        }
+        List<Article> articles = Article.searchArticles(searchTerm);
+        String json = "{\"articleCount\": " + articles.size() + "," +
+                "\"articles\":" + new Gson().toJson(articles) + "}";
+
+        return Response.status(Response.Status.OK).entity(json).build();
     }
 
     public Response updateArticleAvailability(String articleNumber, Integer newAvailability) {
@@ -49,13 +56,5 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
         });
 
         return Response.status(Response.Status.OK).entity(articleAvailabilityQuantities).build();
-    }
-
-    public Response searchArticles(String searchTerm) {
-        List<Article> articles = Article.searchArticles(searchTerm);
-        String json = "{\"articleCount\": " + articles.size() + "," +
-                "\"articles\":" + new Gson().toJson(articles) + "}";
-
-        return Response.status(Response.Status.OK).entity(json).build();
     }
 }

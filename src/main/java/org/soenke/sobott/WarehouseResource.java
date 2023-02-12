@@ -17,13 +17,6 @@ public class WarehouseResource {
     @GET
     @Path("/articles")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllArticles() {
-        return warehouseService.getAllArticles();
-    }
-
-    @GET
-    @Path("/articles/search")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response searchArticles(@QueryParam(value = "searchTerm") String searchTerm) {
         return warehouseService.searchArticles(searchTerm);
     }

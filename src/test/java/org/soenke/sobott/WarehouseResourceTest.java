@@ -1,12 +1,9 @@
 package org.soenke.sobott;
 
-import com.mongodb.client.MongoClient;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.soenke.sobott.entity.Article;
-
-import javax.inject.Inject;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -14,9 +11,6 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 public class WarehouseResourceTest {
-
-    @Inject
-    MongoClient mongoClient;
 
     @BeforeEach
     public void cleanDB() {
@@ -61,7 +55,7 @@ public class WarehouseResourceTest {
         createArticle("10001", "MegaProject0815", 24f, 1022f, 2012);
 
         given()
-                .when().get("/warehouse/articles/search?searchTerm=34")
+                .when().get("/warehouse/articles?searchTerm=34")
                 .then()
                 .statusCode(200)
                 .body("articles.size()", is(3))
@@ -81,7 +75,7 @@ public class WarehouseResourceTest {
         createArticle("10001", "Jec De wid", 24f, 1022f, 2012);
 
         given()
-                .when().get("/warehouse/articles/search?searchTerm=jec")
+                .when().get("/warehouse/articles?searchTerm=jec")
                 .then()
                 .statusCode(200)
                 .body("articles.size()", is(3))
@@ -89,7 +83,6 @@ public class WarehouseResourceTest {
                 .body("articles[0].articleNumber", is("56788"))
                 .body("articles[1].articleNumber", is("12344"))
                 .body("articles[2].articleNumber", is("00900"));
-
     }
 
 //    @Test

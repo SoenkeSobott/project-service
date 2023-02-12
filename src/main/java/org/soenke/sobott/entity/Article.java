@@ -26,11 +26,6 @@ public class Article extends PanacheMongoEntity {
         return find("articleDescription like ?1 or articleNumber like ?1", searchTerm).page(Page.ofSize(1000)).list();
     }
 
-    public static Article findByContainingArticleNumber(String articleNumber) {
-        String query = "{\"articleNumber\" : {$regex : \"" + articleNumber + "\"}}";
-        return find(query).firstResult();
-    }
-
     public String getArticleNumber() {
         return articleNumber;
     }
