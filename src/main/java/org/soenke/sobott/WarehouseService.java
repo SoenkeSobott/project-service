@@ -7,7 +7,6 @@ import org.soenke.sobott.entity.ArticleAvailableQuantity;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -17,7 +16,7 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
     Logger LOGGER = Logger.getLogger(WarehouseService.class.getName());
 
     public Response searchArticles(String searchTerm) {
-        List<Article> articles = Collections.emptyList();
+        List<Article> articles;
         if (searchTerm == null || searchTerm.isEmpty()) {
             articles = Article.getFirstArticles(1000);
         } else {

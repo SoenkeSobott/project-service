@@ -77,10 +77,11 @@ public class WarehouseResourceTest {
                 .when().get("/warehouse/articles?searchTerm=jec")
                 .then()
                 .statusCode(200)
-                .body("size()", is(3))
+                .body("size()", is(4))
                 .body("[0].articleNumber", is("00900"))
                 .body("[1].articleNumber", is("12344"))
-                .body("[2].articleNumber", is("56788"));
+                .body("[2].articleNumber", is("56788"))
+                .body("[3].articleNumber", is("10001"));
     }
 
 //    @Test

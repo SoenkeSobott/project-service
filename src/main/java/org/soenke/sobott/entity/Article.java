@@ -24,7 +24,12 @@ public class Article extends PanacheMongoEntity {
     }
 
     public static List<Article> searchArticles(String searchTerm) {
-        return find("articleDescription like ?1 or articleNumber like ?1", Sort.by("availability").descending(), searchTerm).page(Page.ofSize(1000)).list();
+        String filterQuery = "{$or: [";
+        filterQuery += "{articleDescription:{'$regex' : '" + searchTerm + "', '$options' : 'i'}},";
+        filterQuery += "{articleNumber:{'$regex' : '" + searchTerm + "', '$options' : 'i'}},";
+        filterQuery += "]}";
+
+        return find(filterQuery, Sort.by("availability").descending()).page(Page.ofSize(1000)).list();
     }
 
     public String getArticleNumber() {
