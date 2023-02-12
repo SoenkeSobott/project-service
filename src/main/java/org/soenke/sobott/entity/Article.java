@@ -22,6 +22,30 @@ public class Article extends PanacheMongoEntity {
         return findAll().page(Page.ofSize(amount)).list();
     }
 
+    public static List<Article> searchArticles(String searchTerm) {
+        String query = "{\n" +
+                "  compound: {\n" +
+                "        should: [\n" +
+                "            {\n" +
+                "                autocomplete: {\n" +
+                "                  query: \"" + searchTerm + "\",\n" +
+                "                  path: \"articleNumber\"\n" +
+                "                }\n" +
+                "            },\n" +
+                "            {\n" +
+                "                autocomplete: {\n" +
+                "                  query: \"" + searchTerm + "\",\n" +
+                "                  path: \"articleDescription\"\n" +
+                "                }\n" +
+                "            }\n" +
+                "        ],\n" +
+                "    }\n" +
+                "}";
+
+        return Article.find(query)
+                .page(Page.ofSize(1000)).list(); // Limit to top 1000 atm
+    }
+
     public static Article findByContainingArticleNumber(String articleNumber) {
         String query = "{\"articleNumber\" : {$regex : \"" + articleNumber + "\"}}";
         return find(query).firstResult();
