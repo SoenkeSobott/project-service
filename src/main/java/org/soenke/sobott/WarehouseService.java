@@ -8,6 +8,7 @@ import org.soenke.sobott.entity.ArticleAvailableQuantity;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -17,10 +18,12 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
     Logger LOGGER = Logger.getLogger(WarehouseService.class.getName());
 
     public Response searchArticles(String searchTerm) {
+        List<Article> articles = Collections.emptyList();
         if (searchTerm == null || searchTerm.isEmpty()) {
-            return Response.status(Response.Status.OK).entity(Article.getFirstArticles(1000)).build();
+            articles = Article.getFirstArticles(1000);
+        } else {
+            articles = Article.searchArticles(searchTerm);
         }
-        List<Article> articles = Article.searchArticles(searchTerm);
         String json = "{\"articleCount\": " + articles.size() + "," +
                 "\"articles\":" + new Gson().toJson(articles) + "}";
 
