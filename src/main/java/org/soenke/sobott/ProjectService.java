@@ -49,25 +49,6 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         return Response.status(Response.Status.OK).entity(Project.listAll(Sort.by("projectName"))).build();
     }
 
-    public Response getProjectPrice(String projectNumber) {
-        Project project = Project.findByProjectNumber(projectNumber);
-        if (project == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Project with Project number: '" + projectNumber + "' not found.").build();
-        }
-
-        // Get unit
-        String product = project.getProduct();
-        if (product == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Couldn't find Product unit(m2/m3) for Project number: " + projectNumber).build();
-        }
-        String unit = getUnitFromProduct(product);
-
-        String responseJson = "{\"price\": " + project.getProjectPrice() + "," +
-                "\"currency\": \"HKD\"," +
-                "\"unit\": \"" + unit + "\"}";
-        return Response.status(Response.Status.OK).entity(responseJson).build();
-    }
-
     public Response getSolutionTags(FilterPojo filters) {
         List<String> solutionTags = new ArrayList<>();
         if (filters != null) {
