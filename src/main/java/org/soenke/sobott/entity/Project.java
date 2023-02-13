@@ -33,15 +33,16 @@ public class Project extends PanacheMongoEntity {
     private String SegmentLevelTwo;
     private String SegmentLevelThree;
     private List<String> solutionTags;
-
-    public static Project findByProjectNumber(String projectNumber) {
-        return find("projectNumber", projectNumber).firstResult();
-    }
+    private Double projectPrice;
 
     // PS100
     private Double shoringHeight;
     private Double slabThickness;
     private Double m3OfShoring;
+
+    public static Project findByProjectNumber(String projectNumber) {
+        return find("projectNumber", projectNumber).firstResult();
+    }
 
     public String getProjectNumber() {
         return projectNumber;
@@ -258,6 +259,14 @@ public class Project extends PanacheMongoEntity {
 
     public void setM3OfShoring(Double m3OfShoring) {
         this.m3OfShoring = m3OfShoring;
+    }
+
+    public Double getProjectPrice() {
+        return projectPrice;
+    }
+
+    public void setProjectPrice(Double projectPrice) {
+        this.projectPrice = projectPrice;
     }
 
 }

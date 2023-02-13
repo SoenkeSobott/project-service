@@ -3,8 +3,6 @@ package org.soenke.sobott;
 import com.google.gson.Gson;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import io.quarkus.panache.common.Sort;
-import org.soenke.sobott.entity.Article;
-import org.soenke.sobott.entity.BillOfQuantityEntry;
 import org.soenke.sobott.entity.FilterPojo;
 import org.soenke.sobott.entity.Project;
 import org.soenke.sobott.enums.SolutionTag;
@@ -57,30 +55,6 @@ public class ProjectService implements PanacheMongoRepository<Project> {
             return Response.status(Response.Status.NOT_FOUND).entity("Project with Project number: '" + projectNumber + "' not found.").build();
         }
 
-        List<BillOfQuantityEntry> billOfQuantityEntries = project.getBillOfQuantity();
-        if (billOfQuantityEntries == null || billOfQuantityEntries.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Project with Project number: '" + projectNumber + "' has no BQ.").build();
-        }
-
-        // Calculate price
-        Double projectPrice = 0.0;
-        for (BillOfQuantityEntry entry : billOfQuantityEntries) {
-            String articleNumber = entry.getArticleNumber();
-            Article article = Article.findByArticleNumber(articleNumber);
-            if (article == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Couldn't find article from BQ with Article number: " + articleNumber).build();
-            }
-
-            Float articlePrice = article.getListPrice();
-            Integer quantity = entry.getQuantity();
-            Response response = checkArticlePriceAndQuantityAndReturnErrorResponseIfNecessary(articlePrice, quantity, articleNumber);
-            if (response != null) {
-                return response;
-            }
-
-            projectPrice += (articlePrice * quantity);
-        }
-
         // Get unit
         String product = project.getProduct();
         if (product == null) {
@@ -88,7 +62,7 @@ public class ProjectService implements PanacheMongoRepository<Project> {
         }
         String unit = getUnitFromProduct(product);
 
-        String responseJson = "{\"price\": " + projectPrice + "," +
+        String responseJson = "{\"price\": " + project.getProjectPrice() + "," +
                 "\"currency\": \"HKD\"," +
                 "\"unit\": \"" + unit + "\"}";
         return Response.status(Response.Status.OK).entity(responseJson).build();
