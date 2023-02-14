@@ -34,6 +34,8 @@ public class Project extends PanacheMongoEntity {
     private String SegmentLevelThree;
     private List<String> solutionTags;
     private Double projectPrice;
+    private Double projectPricePerUnit;
+
 
     // PS100
     private Double shoringHeight;
@@ -267,6 +269,14 @@ public class Project extends PanacheMongoEntity {
 
     public void setProjectPrice(Double projectPrice) {
         this.projectPrice = projectPrice;
+    }
+
+    public Double getProjectPricePerUnit() {
+        return projectPricePerUnit;
+    }
+
+    public void setProjectPricePerUnit(Double projectPricePerUnit) {
+        this.projectPricePerUnit = projectPricePerUnit;
     }
 
 }

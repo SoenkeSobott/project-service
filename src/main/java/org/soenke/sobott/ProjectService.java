@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -121,17 +120,6 @@ public class ProjectService implements PanacheMongoRepository<Project> {
             return Response.status(Response.Status.NOT_FOUND).entity("BQ entry quantity is not present or zero for BQ entry Article number: " + articleNumber).build();
         }
         return null;
-    }
-
-    protected String getUnitFromProduct(String product) {
-        if (product.equals("PS100")) {
-            return "M3";
-        }
-        if (product.equals("DUO")) {
-            return "M2";
-        }
-        LOGGER.log(Level.WARNING, "No Product found for product '" + product + "', using default 'M2'");
-        return "M2"; // Default
     }
 
     protected List<String> getAllSolutionTags() {
