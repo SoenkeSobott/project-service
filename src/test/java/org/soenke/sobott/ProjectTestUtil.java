@@ -17,6 +17,14 @@ public class ProjectTestUtil {
         project.persist();
     }
 
+    public static void createBaseProjectWithPricePerUnit(String projectNumber, String projectName, Double pricePerUnit) {
+        Project project = new Project();
+        project.setProjectNumber(projectNumber);
+        project.setProjectName(projectName);
+        project.setProjectPricePerUnit(pricePerUnit);
+        project.persist();
+    }
+
     public static void createProjectWithProduct(String projectNumber, String projectName, String product) {
         Project project = new Project();
         project.setProjectNumber(projectNumber);

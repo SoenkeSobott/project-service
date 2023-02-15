@@ -45,7 +45,8 @@ public class ProjectService implements PanacheMongoRepository<Project> {
                 return Response.status(Response.Status.OK).entity(projects).build();
             }
         }
-        return Response.status(Response.Status.OK).entity(Project.listAll(Sort.by("projectName"))).build();
+        return Response.status(Response.Status.OK).entity(Project.listAll(Sort.by("projectPricePerUnit")
+                .and("projectName"))).build();
     }
 
     public Response getSolutionTags(FilterPojo filters) {

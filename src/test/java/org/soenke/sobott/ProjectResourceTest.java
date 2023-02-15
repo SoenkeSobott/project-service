@@ -56,6 +56,29 @@ public class ProjectResourceTest {
     }
 
     @Test
+    public void testProjectEndpointWithNoFiltersSortingByPrice() {
+        ProjectTestUtil.createBaseProjectWithPricePerUnit("project-number-918", "fdfd", 100.0);
+        ProjectTestUtil.createBaseProjectWithPricePerUnit("project-number-911", "xy", 200.0);
+        ProjectTestUtil.createBaseProjectWithPricePerUnit("project-number-123", "Aasd", 130.0);
+        ProjectTestUtil.createBaseProjectWithPricePerUnit("project-number-878", "70 XY", 56.0);
+
+        given()
+                .contentType("application/json")
+                .when().post("/projects")
+                .then()
+                .statusCode(200)
+                .body("size()", is(4))
+                .body("[0].projectNumber", is("project-number-878"))
+                .body("[0].projectName", is("70 XY"))
+                .body("[1].projectNumber", is("project-number-918"))
+                .body("[1].projectName", is("fdfd"))
+                .body("[2].projectNumber", is("project-number-123"))
+                .body("[2].projectName", is("Aasd"))
+                .body("[3].projectNumber", is("project-number-911"))
+                .body("[3].projectName", is("xy"));
+    }
+
+    @Test
     public void testProjectsEndpointProductNameFiltered() {
         ProjectTestUtil.createBaseProject("project-number-123", "Honk Kong test site");
         ProjectTestUtil.createBaseProject("project-number-918", "Mega Factory kong");
