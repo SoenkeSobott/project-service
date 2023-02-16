@@ -38,6 +38,26 @@ public class ProductFilterTest {
     }
 
     @Test
+    public void testProjectsEndpointProductFilteredSortedByPricePerUnit() {
+        ProjectTestUtil.createProjectWithProductAndPricePerUnit("project-number-123", "DUO-1", "DUO", 233.0);
+        ProjectTestUtil.createProjectWithProductAndPricePerUnit("project-number-918", "DUO-2", "DUO", 20.0);
+        ProjectTestUtil.createProjectWithProductAndPricePerUnit("project-number-911", "Other Product", "OtherProduct", 600.0);
+        ProjectTestUtil.createProjectWithProductAndPricePerUnit("project-number-900", "DUO-3", "DUO", 34.4);
+
+        String filterJson = "{\"product\": \"DUO\"}";
+        given()
+                .contentType("application/json")
+                .body(filterJson)
+                .when().post("/projects")
+                .then()
+                .statusCode(200)
+                .body("size()", is(3))
+                .body("[0].projectName", is("DUO-2"))
+                .body("[1].projectName", is("DUO-3"))
+                .body("[2].projectName", is("DUO-1"));
+    }
+
+    @Test
     public void testProjectsEndpointProductFilteredCaseInsensitive() {
         ProjectTestUtil.createProjectWithProduct("project-number-123", "DUO-1", "DUO");
         ProjectTestUtil.createProjectWithProduct("project-number-918", "DUO-2", "DUO");

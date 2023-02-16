@@ -36,7 +36,6 @@ public class Project extends PanacheMongoEntity {
     private Double projectPrice;
     private Double projectPricePerUnit;
 
-
     // PS100
     private Double shoringHeight;
     private Double slabThickness;

@@ -33,6 +33,15 @@ public class ProjectTestUtil {
         project.persist();
     }
 
+    public static void createProjectWithProductAndPricePerUnit(String projectNumber, String projectName, String product, Double pricePerUnit) {
+        Project project = new Project();
+        project.setProjectNumber(projectNumber);
+        project.setProjectName(projectName);
+        project.setProduct(product);
+        project.setProjectPricePerUnit(pricePerUnit);
+        project.persist();
+    }
+
     public static void createProjectWithSolutionTags(String projectName, String solutionTagOne, String solutionTagTwo,
                                                      String solutionTagThree, String solutionTagFour) {
         Project project = new Project();
