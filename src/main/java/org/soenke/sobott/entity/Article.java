@@ -14,6 +14,7 @@ public class Article extends PanacheMongoEntity {
     private Float weight;
     private Float listPrice;
     private Integer availability;
+    private List<String> childArticles;
 
     public static Article findByArticleNumber(String articleNumber) {
         return find("articleNumber", articleNumber).firstResult();
@@ -28,7 +29,6 @@ public class Article extends PanacheMongoEntity {
         filterQuery += "{articleDescription:{'$regex' : '" + searchTerm + "', '$options' : 'i'}},";
         filterQuery += "{articleNumber:{'$regex' : '" + searchTerm + "', '$options' : 'i'}},";
         filterQuery += "]}";
-
         return find(filterQuery, Sort.by("availability").descending()).page(Page.ofSize(1000)).list();
     }
 
@@ -70,6 +70,14 @@ public class Article extends PanacheMongoEntity {
 
     public void setAvailability(Integer availability) {
         this.availability = availability;
+    }
+
+    public List<String> getChildArticles() {
+        return childArticles;
+    }
+
+    public void setChildArticles(List<String> childArticles) {
+        this.childArticles = childArticles;
     }
 
 }
