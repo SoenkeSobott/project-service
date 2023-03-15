@@ -1,6 +1,6 @@
 package org.soenke.sobott.entity;
 
-public class ChildArticle {
+public class SubstituteArticle {
     private String articleNumber;
     private Integer availability;
 

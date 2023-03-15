@@ -14,7 +14,7 @@ public class Article extends PanacheMongoEntity {
     private Float weight;
     private Float listPrice;
     private Integer availability;
-    private List<ChildArticle> childArticles;
+    private List<SubstituteArticle> substituteArticles;
 
     public static Article findByArticleNumber(String articleNumber) {
         return find("articleNumber", articleNumber).firstResult();
@@ -72,12 +72,12 @@ public class Article extends PanacheMongoEntity {
         this.availability = availability;
     }
 
-    public List<ChildArticle> getChildArticles() {
-        return childArticles;
+    public List<SubstituteArticle> getSubstituteArticles() {
+        return substituteArticles;
     }
 
-    public void setChildArticles(List<ChildArticle> childArticles) {
-        this.childArticles = childArticles;
+    public void setSubstituteArticles(List<SubstituteArticle> substituteArticles) {
+        this.substituteArticles = substituteArticles;
     }
 
 }
