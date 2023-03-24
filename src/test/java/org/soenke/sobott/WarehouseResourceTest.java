@@ -1,9 +1,13 @@
 package org.soenke.sobott;
 
 import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.soenke.sobott.entity.Article;
+
+import javax.ws.rs.core.MediaType;
+import java.io.File;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -183,6 +187,75 @@ public class WarehouseResourceTest {
                 .body(containsString("No article numbers passed"));
     }
 
+    @Test
+    public void testUploadArticlesWeeklyAvailabilityFile() {
+        createArticle("018040", "My Test Description", 10f, 210.06f, 300);
+        createArticle("073659", "Porsche 918", 1634f, 845000f, 918);
+
+        File file = new File("src/test/TestWeeklyAvailability.xlsx");
+        given()
+                .when()
+                .multiPart(file)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .post("/warehouse/articles")
+                .then()
+                .statusCode(200)
+                .body(containsString("Transferred all Article data"));
+
+        // Check articles in Database
+        Assertions.assertEquals(8, Article.listAll().size());
+
+        checkArticleIsCorrect("013010", null, 81, 0, 0f, 0f);
+
+        checkArticleIsCorrect("018040", "My Test Description", 12, 0, 210.06f, 10f);
+
+        checkArticleIsCorrect("200344", null, 2340, 2, 0f, 0f);
+        checkArticleIsCorrect("018060", null, 333, 2, 0f, 0f);
+
+        checkArticleIsCorrect("074970", null, -607, 4, 0f, 0f);
+        checkArticleIsCorrect("073800", null, 101, 4, 0f, 0f);
+        checkArticleIsCorrect("073659", "Porsche 918", 47, 4, 845000f, 1634f);
+        checkArticleIsCorrect("201047", null, 0, 4, 0f, 0f);
+    }
+
+    @Test
+    public void testUploadArticlesWeeklyAvailabilityNoFilePassed() {
+        given()
+                .when()
+                .multiPart("Invalid name", "Invalid stuff")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .post("/warehouse/articles")
+                .then()
+                .statusCode(400)
+                .body(containsString("No file passed in upload"));
+    }
+
+    @Test
+    public void testUploadArticlesWeeklyAvailabilityFileWithInvalidTypePassed() {
+        File invalidFile = new File("src/test/InvalidFile.txt");
+        given()
+                .when()
+                .multiPart(invalidFile)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .post("/warehouse/articles")
+                .then()
+                .statusCode(400)
+                .body(containsString("Uploaded file can't be read into Excel workbook: Can't open workbook - unsupported file type: UNKNOWN"));
+    }
+
+    @Test
+    public void testUploadArticlesWeeklyAvailabilityInvalidExcelFilePassed() {
+        File invalidFile = new File("src/test/InvalidExcelFile.xlsx");
+        given()
+                .when()
+                .multiPart(invalidFile)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .post("/warehouse/articles")
+                .then()
+                .statusCode(400)
+                .body(containsString("The Excel format is corrupted"));
+    }
+
     protected void createArticle(String articleNumber, String articleDescription, Float weight, Float listPrice, Integer availability) {
         Article article = new Article();
         article.setArticleNumber(articleNumber);
@@ -191,5 +264,19 @@ public class WarehouseResourceTest {
         article.setListPrice(listPrice);
         article.setAvailability(availability);
         article.persist();
+    }
+
+    protected void checkArticleIsCorrect(String articleNumber, String description, int availability, int amountOfSubstituteArticles, float listPrice, float weight) {
+        Article article = Article.findByArticleNumber(articleNumber);
+        Assertions.assertEquals(articleNumber, article.getArticleNumber());
+        Assertions.assertEquals(description, article.getArticleDescription());
+        Assertions.assertEquals(availability, article.getAvailability());
+        Assertions.assertEquals(listPrice, article.getListPrice());
+        Assertions.assertEquals(weight, article.getWeight());
+        if (amountOfSubstituteArticles > 0) {
+            Assertions.assertEquals(amountOfSubstituteArticles, article.getSubstituteArticles().size());
+        } else {
+            Assertions.assertNull(article.getSubstituteArticles());
+        }
     }
 }
