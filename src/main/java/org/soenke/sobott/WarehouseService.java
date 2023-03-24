@@ -10,7 +10,6 @@ import org.soenke.sobott.entity.SubstituteArticle;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +76,7 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
         Workbook workbook;
         try {
             workbook = WorkbookFactory.create(firstEntry);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Uploaded file can't be read into Excel workbook: " + e.getMessage()).build();
         }
 
