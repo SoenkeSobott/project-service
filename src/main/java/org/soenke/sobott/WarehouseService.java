@@ -84,7 +84,7 @@ public class WarehouseService implements PanacheMongoRepository<Article> {
         Sheet sheet;
         try {
             sheet = ExcelUtil.generateValueCopiedSheetFromWeeklyArticlesExcel(workbook);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
 
