@@ -24,5 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: Test
     steps:
+      - uses: actions/checkout@v3
       - name: Push with Maven
         run: ./mvnw install -Dmaven.test.skip -Dquarkus.container-image.push=true -Dquarkus.container-image.username=${{ secrets.DOCKERHUB_USERNAME }} -Dquarkus.container-image.password=${{ secrets.DOCKERHUB_TOKEN }}
