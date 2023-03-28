@@ -32,4 +32,4 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Push with Maven
-        run: ./mvnw install -Dmaven.test.skip -Dquarkus.container-image.push=true -Dquarkus.container-image.username=${{ secrets.DOCKERHUB_USERNAME }} -Dquarkus.container-image.password=${{ secrets.DOCKERHUB_TOKEN }}
+        run: ./mvnw install -Dmaven.test.skip -Dquarkus.container-image.push=true -Dquarkus.container-image.username=${{ secrets.DOCKERHUB_USERNAME }} -Dquarkus.container-image.password=${{ secrets.DOCKERHUB_TOKEN }} -Dquarkus.container-image.group=sobott -Dquarkus.container-image.name=project-service -Dquarkus.container-image.tag=latest
